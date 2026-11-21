@@ -1,49 +1,64 @@
-# Nalyanya — Dashboard Pages Build Prompt (T-1 → T-16)
+# Nalyanya — Dashboard Pages Build Prompt (T-1 → T-16) — Tailwind edition
 
 Paste into Claude **after** `nalyanyaMO_build_prompt.md`. It builds the 16 family-
 dashboard pages one per turn, starting with T-1. The home-page prompt's STACK, DESIGN
 SYSTEM, FRONTEND-ONLY MODE, PERFORMANCE, and QUALITY BAR all still apply — obey them
 throughout. New focus: deep overlay density, seamless URL wiring, Elder Mode on every
-page, and the 3D lineage tree (T-2) using the advanced 3D stack.
+page, the 3D lineage tree (T-2) with the advanced 3D stack, and **glassmorphic HUD
+panels floating over a full-screen 3D canvas**.
 
 ## SCOPE
 Build pages T-1 → T-16 (routes `/dashboard` … `/dashboard/settings`), in index order,
 one per turn. Each implements ALL 7 sections from its `nalyanyaMO.md` spec, mounted
-inside the shared **DashboardShell**: sticky top bar (logo · FamilyContextPill switcher ·
-Elder Mode toggle · notifications bell · profile) + 16-item sidebar (active route
-highlighted). Reuse the §7 shared components — `Drawer`, `Stepper`, `OTPInput`,
-`PinPad`, `ProgressRing`, `ReceiveLinkCard`, `PhoneMockup`, `TreeCanvas3D`,
-`TreeFallback2D`, `DataTable`, `ActionsMenu`, `ConfirmDialog`, `ApprovalGate`,
-`MemberCard`, `RoleChip`, `BranchBadge`, `MoneyBadge`, `EmptyState` — never rebuild them.
+inside the shared **DashboardShell**: sticky glassmorphic top bar (logo ·
+FamilyContextPill switcher · Elder Mode toggle · notifications bell · profile) + 16-item
+sidebar (active route highlighted) + main. Reuse the §7 shared components — `Drawer`,
+`Stepper`, `OTPInput`, `PinPad`, `ProgressRing`, `ReceiveLinkCard`, `PhoneMockup`,
+`TreeCanvas3D`, `TreeFallback2D`, `DataTable`, `ActionsMenu`, `ConfirmDialog`,
+`ApprovalGate`, `MemberCard`, `RoleChip`, `BranchBadge`, `MoneyBadge`, `EmptyState` —
+all built on @headlessui/react + Tailwind v4 + Framer Motion, never rebuild them.
 
-## 3D & RENDERING STACK — TanStack + Vite + Bootstrap latest, right tool per job
-- **T-2 Lineage 3D tree — TRUE 3D WEBGL (primary path, recommended):**
+## 3D & RENDERING STACK — TanStack + Vite + Tailwind v4, right tool per job
+- **T-2 Lineage 3D tree — TRUE 3D WEBGL (primary, recommended):**
   React Three Fiber (`@react-three/fiber`) + `@react-three/drei` (CameraControls,
-  OrbitControls, Billboard, Tube, Line, Environment) + `three`. Compute the tree layout
-  with **d3-hierarchy** (d3.cluster / d3.tree → x/y/z positions per generation + branch).
-  Animate camera fly-throughs and node tweens with **GSAP** (short timelines, killed on
-  unmount). Render crisp member-name labels with **troika-three-text** (SDF text,
-  GPU-friendly — do NOT use `<Html>` for >30 nodes; it kills perf). InstancedMesh for
-  nodes when >200; frustum culling; LOD by distance; lazy-load the WHOLE 3D bundle via
-  dynamic import on the T-2 route so the rest of the app stays light.
+  OrbitControls, Billboard, Tube, Line, Environment) + `three`. Layout via
+  **d3-hierarchy** (d3.cluster / d3.tree → x/y/z positions per generation + branch).
+  Camera fly-throughs + node tweens via **GSAP** (short timelines, killed on unmount).
+  Member-name labels via **troika-three-text** (SDF, GPU-friendly — do NOT use `<Html>`
+  for >30 nodes; it kills perf). InstancedMesh for nodes when >200; frustum culling;
+  LOD by distance; dynamic-import the WHOLE 3D bundle on the T-2 route so the rest of
+  the app stays light.
+  **HUD-over-canvas signature pattern:** T-2 is a FULL-SCREEN 3D canvas; the control
+  rail, search float, member-preview drawer, and legend float OVER it as **glassmorphic
+  panels** — `backdrop-blur-xl bg-surface-1/65 border border-white/15 shadow-lift
+  rounded-lg pointer-events-auto` — so the 3D tree stays immersive while controls stay
+  readable. Tailwind 3D utilities (`perspective-[1500px] transform-3d rotate-x-*
+  translate-z-*`) add depth to the floating panels and a subtle tilt to the
+  member-preview card.
 - **Large-family shortcut (optional, only if a family exceeds ~400 nodes):**
   `3d-force-graph` (Three.js built-in) for a force-directed 3D graph that renders
   hundreds of connected family nodes with minimal setup — switch to this only if the
   d3-hierarchy layout strains.
 - **2.5D HTML/DOM — Elder-Mode + reduced-motion + WebGL-fail fallback:**
-  **GSAP (with Flip)** + **CSS 3D Transforms** + **React Flow** for a static tilted
-  "card-bio" tree view. Auto-engaged under `prefers-reduced-motion` OR WebGL
-  unavailable OR Elder Mode. Identical navigation to the 3D scene (click node → detail
-  drawer, search, "where am I?", generation/branch filter). No animation, no parallax.
+  **GSAP (with Flip)** + **Tailwind built-in 3D CSS utilities** (`perspective-[1500px]`,
+  `transform-3d`, `rotate-x-*`, `rotate-y-*`, `translate-z-*`, `backface-hidden`) +
+  **React Flow** for a static tilted "card-bio" tree view. Auto-engaged under
+  `prefers-reduced-motion` OR WebGL unavailable OR Elder Mode. Identical navigation to
+  the 3D scene (click node → detail drawer, search, "where am I?", generation/branch
+  filter). No animation, no parallax.
 - **Visual 3D scene builder (optional, sparingly):**
   **Spline** + `@splinetool/runtime` (Vite/React) for a visually-designed heritage
   environment scene if you want a hero-quality Command Center (T-1) mini-teaser or a
   future splash — dynamic-import only, never on the critical path.
 - **Performance gates:** the T-2 route code-splits ALL 3D libs; first paint = shell +
-  control rail + 2D React Flow skeleton, 3D hydrates after idle; LCP < 1.5s maintained;
-  reduced-motion / Elder Mode → 2D React Flow instantly.
-- **Bootstrap:** latest (6 if stable today, else 5.3.x) + Bootstrap Icons; light
-  default; no jQuery.
+  glass control rail (2D skeleton) over a placeholder canvas, 3D hydrates after idle;
+  LCP < 1.5s maintained; reduced-motion / Elder Mode → 2D React Flow instantly.
+- **Tailwind v4 + @headlessui/react + Lucide + Framer Motion — NO BOOTSTRAP.** Drawers =
+  Headless UI Dialog with Tailwind `transition`/`transform` slide classes; modals =
+  Dialog with `scale-95 → scale-100` + `rotate-x-3 → rotate-x-0` entrance; Actions menu
+  = Headless UI Menu; tabs = Headless UI Tabs; wizards = custom Stepper over Tabs/
+  Disclosure; accordions = Disclosure. Every overlay accessible (focus-trap, Esc,
+  backdrop click), animated, and 3D-tilted where it adds polish.
 
 ## INTERACTION DENSITY — ≥15 overlays per page
 Every dashboard page ships AT LEAST 15 of: drawers, multi-step Stepper wizards,
@@ -73,11 +88,11 @@ decorative dropdowns, no dead buttons, no "coming soon".
   (T-16, T-9); Receive-link phone-preview walk-through (T-9 PhoneMockup is interactive);
   Delete/Revoke confirms with reason (member remove, obituary unpublish, loan write-off,
   allocation revoke, broadcast cancel, branch delete).
-- **Per-row Actions dropdowns** on every table — real working items only (View · Edit ·
-  Send receive link · Repay · Restructure · Mark settled · Rotate · Payout · Resend ·
-  Revoke · Approve · Decline · Duplicate · Cancel · Export row). RBAC-gated:
-  unauthorized actions are HIDDEN not disabled; where an integration can't act yet, show
-  a guidance note + SIMULATED badge — never a dead/disabled button.
+- **Per-row Actions dropdowns** on every table (Headless UI Menu) — real working items
+  only (View · Edit · Send receive link · Repay · Restructure · Mark settled · Rotate ·
+  Payout · Resend · Revoke · Approve · Decline · Duplicate · Cancel · Export row).
+  RBAC-gated: unauthorized actions are HIDDEN not disabled; where an integration can't
+  act yet, show a guidance note + SIMULATED badge — never a dead/disabled button.
 - **Tabs + mini-tabs**: status filters (All/Pending/Confirmed/Failed/Settled…),
   purpose/type chips, branch/scope tabs, period selectors (1M/3M/6M/1Y/ALL), drawer
   sub-tabs.
@@ -121,11 +136,11 @@ decorative dropdowns, no dead buttons, no "coming soon".
   quick-broadcast modal · quick-event wizard(prefill) · elder-receive-link send modal ·
   notifications drawer · 3D-tree mini-teaser open · KPI drilldown · chama-rotation alert
   · overdue-loan drilldown · contribution snapshot detail · calendar event detail.
-- **T-2 Lineage (3D)**: focus-member drawer(6 tabs) · where-am-I panel · branch-fit cam
-  · search-results modal · generation-filter · branch-filter · add-relation wizard
-  (admin) · mark-deceased confirm · mark-adopted · merge-duplicate modal · edit-request
-  submit · 2D-fallback toggle · legend modal · branch-overview open · audit-requests
-  drawer.
+- **T-2 Lineage (3D)**: focus-member drawer(6 tabs, glass HUD) · where-am-I panel ·
+  branch-fit cam · search-results modal · generation-filter · branch-filter ·
+  add-relation wizard (admin) · mark-deceased confirm · mark-adopted · merge-duplicate
+  modal · edit-request submit · 2D-fallback toggle · legend modal · branch-overview
+  open · audit-requests drawer.
 - **T-3 Members**: member detail drawer(6 tabs) · add-member wizard · role-assign modal
   · suspend confirm · remove confirm · send-receive-link · export-row · bulk-actions bar
   · requests-queue drawer · relation-seed modal · branch-reassign · finance-snapshot ·
@@ -186,9 +201,9 @@ decorative dropdowns, no dead buttons, no "coming soon".
 - I name the page (first: T-1). Build ONLY that page. Do not build future pages "while
   you're at it".
 - BEFORE code: re-read that page's spec in `nalyanyaMO.md` (e.g. "PAGE T-6") + §2
-  tokens + §7 components + §8 query keys; re-read `src/styles/tokens.css`, the
-  DashboardShell, and one already-built dashboard page for consistency. Reuse shared
-  components — never duplicate or restyle them.
+  tokens + §7 components + §8 query keys; re-read `src/styles/tokens.css` (the `@theme`
+  block), the DashboardShell, and one already-built dashboard page for consistency.
+  Reuse shared components — never duplicate or restyle them.
 - If the DashboardShell / top bar / sidebar / shared primitives don't exist yet, create
   them as part of T-1, then build the page.
 - Cross-page links to pages not built yet must still resolve: tiny designed stub route
@@ -199,18 +214,19 @@ decorative dropdowns, no dead buttons, no "coming soon".
   drawer, every destructive/money action to a confirm (reason where the outline says).
   Frontend-only: paper simulates live; live-integration submits end in the labeled
   "connects later" state.
-- When the page passes the QUALITY BAR: run build + Lighthouse mobile, fix everything,
-  then STOP and reply with a 4-line report (page built · overlays shipped with counts ·
-  URL deep-links wired · verification incl. zero-network + 360px + Elder Mode +
-  reduced-motion + Lighthouse). Wait for my "next" instruction.
+- When the page passes the QUALITY BAR: run build (Tailwind v4 Vite plugin) + Lighthouse
+  mobile, fix everything, then STOP and reply with a 4-line report (page built ·
+  overlays shipped with counts · URL deep-links wired · verification incl. zero-network
+  + 360px + Elder Mode + reduced-motion + Lighthouse). Wait for my "next" instruction.
 
 ## FIRST DASHBOARD PAGE — T-1 Command Center (`/dashboard`)
 Implement all 7 sections from `nalyanyaMO.md` "PAGE T-1": build the DashboardShell
-(sticky top bar with FamilyContextPill + Elder Mode toggle + notifications bell +
-profile, 16-item sidebar) → S1 status ribbon (family health chips) → S2 KPI row (6,
-count-up, flash) → S3 family finance curve + per-branch sparklines → S4 live
-contributions snapshot (→ T-7 detail via URL param) → S5 mini 3D lineage teaser (lazy,
-SVG fallback under Elder Mode / reduced-motion) → S6 alerts & action center (each →
-deep-link) → S7 upcoming events + chama/calendar strip. Ship ≥15 overlays per the floor
-above, wire every link to a real route, verify (incl. Lighthouse + Elder Mode +
-reduced-motion), report, and stop.
+(sticky glassmorphic top bar `backdrop-blur-xl bg-surface-1/70 border-b border-white/15`
+with FamilyContextPill + Elder Mode toggle + notifications bell + profile, 16-item
+sidebar) → S1 status ribbon (family health chips) → S2 KPI row (6, count-up, flash,
+`hover:-translate-y-1 hover:rotate-y-2 hover:translate-z-4` tilt) → S3 family finance
+curve + per-branch sparklines → S4 live contributions snapshot (→ T-7 detail via URL
+param) → S5 mini 3D lineage teaser (lazy, SVG fallback under Elder Mode /
+reduced-motion) → S6 alerts & action center (each → deep-link) → S7 upcoming events +
+chama/calendar strip. Ship ≥15 overlays per the floor above, wire every link to a real
+route, verify (incl. Lighthouse + Elder Mode + reduced-motion), report, and stop.
