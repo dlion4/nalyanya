@@ -1,0 +1,149 @@
+/* ─── H-7 Contact · page-scoped styles ──────────────────────────────────────
+   Injected on /contact enter, removed on leave (usePageStyles). Every selector
+   lives under .page-contact; keyframes are prefixed ny-ct-*.               */
+
+@layer components {
+  .page-contact { position: relative; isolation: isolate; }
+
+  .page-contact .ny-ct-glow {
+    background:
+      radial-gradient(46% 44% at 82% 24%, rgba(212, 164, 55, 0.22), transparent 70%),
+      radial-gradient(38% 40% at 6% 78%, rgba(106, 76, 147, 0.12), transparent 72%);
+  }
+
+  /* ── Pinhole camera body around the header shutter ──────────── */
+  .page-contact .ny-ct-stage { perspective: 1400px; }
+  .page-contact .ny-ct-body {
+    transform-style: preserve-3d;
+    transform: rotateY(-6deg) rotateX(3deg);
+    transition: transform 700ms var(--ease-out);
+  }
+  .page-contact .ny-ct-stage:hover .ny-ct-body { transform: rotateY(-1.5deg) rotateX(1deg); }
+
+  /* ── Postmark ───────────────────────────────────────────────── */
+  .page-contact .ny-postmark-spin { transform-box: view-box; transform-origin: 50% 50%; animation: ny-ct-spin 44s linear infinite; }
+  .page-contact .ny-float-postmark { animation: ny-ct-float 8s ease-in-out infinite; }
+
+  /* ── Perforated stamp frame: page-coloured dots painted on the white border ── */
+  .page-contact .ny-stamp {
+    padding: 12px;
+    border-radius: 4px;
+    background-color: #fffdf7;
+    background-image:
+      radial-gradient(circle 4px at 8px 0, var(--color-surface-0) 97%, transparent),
+      radial-gradient(circle 4px at 8px 100%, var(--color-surface-0) 97%, transparent),
+      radial-gradient(circle 4px at 0 8px, var(--color-surface-0) 97%, transparent),
+      radial-gradient(circle 4px at 100% 8px, var(--color-surface-0) 97%, transparent);
+    background-size: 16px 12px, 16px 12px, 12px 16px, 12px 16px;
+    background-position: 0 0, 0 100%, 0 0, 100% 0;
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    box-shadow: var(--shadow-lift);
+  }
+
+  /* ── Form fields ────────────────────────────────────────────── */
+  .page-contact .ny-ct-input {
+    width: 100%;
+    margin-top: 0.375rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-surface-3);
+    background: var(--color-surface-0);
+    padding: 0.75rem 0.9rem;
+    font: inherit;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    outline: none;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+  .page-contact .ny-ct-input::placeholder { color: var(--color-text-tertiary); font-weight: 400; }
+  .page-contact .ny-ct-input:hover { border-color: color-mix(in srgb, var(--color-text-tertiary) 55%, transparent); }
+  .page-contact .ny-ct-input:focus,
+  .page-contact .ny-ct-input:focus-visible {
+    border-color: var(--color-brand-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-brand-primary) 20%, transparent);
+  }
+  .page-contact .ny-ct-input.is-invalid { border-color: var(--color-brand-danger); }
+  .page-contact .ny-ct-input.is-invalid:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-brand-danger) 18%, transparent); }
+  .page-contact select.ny-ct-input {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 2.6rem;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231F4D3A' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+  }
+  html[data-ny-mode="elder"] .page-contact .ny-ct-input { min-height: 56px; font-size: 1.05rem; }
+
+  /* Radio / check cards */
+  .page-contact .ny-ct-choice {
+    position: relative;
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    border: 1px solid var(--color-surface-3);
+    border-radius: var(--radius-md);
+    padding: 0.65rem 0.8rem;
+    background: var(--color-surface-0);
+    cursor: pointer;
+    transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  }
+  .page-contact .ny-ct-choice:hover { border-color: color-mix(in srgb, var(--color-brand-primary) 45%, transparent); }
+  .page-contact .ny-ct-choice:active { transform: scale(0.985); }
+  .page-contact .ny-ct-choice:has(input:checked) {
+    border-color: var(--color-brand-primary);
+    background: var(--color-brand-primary-tint);
+    box-shadow: inset 0 0 0 1px var(--color-brand-primary);
+  }
+  .page-contact .ny-ct-choice:has(input:focus-visible) { outline: 2px solid var(--color-brand-primary); outline-offset: 2px; }
+  .page-contact .ny-ct-choice > input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+
+  /* ── 3D message switchboard ─────────────────────────────────── */
+  .page-contact .ny-ct-stage-3d { background: radial-gradient(70% 60% at 50% 42%, #1c3428 0%, #102018 58%, #0a1410 100%); }
+  .page-contact .ny-ct-stage-3d canvas { display: block; }
+  .page-contact .ny-ct-route { transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease; }
+  .page-contact .ny-ct-route[aria-pressed="true"] { background: rgba(212, 164, 55, 0.2); border-color: rgba(212, 164, 55, 0.7); color: #fff; }
+
+  /* ── People cards ───────────────────────────────────────────── */
+  .page-contact .ny-ct-person { transform-style: preserve-3d; transition: transform 420ms var(--ease-out), box-shadow 420ms var(--ease-out); }
+  .page-contact .ny-ct-person:hover { transform: translateY(-6px) rotateY(-5deg) rotateX(3deg); box-shadow: var(--shadow-lift); }
+  .page-contact .ny-ct-person img { transition: transform 800ms var(--ease-out); }
+  .page-contact .ny-ct-person:hover img { transform: scale(1.06); }
+
+  /* ── Channel cards ──────────────────────────────────────────── */
+  .page-contact .ny-ct-channel { transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out); }
+  .page-contact .ny-ct-channel:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+
+  /* ── "Received" stamp on a sent note ────────────────────────── */
+  .page-contact .ny-ct-stamp { display: inline-block; animation: ny-ct-stamp 700ms cubic-bezier(0.2, 0.9, 0.25, 1.2) both; }
+
+  /* ── Live ticket node + map pulse ────────────────────────────── */
+  .page-contact .ny-ct-live { animation: ny-ct-pulse 1.6s ease-in-out infinite; }
+  .page-contact .ny-map-pulse { transform-box: fill-box; transform-origin: center; animation: ny-ct-ring 2.4s ease-out infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-contact .ny-postmark-spin,
+    .page-contact .ny-float-postmark,
+    .page-contact .ny-ct-live,
+    .page-contact .ny-map-pulse { animation: none !important; }
+    .page-contact .ny-ct-body,
+    .page-contact .ny-ct-stage:hover .ny-ct-body,
+    .page-contact .ny-ct-person:hover,
+    .page-contact .ny-ct-channel:hover { transform: none !important; }
+    .page-contact .ny-ct-person:hover img { transform: none !important; }
+    .page-contact .ny-ct-stamp { animation: none; }
+  }
+  html[data-ny-mode="elder"] .page-contact .ny-ct-body,
+  html[data-ny-mode="elder"] .page-contact .ny-ct-stage:hover .ny-ct-body,
+  html[data-ny-mode="elder"] .page-contact .ny-ct-person:hover,
+  html[data-ny-mode="elder"] .page-contact .ny-ct-channel:hover { transform: none; }
+}
+
+@keyframes ny-ct-spin { to { transform: rotate(360deg); } }
+@keyframes ny-ct-float { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-10px) rotate(-1deg); } }
+@keyframes ny-ct-stamp {
+  from { opacity: 0; transform: rotate(-18deg) scale(1.7); }
+  60% { opacity: 1; }
+  to { opacity: 1; transform: rotate(-9deg) scale(1); }
+}
+@keyframes ny-ct-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(212, 164, 55, 0.55); } 50% { box-shadow: 0 0 0 7px rgba(212, 164, 55, 0); } }
+@keyframes ny-ct-ring { 0% { transform: scale(0.6); opacity: 0.9; } 100% { transform: scale(2.6); opacity: 0; } }

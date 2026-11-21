@@ -1,0 +1,36 @@
+/* ─── A-2 Sign In · page-scoped styles (injected on /signin enter) ──────── */
+
+@layer components {
+  .page-auth-signin { min-height: 100svh; }
+
+  @media (min-width: 1024px) {
+    .page-auth-signin .auth-shell__panel::before {
+      content: ""; position: absolute; inset: auto 0 0; height: 22rem; pointer-events: none;
+      background: radial-gradient(60% 80% at 50% 100%, rgba(31, 77, 58, 0.08), transparent 70%);
+    }
+  }
+
+  .page-auth-signin .auth-title { font-style: normal; }
+  .page-auth-signin .auth-title em { font-style: italic; color: var(--color-brand-secondary); font-weight: 500; }
+
+  /* remembered-family chips */
+  .page-auth-signin .auth-recent { transition: all 160ms var(--ease-out); }
+  .page-auth-signin .auth-recent:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); border-color: color-mix(in srgb, var(--color-brand-primary) 45%, transparent); }
+
+  /* shake */
+  .page-auth-signin .auth-shake { animation: ny-auth-shake 380ms cubic-bezier(0.36, 0.07, 0.19, 0.97); }
+
+  /* sample QR frame — decodes nothing, labels itself */
+  .page-auth-signin .auth-qr { border: 1px solid var(--color-surface-3); background: #fff; padding: 0.75rem; border-radius: var(--radius-md); box-shadow: var(--shadow-card); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-auth-signin .auth-shake, .page-auth-signin .auth-recent { animation: none; transition: none; }
+  }
+}
+
+@keyframes ny-auth-shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-5px); }
+  40%, 60% { transform: translateX(5px); }
+}

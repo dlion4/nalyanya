@@ -1,0 +1,171 @@
+@import "./styles/tokens.css";
+@import "./styles/components/shutter.css";
+
+/* ─── Nalyanya master styles — light-first, warm, flat + hairlines ───────── */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply bg-surface-0 text-text-primary font-sans antialiased;
+    overflow-x: clip;
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-brand-accent-soft);
+    color: var(--color-brand-primary-deep);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  img {
+    content-visibility: auto;
+    max-width: 100%;
+  }
+}
+
+/* ─── Elder Mode — bump type, touch targets, line-height ─────────────────── */
+
+html[data-ny-mode="elder"] body {
+  font-size: 1.125rem;
+  line-height: 1.8;
+}
+html[data-ny-mode="elder"] .ny-touch,
+html[data-ny-mode="elder"] .ny-btn {
+  min-height: 56px;
+  min-width: 56px;
+}
+
+/* ─── Shared component layer (.ny-*) ─────────────────────────────────────── */
+
+@layer components {
+  .ny-eyebrow {
+    @apply inline-flex items-center gap-2 rounded-pill border border-brand-primary/15 bg-brand-primary-tint px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-primary;
+  }
+
+  .ny-btn, .ny-btn-primary, .ny-btn-gold, .ny-btn-ghost, .ny-btn-dark {
+    @apply relative inline-flex select-none items-center justify-center gap-2 rounded-pill px-6 py-3 text-[15px] font-semibold leading-none transition-all duration-300 ease-out active:scale-[0.97];
+    min-height: 44px;
+  }
+  .ny-btn-primary {
+    @apply bg-brand-primary text-surface-0 shadow-lift hover:bg-brand-primary-deep;
+  }
+  .ny-btn-gold {
+    @apply bg-brand-accent text-brand-primary-deep shadow-glow hover:brightness-[1.04] hover:shadow-lift;
+  }
+  .ny-btn-ghost {
+    @apply border border-brand-primary/25 bg-surface-1 text-brand-primary hover:border-brand-primary/40 hover:bg-brand-primary-tint;
+  }
+  .ny-btn-dark {
+    @apply bg-surface-1 text-brand-primary hover:bg-surface-2;
+  }
+
+  .ny-card {
+    @apply rounded-lg border border-surface-3/70 bg-surface-1 shadow-card;
+  }
+
+  .ny-chip {
+    @apply inline-flex items-center gap-1.5 rounded-pill border border-surface-3 bg-surface-2 px-3 py-1.5 text-xs font-semibold text-text-secondary;
+  }
+
+  .ny-icon-chip {
+    @apply grid size-11 shrink-0 place-items-center rounded-full bg-brand-primary-tint text-brand-primary ring-1 ring-brand-primary/10;
+  }
+
+  .ny-sim-badge {
+    @apply inline-flex items-center gap-1.5 rounded-pill border border-brand-accent/60 bg-brand-accent-soft px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#7a5b14];
+  }
+
+  .ny-section-label {
+    @apply text-[11px] font-bold uppercase tracking-[0.18em] text-brand-secondary;
+  }
+
+  .ny-heading {
+    @apply font-display font-semibold leading-[1.05] tracking-[-0.02em] text-text-primary;
+  }
+
+  .ny-prose {
+    @apply text-text-secondary leading-relaxed;
+  }
+
+  .ny-num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Shared glassmorphic HUD panel — floats over photos / 3D canvases */
+  .ny-glass {
+    background: rgba(255, 255, 255, 0.66);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    backdrop-filter: blur(18px) saturate(1.3);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 18px 50px -18px rgba(20, 53, 39, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  }
+  .ny-glass-dark {
+    background: rgba(15, 30, 22, 0.55);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    backdrop-filter: blur(16px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 18px 50px -20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  /* Shared modal backdrop — glass panel floats over the page */
+  .ny-modal-backdrop {
+    position: fixed; inset: 0; z-index: 80;
+    background: rgba(15, 26, 20, 0.62);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    display: grid; place-items: center; padding: 1rem;
+  }
+
+  /* Shared heritage grid paper atmosphere */
+  .ny-grid-paper {
+    background-image:
+      linear-gradient(rgba(31, 77, 58, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(31, 77, 58, 0.05) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(70% 60% at 50% 40%, black 30%, transparent 100%);
+  }
+
+  /* Shared CTA rings — used by the footer on every page */
+  .ny-cta-rings { position: relative; }
+  .ny-cta-rings::before,
+  .ny-cta-rings::after {
+    content: "";
+    position: absolute;
+    border-radius: 999px;
+    border: 1.5px dashed rgba(212, 164, 55, 0.5);
+    pointer-events: none;
+  }
+  .ny-cta-rings::before {
+    width: 46rem; height: 46rem; top: -34rem; right: -12rem;
+    animation: ny-cta-spin 90s linear infinite;
+  }
+  .ny-cta-rings::after {
+    width: 26rem; height: 26rem; bottom: -17rem; left: -8rem;
+    animation: ny-cta-spin 70s linear infinite reverse;
+  }
+}
+
+@keyframes ny-cta-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .ny-cta-rings::before, .ny-cta-rings::after { animation: none; }
+}
