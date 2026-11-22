@@ -1,0 +1,150 @@
+/* ─────────────────────────────────────────────────────────────────────
+   T-4 Events & Activities · page-scoped stylesheet
+   Root class: .page-dash-events — every selector is scoped to it so
+   nothing leaks into other pages. Master tokens and components come from
+   src/styles/tokens.css, components.css and app-shell.css.
+   The camera reel (IrisReel) is wrapped in .page-dash-events inside its
+   modal, so the viewfinder rules below apply there too.
+   ───────────────────────────────────────────────────────────────────── */
+
+.page-dash-events {
+  --page-accent: #a284dc;
+}
+
+/* S2 · Calendar cells lift in 3D on hover */
+.page-dash-events .ny-cal-cell {
+  transform-style: preserve-3d;
+  transition:
+    transform 280ms var(--ease-out-expo),
+    box-shadow 280ms var(--ease-out-expo),
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+
+.page-dash-events .ny-cal-cell:hover {
+  transform: translate3d(0, -2px, 10px) rotateX(4deg);
+  box-shadow: var(--shadow-soft);
+}
+
+.page-dash-events .ny-cal-cell:focus-visible {
+  outline: 2px solid var(--color-brand-accent);
+  outline-offset: 2px;
+}
+
+/* Event dots pop in when the month changes */
+.page-dash-events .ny-dot-pop {
+  animation: ny-dot-pop 620ms var(--ease-out-expo) both;
+}
+
+@keyframes ny-dot-pop {
+  0% { transform: scale(0.2); opacity: 0; }
+  70% { transform: scale(1.25); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* Slim progress bar while a mutation is in flight */
+.page-dash-events .ny-progress-bar {
+  animation: ny-progress-sweep 1.1s ease-in-out infinite;
+  transform-origin: left center;
+}
+
+@keyframes ny-progress-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(320%); }
+}
+
+/* S3 · Glassmorphic bulk bar */
+.page-dash-events .ny-bulk-hud {
+  background: rgb(15 42 32 / 0.9);
+  border: 1px solid rgb(244 210 122 / 0.35);
+  backdrop-filter: blur(16px) saturate(1.25);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
+  box-shadow: 0 24px 56px -20px rgb(11 31 23 / 0.75);
+}
+
+/* KPI and card tilt stages */
+.page-dash-events .ny-stage-3d {
+  perspective: 1200px;
+}
+
+.page-dash-events .ny-card-3d {
+  transform-style: preserve-3d;
+  transition:
+    transform 320ms var(--ease-out-expo),
+    box-shadow 320ms var(--ease-out-expo),
+    border-color 220ms ease;
+}
+
+.page-dash-events .ny-card-3d:hover {
+  transform: translate3d(0, -4px, 12px) rotateX(2.5deg) rotateY(-2.5deg);
+  box-shadow: var(--shadow-lift);
+}
+
+/* S7 · Polaroid archive cards */
+.page-dash-events .ny-polaroid {
+  transform-style: preserve-3d;
+}
+
+.page-dash-events .ny-polaroid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgb(31 77 58 / 0.06);
+}
+
+/* S8 · Camera viewfinder (IrisReel) */
+.page-dash-events .ny-reel-stage {
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08), 0 30px 60px -36px rgb(11 31 23 / 0.8);
+}
+
+.page-dash-events .ny-reel-img {
+  animation: ny-reel-in 0.8s var(--ease-out-expo);
+}
+
+@keyframes ny-reel-in {
+  from { opacity: 0.25; transform: scale(1.045); }
+  to { opacity: 1; transform: none; }
+}
+
+.page-dash-events .ny-corner {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border: 0 solid rgb(255 255 255 / 0.85);
+}
+
+.page-dash-events .ny-corner-tl { top: 14px; left: 14px; border-top-width: 2px; border-left-width: 2px; border-top-left-radius: 8px; }
+.page-dash-events .ny-corner-tr { top: 14px; right: 14px; border-top-width: 2px; border-right-width: 2px; border-top-right-radius: 8px; }
+.page-dash-events .ny-corner-bl { bottom: 14px; left: 14px; border-bottom-width: 2px; border-left-width: 2px; border-bottom-left-radius: 8px; }
+.page-dash-events .ny-corner-br { bottom: 14px; right: 14px; border-bottom-width: 2px; border-right-width: 2px; border-bottom-right-radius: 8px; }
+
+.page-dash-events .ny-reel-thumb {
+  will-change: transform;
+}
+
+/* Elder Mode and reduced motion: calm, static, same information */
+html[data-ny-mode="elder"] .page-dash-events .ny-cal-cell:hover,
+html[data-ny-mode="elder"] .page-dash-events .ny-card-3d:hover {
+  transform: none;
+}
+
+html[data-ny-mode="elder"] .page-dash-events .ny-dot-pop,
+html[data-ny-mode="elder"] .page-dash-events .ny-progress-bar,
+html[data-ny-mode="elder"] .page-dash-events .ny-reel-img {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-dash-events .ny-cal-cell:hover,
+  .page-dash-events .ny-card-3d:hover {
+    transform: none;
+  }
+
+  .page-dash-events .ny-dot-pop,
+  .page-dash-events .ny-progress-bar,
+  .page-dash-events .ny-reel-img {
+    animation: none;
+  }
+}

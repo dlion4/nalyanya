@@ -1,0 +1,17 @@
+/* T-16 Settings · page-scoped stylesheet (root: .page-dash-settings) */
+.page-dash-settings {
+  --page-accent: #4b6584;
+}
+
+.page-dash-settings .ny-module-accent { color: var(--page-accent); }
+
+.page-dash-settings .ny-module-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(60% 80% at 100% 0%, color-mix(in srgb, var(--page-accent) 30%, transparent), transparent 70%);
+}
+
+.page-dash-settings .ny-module-section:hover { border-color: color-mix(in srgb, var(--page-accent) 55%, transparent); }
+.page-dash-settings .ny-module-section .ny-title { color: var(--page-accent); }

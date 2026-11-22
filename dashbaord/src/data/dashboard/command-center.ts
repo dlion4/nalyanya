@@ -1,488 +1,141 @@
-import type {
-  Alert,
-  Branch,
-  Contribution,
-  FamilyEvent,
-  Member,
-  Memory,
-} from "@/types/workspace";
+import { BRANCHES } from "@/data/family/branches";
+import { between, mulberry32 } from "@/lib/rng";
 
-export const family = {
-  name: "Nalyanya",
-  root: "Mzee Victor Nalyanya",
-  members: 248,
-  branches: 12,
-  generations: 5,
-  wallet: 1284500,
-  contributions: 186500,
-  shares: 312000,
-  loans: 125000,
+/* T-1 Command Center — page data (mock, deterministic). */
+
+export const SHARE_UNIT_VALUE_KES = 1250;
+
+export type RangeKey = "1M" | "3M" | "6M" | "1Y" | "ALL";
+
+export const RANGES: Array<{ key: RangeKey; label: string; points: number }> = [
+  { key: "1M", label: "1M", points: 5 },
+  { key: "3M", label: "3M", points: 13 },
+  { key: "6M", label: "6M", points: 26 },
+  { key: "1Y", label: "1Y", points: 52 },
+  { key: "ALL", label: "All", points: 104 },
+];
+
+export interface FinancePoint {
+  label: string;
+  inflow: number;
+  outflow: number;
+  balance: number;
+}
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function buildSeries(): FinancePoint[] {
+  const rand = mulberry32(4242);
+  const points: FinancePoint[] = [];
+  let balance = 8_400_000;
+  const start = Date.UTC(2024, 3, 8);
+  for (let i = 0; i < 104; i++) {
+    const inflow = between(rand, 420_000, 980_000);
+    const outflow = between(rand, 260_000, 760_000) + (i % 13 === 12 ? 380_000 : 0);
+    balance += inflow - outflow;
+    const d = new Date(start + i * 7 * 86_400_000);
+    points.push({
+      label: `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`,
+      inflow,
+      outflow,
+      balance,
+    });
+  }
+  return points;
+}
+
+/** 104 weekly points ending in the current week (ALL). Ranges slice from the end. */
+export const FINANCE_SERIES: FinancePoint[] = buildSeries();
+
+export const BRANCH_SPARKS = BRANCHES.slice(0, 6).map((branch, index) => {
+  const rand = mulberry32(900 + index);
+  const series = Array.from({ length: 12 }, (_, k) => 200_000 + k * 15_000 + between(rand, -60_000, 90_000));
+  return { branchId: branch.id, series, net: series[11] - series[10] };
+});
+
+export type ContributionStatus = "received" | "pending" | "quarantined";
+
+export const LIVE_CONTRIBUTIONS: Array<{
+  id: string;
+  contributor: string;
+  purpose: "Wedding" | "Medical" | "Funeral" | "Harambee" | "Project" | "Education";
+  cause: string;
+  amountKes: number;
+  when: string;
+  status: ContributionStatus;
+}> = [
+  { id: "NY-CON-2026-0412", contributor: "Peter Otieno Nalyanya", purpose: "Wedding", cause: "Caleb & Esther · Eldoret", amountKes: 25000, when: "12 min ago", status: "received" },
+  { id: "NY-CON-2026-0411", contributor: "Naomi Achieng Nalyanya", purpose: "Medical", cause: "Mzee Victor · clinic fund", amountKes: 60000, when: "38 min ago", status: "received" },
+  { id: "NY-CON-2026-0409", contributor: "Mercy Auma Nalyanya", purpose: "Harambee", cause: "Kimilili water project", amountKes: 5000, when: "1 h ago", status: "pending" },
+  { id: "NY-CON-2026-0405", contributor: "Tom Mutua Okoth", purpose: "Education", cause: "Ethan's school fees", amountKes: 12000, when: "2 h ago", status: "received" },
+  { id: "NY-CON-2026-0402", contributor: "Daniel Wafula Nalyanya", purpose: "Funeral", cause: "Kisumu · Grace's cousin", amountKes: 20000, when: "4 h ago", status: "received" },
+  { id: "NY-CON-2026-0398", contributor: "Lynn Ruth Wakoli", purpose: "Project", cause: "Kitale dairy shed roof", amountKes: 15000, when: "yesterday", status: "quarantined" },
+  { id: "NY-CON-2026-0396", contributor: "Caleb Kiprono Nalyanya", purpose: "Harambee", cause: "Kimilili water project", amountKes: 30000, when: "yesterday", status: "received" },
+  { id: "NY-CON-2026-0391", contributor: "Hellen Nasimiyu Nalyanya", purpose: "Education", cause: "Nyeri bursary", amountKes: 8000, when: "2 days ago", status: "pending" },
+];
+
+export const ALERTS: Array<{
+  id: string;
+  tone: "warning" | "info" | "danger" | "success";
+  critical: boolean;
+  title: string;
+  body: string;
+  href: string;
+  cta: string;
+}> = [
+  { id: "al-1", tone: "warning", critical: false, title: "3 contributions waiting for verification", body: "Two M-Pesa references and one cash receipt need a second look.", href: "/dashboard/contributions", cta: "Review contributions" },
+  { id: "al-2", tone: "info", critical: false, title: "Chama “Wazee Round” rotates in 2 days", body: "Your turn is position 4 of 12 in the merry-go-round.", href: "/dashboard/finances", cta: "Open the chama" },
+  { id: "al-3", tone: "danger", critical: true, title: "Loan NY-LON-2026-00088 is 2 days overdue", body: "Instalment of KES 18,400 is due. A reminder is queued (SIMULATED).", href: "/dashboard/loans", cta: "Open the loan" },
+  { id: "al-4", tone: "warning", critical: false, title: "Ann Nekesa's receive link unused for 7 days", body: "Resend the link, or call to confirm the PIN is still remembered.", href: "/dashboard/finance-access", cta: "Resend link" },
+  { id: "al-5", tone: "success", critical: false, title: "Broadcast “December reunion” reached 240 of 242", body: "Two numbers failed. Retrying is one tap away.", href: "/dashboard/communications", cta: "View delivery" },
+];
+
+export const UPCOMING_EVENTS: Array<{
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  host: string;
+  kind: string;
+  rsvp: string;
+  href: string;
+}> = [
+  { id: "EVT-2026-014", title: "Sunday devotion & family call", date: "Sun 10 May", time: "18:00 EAT", host: "Peter Otieno", kind: "Devotion", rsvp: "34 going", href: "/dashboard/events" },
+  { id: "EVT-2026-016", title: "Caleb & Esther's kitchen committee", date: "Tue 12 May", time: "17:30 EAT", host: "Samuel Kipkoech", kind: "Wedding", rsvp: "12 going", href: "/dashboard/events" },
+  { id: "EVT-2026-019", title: "Nairobi merry-go-round meeting", date: "Thu 14 May", time: "19:00 EAT", host: "Brian Otieno", kind: "Chama", rsvp: "9 going", href: "/dashboard/finances" },
+  { id: "EVT-2026-021", title: "Kisumu clinic drive planning", date: "Sat 16 May", time: "10:00 EAT", host: "Grace Adhiambo", kind: "Foundation", rsvp: "21 going", href: "/dashboard/foundation" },
+  { id: "EVT-2026-024", title: "Kimilili reunion committee", date: "Sun 24 May", time: "14:00 EAT", host: "Joseph Wafula", kind: "Reunion", rsvp: "58 going", href: "/dashboard/events" },
+];
+
+export const CALENDAR_WEEK: Array<{
+  day: string;
+  date: string;
+  items: Array<{ kind: "chama" | "event" | "loan" | "deadline"; label: string; href: string }>;
+}> = [
+  { day: "Mon", date: "11", items: [{ kind: "deadline", label: "Contribution deadline · Harambee", href: "/dashboard/contributions" }] },
+  { day: "Tue", date: "12", items: [{ kind: "event", label: "Wedding committee", href: "/dashboard/events" }] },
+  { day: "Wed", date: "13", items: [{ kind: "chama", label: "Wazee Round payout", href: "/dashboard/finances" }, { kind: "loan", label: "Loan instalment due", href: "/dashboard/loans" }] },
+  { day: "Thu", date: "14", items: [{ kind: "event", label: "Nairobi merry-go-round", href: "/dashboard/events" }] },
+  { day: "Fri", date: "15", items: [] },
+  { day: "Sat", date: "16", items: [{ kind: "event", label: "Kisumu clinic planning", href: "/dashboard/foundation" }] },
+  { day: "Sun", date: "17", items: [{ kind: "deadline", label: "Sacco share purchase closes", href: "/dashboard/finances" }] },
+];
+
+export const INTEGRATIONS: Array<{ id: string; name: string; detail: string; lastSync: string }> = [
+  { id: "mpesa", name: "M-Pesa Daraja", detail: "Contributions & payouts", lastSync: "2 min ago" },
+  { id: "whatsapp", name: "WhatsApp Cloud", detail: "Broadcasts & receipts", lastSync: "7 min ago" },
+  { id: "sms", name: "Africa's Talking SMS", detail: "OTP & reminders", lastSync: "11 min ago" },
+  { id: "drive", name: "Google Drive", detail: "Gallery pulls", lastSync: "1 h ago" },
+];
+
+export const EVENTS_NEXT_30_DAYS = 11;
+
+export const CHAMA = {
+  name: "Wazee Round",
+  cadence: "Fortnightly",
+  pool: 480000,
+  position: 4,
+  of: 12,
+  nextPayout: "Wed 13 May",
+  recipient: "Peter Otieno Nalyanya",
 };
-export const kes = (value: number) =>
-  `KES ${Math.round(value).toLocaleString("en-KE")}`;
-export const compact = (value: number) =>
-  new Intl.NumberFormat("en", {
-    notation: "compact",
-    maximumFractionDigits: 1,
-  }).format(value);
-export const localDate = (
-  date: string | Date,
-  options: Intl.DateTimeFormatOptions = {},
-) =>
-  new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Africa/Nairobi",
-    ...options,
-  }).format(new Date(date));
-export const dateFromToday = (days: number, hour = 11) => {
-  const d = new Date();
-  d.setUTCDate(d.getUTCDate() + days);
-  d.setUTCHours(hour - 3, 0, 0, 0);
-  return d.toISOString();
-};
-const names = [
-  "Bungoma",
-  "Kakamega",
-  "Nairobi",
-  "Trans-Nzoia",
-  "Kisumu",
-  "Nakuru",
-  "Uasin Gishu",
-  "Busia",
-  "Kiambu",
-  "Vihiga",
-  "Mombasa",
-  "Diaspora",
-];
-const counts = [52, 38, 34, 26, 21, 19, 15, 12, 10, 9, 7, 5];
-const colors = [
-  "#527859",
-  "#b7814d",
-  "#8992b4",
-  "#ba8966",
-  "#67968e",
-  "#a58d51",
-];
-export const branches: Branch[] = names.map((name, i) => ({
-  id: name.toLowerCase().replace(/ /g, "-"),
-  name,
-  members: counts[i],
-  balance: Math.round((family.wallet * counts[i]) / 248),
-  growth: [12.8, 9.4, 16.2, 8.6, 10.4, 7.5][i % 6],
-  color: colors[i % 6],
-}));
-const people = [
-  [
-    "Mzee Victor Nalyanya",
-    "Mzee Victor",
-    "bungoma",
-    1,
-    "Family founder",
-    "The roots of our family begin with Mzee Victor. His homestead in Bungoma remains a gathering place for every generation.",
-  ],
-  [
-    "Mama Grace Nalyanya",
-    "Mama Grace",
-    "bungoma",
-    2,
-    "Retired teacher",
-    "Keeper of family recipes, stories, and a garden that always has room for another chair.",
-  ],
-  [
-    "Brian Otieno Nalyanya",
-    "Brian",
-    "nairobi",
-    3,
-    "Architect",
-    "Our family administrator, connecting branches and keeping the family archive close at hand.",
-  ],
-  [
-    "Faith Chebet Nalyanya",
-    "Faith",
-    "kakamega",
-    3,
-    "Teacher",
-    "Faith coordinates the education fund and helps our youngest members find their next chapter.",
-  ],
-  [
-    "Peter Wafula Nalyanya",
-    "Peter",
-    "bungoma",
-    2,
-    "Agronomist",
-    "Peter tends the family farm and hosts the annual harvest lunch at the homestead.",
-  ],
-  [
-    "Amina Hassan Nalyanya",
-    "Amina",
-    "nairobi",
-    3,
-    "Nurse",
-    "Amina brings all our branches together through the family wellness circle.",
-  ],
-  [
-    "Daniel Wekesa Nalyanya",
-    "Daniel",
-    "trans-nzoia",
-    3,
-    "Civil engineer",
-    "Daniel looks after the family building projects and our shared savings records.",
-  ],
-  [
-    "Lydia Achieng Nalyanya",
-    "Lydia",
-    "kisumu",
-    4,
-    "Photographer",
-    "Lydia documents our reunions and preserves the family photo albums.",
-  ],
-  [
-    "Joseph Barasa Nalyanya",
-    "Joseph",
-    "nakuru",
-    3,
-    "Veterinarian",
-    "Joseph is a mentor to students in the family and a regular at the monthly chama.",
-  ],
-  [
-    "Esther Nekesa Nalyanya",
-    "Esther",
-    "bungoma",
-    4,
-    "Community organizer",
-    "Esther brings cousins, grandparents, and neighbours together for community days.",
-  ],
-  [
-    "Hamza Hassan Nalyanya",
-    "Hamza",
-    "mombasa",
-    4,
-    "Designer",
-    "Hamza shares the stories of our coast-based branch through photography and design.",
-  ],
-  [
-    "Zawadi Nalyanya",
-    "Zawadi",
-    "kakamega",
-    5,
-    "Student",
-    "One of the youngest leaves on the family tree, with a love of drawing and the outdoors.",
-  ],
-] as const;
-export const members: Member[] = people.map((p, i) => ({
-  id: `NY-MBR-${String(i + 1).padStart(5, "0")}`,
-  name: p[0],
-  short: p[1],
-  branch: p[2],
-  generation: p[3],
-  profession: p[4],
-  bio: p[5],
-  image: i === 2 ? "/images/brian.webp" : undefined,
-}));
-export const memories: Memory[] = [
-  {
-    id: "roots",
-    title: "Where our story begins",
-    image: "/images/savannah.webp",
-    alt: "The setting sun shines through a broad acacia tree on the savannah",
-    caption:
-      "An acacia stands against the evening sky. A reminder that strong roots make room for every branch.",
-    place: "The Kenyan savannah",
-    year: "2025",
-    credit: "Unsplash",
-  },
-  {
-    id: "reunion",
-    title: "Together, under one roof",
-    image: "/images/reunion.webp",
-    alt: "A family in colourful traditional clothing sharing a happy moment together",
-    caption:
-      "The best part of a family gathering is the time between the photographs: the teasing, the stories, and the laughter.",
-    place: "The family homestead",
-    year: "2025",
-    credit: "Askar Abayev / Pexels",
-  },
-  {
-    id: "highlands",
-    title: "A way back home",
-    image: "/images/highlands.webp",
-    alt: "Green patchwork fields and a winding road in the Kenyan highlands",
-    caption:
-      "A long road through the highlands always feels a little shorter when it is taking us home.",
-    place: "Kenyan highlands",
-    year: "2025",
-    credit: "Vince Pictures / Pexels",
-  },
-  {
-    id: "generations",
-    title: "Stories across generations",
-    image: "/images/grandparents.webp",
-    alt: "A grandfather and young grandson laughing together",
-    caption:
-      "Some of our most treasured stories are passed down in the quiet, ordinary moments.",
-    place: "Our family album",
-    year: "2025",
-    credit: "Mikhail Nilov / Pexels",
-  },
-  {
-    id: "traditions",
-    title: "Made with love",
-    image: "/images/traditions.webp",
-    alt: "A family making handmade gifts together at home",
-    caption:
-      "An afternoon of making keepsakes and passing familiar traditions on to new hands.",
-    place: "The family homestead",
-    year: "2024",
-    credit: "Askar Abayev / Pexels",
-  },
-  {
-    id: "garden",
-    title: "An afternoon in the garden",
-    image: "/images/garden.webp",
-    alt: "Family members sharing a sunny afternoon in a green garden",
-    caption:
-      "A shared meal, a shady tree, and a long afternoon with the people we love.",
-    place: "The family garden",
-    year: "2024",
-    credit: "Samuel Peter / Pexels",
-  },
-];
-const eventSeeds = [
-  [
-    "Nalyanya family reunion",
-    8,
-    "Bungoma homestead",
-    "Mama Grace",
-    "Reunion",
-    "bungoma",
-    42,
-    "reunion",
-  ],
-  [
-    "Sunday at the homestead",
-    11,
-    "The family garden",
-    "Peter Wafula",
-    "Family lunch",
-    "bungoma",
-    18,
-    "garden",
-  ],
-  [
-    "Education fund gathering",
-    14,
-    "Kakamega community hall",
-    "Faith Chebet",
-    "Fundraiser",
-    "kakamega",
-    27,
-    "traditions",
-  ],
-  [
-    "Cousins in the city",
-    17,
-    "Karura Forest, Nairobi",
-    "Brian Otieno",
-    "Picnic",
-    "nairobi",
-    16,
-    "garden",
-  ],
-  [
-    "An evening of family stories",
-    22,
-    "Kitale homestead",
-    "Daniel Wekesa",
-    "Heritage",
-    "trans-nzoia",
-    21,
-    "grandparents",
-  ],
-  [
-    "Family harvest lunch",
-    27,
-    "Kisumu family garden",
-    "Lydia Achieng",
-    "Family lunch",
-    "kisumu",
-    24,
-    "highlands",
-  ],
-  [
-    "Wazee annual gathering",
-    36,
-    "Bungoma homestead",
-    "Mama Grace",
-    "Reunion",
-    "bungoma",
-    32,
-    "reunion",
-  ],
-  [
-    "Youth mentorship morning",
-    41,
-    "Nakuru library",
-    "Joseph Barasa",
-    "Mentorship",
-    "nakuru",
-    12,
-    "garden",
-  ],
-  [
-    "Family wellness day",
-    46,
-    "Uhuru Gardens",
-    "Amina Hassan",
-    "Wellness",
-    "nairobi",
-    19,
-    "family-portrait",
-  ],
-  [
-    "Coastal cousins meet-up",
-    53,
-    "Mombasa family home",
-    "Hamza Hassan",
-    "Reunion",
-    "mombasa",
-    14,
-    "garden",
-  ],
-] as const;
-export const events: FamilyEvent[] = eventSeeds.map((e, i) => ({
-  id: `NY-EVT-${String(i + 1).padStart(4, "0")}`,
-  title: e[0],
-  date: dateFromToday(e[1]),
-  place: e[2],
-  host: e[3],
-  type: e[4],
-  branch: e[5],
-  attending: e[6],
-  image: `/images/${e[7]}.webp`,
-  description:
-    i === 0
-      ? "Come home for a day of shared food, family photographs, and stories from our elders. Every generation and every branch is welcome."
-      : "A chance to spend time together, catch up on family news, and make a few more memories. All generations are welcome.",
-}));
-const causes = [
-  "Education fund",
-  "Family welfare",
-  "Reunion fund",
-  "Homestead project",
-];
-export const contributions: Contribution[] = [
-  3, 4, 5, 6, 7, 8, 9, 10, 2, 1, 5, 6,
-].map((p, i) => ({
-  id: `NY-CON-${String(1048 - i).padStart(5, "0")}`,
-  member: members[p].name,
-  purpose: causes[i % 4],
-  amount: [
-    5000, 3000, 10000, 2500, 7500, 5000, 4000, 8000, 12500, 2500, 6000, 3500,
-  ][i],
-  time: [
-    "24 min ago",
-    "1 hour ago",
-    "2 hours ago",
-    "3 hours ago",
-    "4 hours ago",
-    "Yesterday",
-  ][Math.min(i, 5)],
-  status: i % 4 === 3 ? "Pending" : "Recorded",
-  branch: members[p].branch,
-}));
-export const alerts: Alert[] = [
-  {
-    id: "verify",
-    title: "Contributions to review",
-    text: "Three contributions are waiting for a family administrator to check their details.",
-    kind: "contribution",
-    time: "24 min ago",
-  },
-  {
-    id: "rotate",
-    title: "A chama rotation is approaching",
-    text: "Wazee Round rotates in two days. Mama Grace is next to receive the pool; your position is four.",
-    kind: "chama",
-    time: "1 hour ago",
-  },
-  {
-    id: "loan",
-    title: "One instalment needs attention",
-    text: "The KES 2,500 instalment for education loan NY-LON-00088 is two days overdue.",
-    kind: "loan",
-    time: "2 hours ago",
-    critical: true,
-  },
-  {
-    id: "receive",
-    title: "An unused receive link",
-    text: "Mama Grace has not opened her KES 3,000 allocation preview. Review the details before preparing a reminder.",
-    kind: "allocation",
-    time: "Yesterday",
-  },
-  {
-    id: "gather",
-    title: "A family gathering is on the calendar",
-    text: "Mama Grace has shared the plans for our next family reunion. Let the family know if you can join.",
-    kind: "event",
-    time: "Yesterday",
-  },
-];
-export const funds = [
-  {
-    id: "education",
-    title: "Family education fund",
-    raised: 145000,
-    target: 200000,
-    description: "School fees and learning materials for the next generation.",
-    icon: "education",
-  },
-  {
-    id: "homestead",
-    title: "Our homestead project",
-    raised: 86400,
-    target: 120000,
-    description: "Caring for the place that brings every branch together.",
-    icon: "home",
-  },
-  {
-    id: "welfare",
-    title: "Family welfare circle",
-    raised: 62500,
-    target: 100000,
-    description: "A helping hand when someone in our family needs one.",
-    icon: "heart",
-  },
-];
-export const chamas = [
-  {
-    id: "wazee",
-    name: "Wazee Round",
-    members: 18,
-    pool: 90000,
-    next: "Mama Grace",
-    days: 2,
-    position: 4,
-  },
-  {
-    id: "umoja",
-    name: "Umoja Savings",
-    members: 24,
-    pool: 120000,
-    next: "Faith Chebet",
-    days: 7,
-    position: 8,
-  },
-  {
-    id: "cousins",
-    name: "Cousins Circle",
-    members: 12,
-    pool: 36000,
-    next: "Lydia Achieng",
-    days: 12,
-    position: 3,
-  },
-];
-export const financeHistory = [
-  32, 33, 31, 36, 35, 41, 39, 37, 42, 48, 45, 52, 51, 58, 56, 60, 66, 63, 64,
-  70, 68, 75, 71, 76, 83, 80, 83, 89, 86, 91, 88, 97,
-];

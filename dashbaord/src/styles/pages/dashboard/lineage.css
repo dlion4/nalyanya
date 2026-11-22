@@ -1,0 +1,105 @@
+/* ─────────────────────────────────────────────────────────────────────
+   T-2 Lineage · page-scoped stylesheet
+   Root class: .page-dash-lineage — every selector below is scoped to it,
+   so nothing leaks into other pages. Master tokens/components come from
+   globals.css (tokens.css, components.css, app-shell.css).
+   ───────────────────────────────────────────────────────────────────── */
+
+.page-dash-lineage .ny-tree-stage {
+  background: radial-gradient(120% 90% at 50% 0%, #2c6049 0%, #17382b 46%, #0b1f17 100%);
+}
+
+.page-dash-lineage .ny-tree-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(55% 35% at 50% 100%, rgb(212 164 55 / 0.14), transparent 70%);
+}
+
+.page-dash-lineage .ny-hud {
+  background: rgb(11 31 23 / 0.6);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  color: #fffdf7;
+  box-shadow: 0 18px 40px -22px rgb(0 0 0 / 0.6);
+}
+
+.page-dash-lineage .ny-hud .ny-kbd {
+  background: rgb(255 255 255 / 0.12);
+  border-color: rgb(255 255 255 / 0.22);
+  color: #fffdf7;
+}
+
+/* Floating labels rendered by drei <Html> inside the 3D scene */
+.page-dash-lineage .ny-node-label {
+  transform: translateY(-4px);
+  background: rgb(11 31 23 / 0.84);
+  color: #fffdf7;
+  border: 1px solid rgb(244 210 122 / 0.42);
+  border-radius: 12px;
+  padding: 5px 10px;
+  font: 600 12px/1.25 var(--font-sans);
+  white-space: nowrap;
+  box-shadow: 0 12px 26px -14px rgb(0 0 0 / 0.7);
+  backdrop-filter: blur(6px);
+}
+
+.page-dash-lineage .ny-node-label-ghost {
+  border-style: dashed;
+  border-color: rgb(244 210 122 / 0.75);
+}
+
+/* Loading shutter (before the WebGL scene is ready) */
+.page-dash-lineage .ny-loader-bar {
+  animation: ny-scan 1.6s ease-in-out infinite;
+}
+
+@keyframes ny-scan {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(56px); }
+}
+
+/* Photo reel: each new frame settles in like a focus pull */
+.page-dash-lineage .ny-reel-stage {
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08), 0 30px 60px -36px rgb(11 31 23 / 0.8);
+}
+
+.page-dash-lineage .ny-reel-img {
+  animation: ny-reel-in 0.8s var(--ease-out-expo);
+}
+
+@keyframes ny-reel-in {
+  from { opacity: 0.25; transform: scale(1.045); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Viewfinder corner brackets */
+.page-dash-lineage .ny-corner {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border: 0 solid rgb(255 255 255 / 0.85);
+}
+
+.page-dash-lineage .ny-corner-tl { top: 14px; left: 14px; border-top-width: 2px; border-left-width: 2px; border-top-left-radius: 8px; }
+.page-dash-lineage .ny-corner-tr { top: 14px; right: 14px; border-top-width: 2px; border-right-width: 2px; border-top-right-radius: 8px; }
+.page-dash-lineage .ny-corner-bl { bottom: 14px; left: 14px; border-bottom-width: 2px; border-left-width: 2px; border-bottom-left-radius: 8px; }
+.page-dash-lineage .ny-corner-br { bottom: 14px; right: 14px; border-bottom-width: 2px; border-right-width: 2px; border-bottom-right-radius: 8px; }
+
+.page-dash-lineage .ny-reel-thumb {
+  will-change: transform;
+}
+
+html[data-ny-mode="elder"] .page-dash-lineage .ny-reel-img,
+html[data-ny-mode="elder"] .page-dash-lineage .ny-loader-bar {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-dash-lineage .ny-reel-img,
+  .page-dash-lineage .ny-loader-bar {
+    animation: none;
+  }
+}

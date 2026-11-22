@@ -1,0 +1,17 @@
+/* T-10 Loans · page-scoped stylesheet (root: .page-dash-loans) */
+.page-dash-loans {
+  --page-accent: #b5532a;
+}
+
+.page-dash-loans .ny-module-accent { color: var(--page-accent); }
+
+.page-dash-loans .ny-module-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(60% 80% at 100% 0%, color-mix(in srgb, var(--page-accent) 30%, transparent), transparent 70%);
+}
+
+.page-dash-loans .ny-module-section:hover { border-color: color-mix(in srgb, var(--page-accent) 55%, transparent); }
+.page-dash-loans .ny-module-section .ny-title { color: var(--page-accent); }

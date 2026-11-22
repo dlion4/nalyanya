@@ -1,0 +1,136 @@
+/* ─────────────────────────────────────────────────────────────────────
+   T-3 Members Directory · page-scoped stylesheet
+   Root class: .page-dash-members — every selector below is scoped to it
+   so nothing leaks across pages. Master tokens & components come from
+   src/styles/tokens.css, components.css, app-shell.css.
+   ───────────────────────────────────────────────────────────────────── */
+
+.page-dash-members {
+  --page-accent: #e0764a;
+}
+
+/* Row entrance when a new member is added or imported */
+.page-dash-members .ny-row-in {
+  animation: ny-member-row-in 0.85s var(--ease-out-expo) both;
+}
+
+@keyframes ny-member-row-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -10px, 0);
+    background-color: rgb(212 164 55 / 0.24);
+  }
+  65% {
+    opacity: 1;
+    transform: none;
+    background-color: rgb(212 164 55 / 0.14);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    background-color: transparent;
+  }
+}
+
+/* Signature gold flash on approved requests or added members */
+.page-dash-members .ny-flash-received {
+  animation: ny-member-gold-flash 1.3s var(--ease-out-expo) 1;
+}
+
+@keyframes ny-member-gold-flash {
+  0% { box-shadow: 0 0 0 0 rgb(212 164 55 / 0.5); }
+  100% { box-shadow: 0 0 0 18px rgb(212 164 55 / 0); }
+}
+
+/* 3D perspective stage for avatar grid and digital ID card */
+.page-dash-members .ny-stage-3d {
+  perspective: 1200px;
+}
+
+.page-dash-members .ny-card-3d {
+  transform-style: preserve-3d;
+  transition:
+    transform 320ms var(--ease-out-expo),
+    box-shadow 320ms var(--ease-out-expo),
+    border-color 220ms ease;
+}
+
+.page-dash-members .ny-card-3d:hover {
+  transform: translate3d(0, -4px, 12px) rotateX(2.5deg) rotateY(-2.5deg);
+  box-shadow: var(--shadow-lift);
+}
+
+/* Camera pinhole shutter stage (Portrait Studio S8) */
+.page-dash-members .ny-shutter-frame {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(110% 90% at 50% 0%, #244f3d 0%, #0f2a20 65%, #071510 100%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1), 0 32px 64px -32px rgb(11 31 23 / 0.8);
+}
+
+.page-dash-members .ny-shutter-photo {
+  animation: ny-shutter-settle 0.78s var(--ease-out-expo);
+}
+
+@keyframes ny-shutter-settle {
+  from {
+    opacity: 0.25;
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Viewfinder corner brackets & crosshair reticle */
+.page-dash-members .ny-vf-corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: 0 solid rgb(255 255 255 / 0.85);
+}
+
+.page-dash-members .ny-vf-tl { top: 14px; left: 14px; border-top-width: 2px; border-left-width: 2px; border-top-left-radius: 8px; }
+.page-dash-members .ny-vf-tr { top: 14px; right: 14px; border-top-width: 2px; border-right-width: 2px; border-top-right-radius: 8px; }
+.page-dash-members .ny-vf-bl { bottom: 14px; left: 14px; border-bottom-width: 2px; border-left-width: 2px; border-bottom-left-radius: 8px; }
+.page-dash-members .ny-vf-br { bottom: 14px; right: 14px; border-bottom-width: 2px; border-right-width: 2px; border-bottom-right-radius: 8px; }
+
+/* Glassmorphic floating bulk bar */
+.page-dash-members .ny-bulk-hud {
+  background: rgb(15 42 32 / 0.88);
+  border: 1px solid rgb(244 210 122 / 0.35);
+  backdrop-filter: blur(16px) saturate(1.25);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
+  box-shadow: 0 24px 56px -20px rgb(11 31 23 / 0.75);
+}
+
+/* Digital heritage ID card sheen */
+.page-dash-members .ny-id-card {
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgb(212 164 55 / 0.3), transparent 55%),
+    linear-gradient(145deg, #1f4d3a 0%, #143628 58%, #0c2119 100%);
+  box-shadow: 0 28px 60px -24px rgb(11 31 23 / 0.65);
+}
+
+/* Elder Mode & Reduced Motion compliance */
+html[data-ny-mode="elder"] .page-dash-members .ny-card-3d:hover {
+  transform: none;
+}
+
+html[data-ny-mode="elder"] .page-dash-members .ny-row-in,
+html[data-ny-mode="elder"] .page-dash-members .ny-flash-received,
+html[data-ny-mode="elder"] .page-dash-members .ny-shutter-photo {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-dash-members .ny-card-3d:hover {
+    transform: none;
+  }
+  .page-dash-members .ny-row-in,
+  .page-dash-members .ny-flash-received,
+  .page-dash-members .ny-shutter-photo {
+    animation: none;
+  }
+}

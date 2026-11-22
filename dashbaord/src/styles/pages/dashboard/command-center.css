@@ -1,0 +1,59 @@
+/* ─────────────────────────────────────────────────────────────────────
+   T-1 Command Center · page-scoped stylesheet
+   Root class: .page-dash-command-center
+   ───────────────────────────────────────────────────────────────────── */
+
+.page-dash-command-center .ny-tree-teaser {
+  background: radial-gradient(120% 90% at 50% 0%, #2c6049 0%, #17382b 46%, #0b1f17 100%);
+  overflow: hidden;
+}
+
+.page-dash-command-center .ny-flash-received {
+  animation: ny-flash-gold 1.4s var(--ease-out-expo) 1;
+}
+
+@keyframes ny-flash-gold {
+  0% { box-shadow: 0 0 0 0 rgb(212 164 55 / 0.45); }
+  100% { box-shadow: 0 0 0 16px rgb(212 164 55 / 0); }
+}
+
+.page-dash-command-center .ny-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ny-draw 1.6s var(--ease-out-expo) 0.2s forwards;
+}
+
+@keyframes ny-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+.page-dash-command-center .ny-alert-critical {
+  animation: ny-critical 2.4s ease-in-out infinite;
+}
+
+@keyframes ny-critical {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(198 40 40 / 0.22); }
+  50% { box-shadow: 0 0 0 9px rgb(198 40 40 / 0); }
+}
+
+html[data-ny-mode="elder"] .page-dash-command-center .ny-draw,
+html[data-ny-mode="elder"] .page-dash-command-center .ny-alert-critical,
+html[data-ny-mode="elder"] .page-dash-command-center .ny-flash-received {
+  animation: none;
+}
+
+html[data-ny-mode="elder"] .page-dash-command-center .ny-draw {
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-dash-command-center .ny-draw {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+
+  .page-dash-command-center .ny-alert-critical,
+  .page-dash-command-center .ny-flash-received {
+    animation: none;
+  }
+}

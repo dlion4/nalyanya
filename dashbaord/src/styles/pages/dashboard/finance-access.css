@@ -1,0 +1,17 @@
+/* T-9 Finance Access · page-scoped stylesheet (root: .page-dash-finance-access) */
+.page-dash-finance-access {
+  --page-accent: #6a4c93;
+}
+
+.page-dash-finance-access .ny-module-accent { color: var(--page-accent); }
+
+.page-dash-finance-access .ny-module-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(60% 80% at 100% 0%, color-mix(in srgb, var(--page-accent) 30%, transparent), transparent 70%);
+}
+
+.page-dash-finance-access .ny-module-section:hover { border-color: color-mix(in srgb, var(--page-accent) 55%, transparent); }
+.page-dash-finance-access .ny-module-section .ny-title { color: var(--page-accent); }
