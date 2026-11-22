@@ -1,0 +1,382 @@
+@import "tailwindcss";
+@import "./styles/tokens.css";
+@import "./styles/overlays.css";
+@import "./styles/components/dashboard-panels.css";
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+  }
+  body {
+    margin: 0;
+    background: var(--color-surface-0);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+  button,
+  a,
+  select {
+    cursor: pointer;
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+  button,
+  a {
+    touch-action: manipulation;
+  }
+  button {
+    text-align: inherit;
+  }
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  button,
+  a,
+  input,
+  select,
+  textarea,
+  [tabindex] {
+    outline-offset: 4px;
+  }
+  :focus-visible {
+    outline: 2px solid #a78332;
+  }
+  h1,
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
+  h1,
+  h2,
+  .ny-display {
+    font-family: var(--font-display);
+    font-weight: 450;
+    letter-spacing: -0.045em;
+  }
+  h2 {
+    font-size: 23px;
+    line-height: 1.25;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  svg {
+    flex-shrink: 0;
+  }
+  img {
+    display: block;
+    max-width: 100%;
+  }
+  ::selection {
+    background: #dfe8cf;
+    color: #163c26;
+  }
+}
+@layer components {
+  .ny-btn {
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all;
+    min-height: 37px;
+    padding: 9px 15px;
+    border-radius: 7px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .ny-btn:hover {
+    transform: translateY(-1px);
+  }
+  .ny-btn:active {
+    transform: translateY(0);
+  }
+  .ny-btn-primary {
+    background: var(--color-brand-primary);
+    color: #fff;
+    border: 1px solid var(--color-brand-primary);
+  }
+  .ny-btn-primary:hover {
+    background: #173b29;
+  }
+  .ny-btn-secondary {
+    background: white;
+    border: 1px solid var(--color-line);
+  }
+  .ny-btn-secondary:hover {
+    border-color: #9bad96;
+    background: var(--color-surface-0);
+  }
+  .ny-btn-gold {
+    background: #eadab0;
+    color: #243b29;
+    border: 1px solid #eadab0;
+  }
+  .ny-btn-gold:hover {
+    background: #f4e6c5;
+  }
+  .ny-text-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: var(--color-brand-primary);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .ny-text-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .ny-icon-button {
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 7px;
+    color: #637165;
+  }
+  .ny-icon-button:hover {
+    background: var(--color-surface-2);
+  }
+  .ny-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .ny-panel {
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-panel);
+    padding: 20px;
+    min-width: 0;
+  }
+  .ny-icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .tone-sage {
+    background: #e9efe3;
+    color: #59734d;
+  }
+  .tone-gold {
+    background: #f5ecd6;
+    color: #99752e;
+  }
+  .tone-clay {
+    background: #f3e8dd;
+    color: #a57351;
+  }
+  .tone-violet {
+    background: #efebf5;
+    color: #897598;
+  }
+  .tone-blue {
+    background: #e6edf2;
+    color: #637f96;
+  }
+  .ny-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden;
+    font-weight: 650;
+    flex-shrink: 0;
+    letter-spacing: -0.03em;
+  }
+  .ny-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .avatar-0 {
+    background: #e6ebdb;
+    color: #536b41;
+  }
+  .avatar-1 {
+    background: #f1e4d3;
+    color: #77542e;
+  }
+  .avatar-2 {
+    background: #e5e0e9;
+    color: #69536d;
+  }
+  .avatar-3 {
+    background: #e2eaf0;
+    color: #456079;
+  }
+  .avatar-4 {
+    background: #f5e4db;
+    color: #855137;
+  }
+  .ny-eyebrow {
+    font-size: 9px;
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .ny-sparkline {
+    width: 75px;
+    height: 30px;
+    overflow: visible;
+  }
+  .ny-simulated {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+    border: 1px solid #d6c8a4;
+    border-radius: 4px;
+    padding: 3px 6px;
+    color: #856b35;
+    background: #fbf5e8;
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+  }
+  .ny-empty {
+    padding: 24px;
+    border: 1px dashed var(--color-line);
+    text-align: center;
+    border-radius: 10px;
+  }
+  .ny-empty h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+  .ny-empty p {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+  .ny-iris-photo {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: #1a3024;
+  }
+  .ny-lens-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+  }
+  .ny-lens-shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgb(9 23 15 / 45%), transparent 45%);
+  }
+  .ny-shutter {
+    visibility: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .ny-lens-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 22px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 4;
+    color: white;
+  }
+  .ny-lens-controls > svg {
+    opacity: 0.8;
+  }
+  .ny-lens-controls > span {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    font-variant-numeric: tabular-nums;
+    margin-right: 4px;
+  }
+  .ny-lens-controls b {
+    font-weight: 400;
+    opacity: 0.5;
+    padding: 0 2px;
+  }
+  .ny-lens-controls button {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #ffffff66;
+    border-radius: 50%;
+    background: #23312426;
+    backdrop-filter: blur(8px);
+    transition: background 0.2s;
+  }
+  .ny-lens-controls button:hover {
+    background: #ffffff35;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+[data-ny-mode="elder"] {
+  font-size: 18px;
+  scroll-behavior: auto;
+}
+[data-ny-mode="elder"] *,
+[data-ny-mode="elder"] *::before,
+[data-ny-mode="elder"] *::after {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
+[data-ny-mode="elder"] button:not(.ny-mobile-close),
+[data-ny-mode="elder"] .ny-nav-link,
+[data-ny-mode="elder"] input,
+[data-ny-mode="elder"] select {
+  min-height: 56px;
+}
+[data-ny-mode="elder"] .ny-main-content {
+  font-size: 17px;
+}
+[data-ny-mode="elder"] .ny-panel p,
+[data-ny-mode="elder"] .ny-detail-body p,
+[data-ny-mode="elder"] .ny-nav-link,
+[data-ny-mode="elder"] .ny-btn,
+[data-ny-mode="elder"] label {
+  font-size: 16px;
+  line-height: 1.7;
+}

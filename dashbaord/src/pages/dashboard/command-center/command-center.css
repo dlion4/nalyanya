@@ -1,0 +1,364 @@
+.page-dash-command-center {
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+}
+.page-dash-command-center .ny-welcome-hero {
+  height: clamp(213px, 16.6vw, 275px);
+  border-radius: 13px;
+  background: #203527;
+}
+.page-dash-command-center .ny-welcome-hero .ny-lens-image {
+  left: auto;
+  right: 0;
+  width: 81%;
+  object-position: center 63%;
+  mask-image: linear-gradient(90deg, transparent, #000 29%);
+}
+.page-dash-command-center .ny-welcome-hero .lens-reunion,
+.page-dash-command-center .ny-welcome-hero .lens-generations {
+  object-position: center 34%;
+}
+.page-dash-command-center .ny-welcome-hero .ny-lens-image.lens-roots {
+  width: 72%;
+  object-position: center 83%;
+  mask-image: linear-gradient(90deg, transparent, #000 29%);
+}
+.page-dash-command-center .ny-welcome-hero .ny-lens-shade {
+  background:
+    linear-gradient(
+      90deg,
+      #203527 0%,
+      #203527fa 16%,
+      #203527d9 29%,
+      #273c2e75 49%,
+      #172f2003 76%
+    ),
+    linear-gradient(0deg, #15211752, transparent 55%);
+}
+.page-dash-command-center .ny-welcome-copy {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+  padding: 23px 31px;
+  color: #faf9ee;
+  pointer-events: none;
+}
+.page-dash-command-center .ny-welcome-copy .ny-eyebrow {
+  color: #dcc997;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.17em;
+  gap: 8px;
+}
+.page-dash-command-center .ny-welcome-copy h1 {
+  font-size: clamp(36px, 3.45vw, 56px);
+  line-height: 1.12;
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  margin: 13px 0 8px;
+  text-shadow: 0 2px 20px #14261916;
+}
+.page-dash-command-center .ny-welcome-copy em {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  color: #eadfba;
+}
+.page-dash-command-center .ny-welcome-copy > p {
+  font-size: 12px;
+  color: #e0e5d9;
+  line-height: 1.7;
+}
+.page-dash-command-center .ny-welcome-copy .ny-btn {
+  pointer-events: auto;
+  margin-top: 21px;
+  min-height: 34px;
+  padding: 8px 12px;
+  font-size: 10.5px;
+  border-radius: 6px;
+  gap: 8px;
+}
+.page-dash-command-center .ny-overview-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 13px;
+  gap: 10px;
+}
+.page-dash-command-center .ny-overview-heading h2 {
+  font-size: 25px;
+}
+.page-dash-command-center .ny-overview-heading > div {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+.page-dash-command-center .ny-overview-date {
+  gap: 6px;
+  color: #697064;
+  font-size: 10.5px;
+}
+.page-dash-command-center .ny-quick-actions {
+  min-height: 32px;
+  padding: 7px 11px;
+  font-size: 10.5px;
+  gap: 6px;
+  border-radius: 6px;
+}
+.page-dash-command-center .ny-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+}
+.page-dash-command-center .ny-stat-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 15px 16px 13px;
+  background: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: 11px;
+  min-height: 117px;
+  overflow: hidden;
+  text-align: left;
+  box-shadow: 0 2px 4px #343c2803;
+}
+.page-dash-command-center .ny-stat-card:hover {
+  border-color: #b3bfa8;
+  box-shadow: var(--shadow-lift);
+}
+.page-dash-command-center .ny-stat-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  color: #65715f;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.page-dash-command-center .ny-stat-label .ny-icon-box {
+  width: 27px;
+  height: 27px;
+  border-radius: 7px;
+}
+.page-dash-command-center .ny-stat-label > svg {
+  margin-left: auto;
+  color: #6a6f67;
+  width: 11px;
+}
+.page-dash-command-center .ny-stat-value {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 9px;
+  color: #263428;
+  font-weight: 550;
+  font-size: clamp(23px, 2.05vw, 33px);
+  line-height: 1.2;
+  letter-spacing: -0.055em;
+  font-variant-numeric: tabular-nums;
+}
+.page-dash-command-center .ny-stat-value small {
+  font-size: 11px;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  color: #697163;
+}
+.page-dash-command-center .ny-stat-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2px;
+  margin-top: auto;
+  min-height: 22px;
+}
+.page-dash-command-center .ny-stat-bottom > span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  line-height: 17px;
+  color: #6a6f65;
+  white-space: nowrap;
+}
+.page-dash-command-center .ny-stat-bottom b {
+  color: #567953;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 9px;
+  font-weight: 550;
+}
+.page-dash-command-center .ny-stat-bottom .ny-sparkline {
+  width: 29%;
+  max-width: 72px;
+  height: 23px;
+  flex-shrink: 1;
+  margin-bottom: 1px;
+}
+@media (min-width: 1500px) {
+  .page-dash-command-center .ny-stat-card {
+    padding: 18px 20px;
+    min-height: 132px;
+  }
+  .page-dash-command-center .ny-welcome-copy > p {
+    font-size: 13px;
+  }
+}
+@media (max-width: 1210px) {
+  .page-dash-command-center .ny-stat-grid {
+    gap: 10px;
+  }
+  .page-dash-command-center .ny-stat-card {
+    padding: 12px;
+  }
+  .page-dash-command-center .ny-stat-bottom .ny-sparkline {
+    width: 24%;
+  }
+}
+@media (max-width: 800px) {
+  .page-dash-command-center .ny-stat-label {
+    gap: 6px;
+    font-size: 10px;
+  }
+  .page-dash-command-center .ny-stat-label > svg {
+    display: none;
+  }
+  .page-dash-command-center .ny-stat-value {
+    font-size: 24px;
+  }
+  .page-dash-command-center .ny-stat-bottom .ny-sparkline {
+    display: none;
+  }
+}
+@media (max-width: 640px) {
+  .page-dash-command-center {
+    gap: 18px;
+  }
+  .page-dash-command-center .ny-welcome-hero {
+    height: 241px;
+    border-radius: 11px;
+  }
+  .page-dash-command-center .ny-welcome-hero .ny-lens-image {
+    width: 100%;
+    object-position: 65% 60%;
+  }
+  .page-dash-command-center .ny-welcome-hero .ny-lens-shade {
+    background:
+      linear-gradient(90deg, #1d3529dd, #1f3428a1 49%, #172d2226),
+      linear-gradient(0deg, #17291b9c, transparent 75%);
+  }
+  .page-dash-command-center .ny-welcome-copy {
+    padding: 21px;
+    justify-content: flex-start;
+  }
+  .page-dash-command-center .ny-welcome-copy .ny-eyebrow {
+    font-size: 8px;
+    margin-top: 3px;
+  }
+  .page-dash-command-center .ny-welcome-copy h1 {
+    font-size: clamp(30px, 7.4vw, 43px);
+    margin: 16px 0 8px;
+  }
+  .page-dash-command-center .ny-welcome-copy > p {
+    max-width: 290px;
+    font-size: 11.5px;
+    line-height: 1.65;
+  }
+  .page-dash-command-center .ny-welcome-copy .ny-btn {
+    margin-top: 18px;
+  }
+  .page-dash-command-center .ny-overview-heading h2 {
+    font-size: 23px;
+  }
+  .page-dash-command-center .ny-overview-date {
+    display: none;
+  }
+  .page-dash-command-center .ny-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .page-dash-command-center .ny-stat-card {
+    min-height: 118px;
+    padding: 13px;
+  }
+  .page-dash-command-center .ny-stat-label {
+    font-size: 10.5px;
+  }
+  .page-dash-command-center .ny-stat-bottom .ny-sparkline {
+    display: block;
+    width: 27%;
+  }
+  .page-dash-command-center .ny-stat-label > svg {
+    display: block;
+  }
+  .page-dash-command-center .ny-stat-value {
+    font-size: 25px;
+  }
+}
+@media (max-width: 380px) {
+  .page-dash-command-center .ny-stat-bottom .ny-sparkline {
+    width: 22%;
+  }
+  .page-dash-command-center .ny-stat-bottom > span {
+    font-size: 8px;
+  }
+  .page-dash-command-center .ny-stat-value {
+    font-size: 23px;
+  }
+}
+[data-ny-mode="elder"] .page-dash-command-center .ny-welcome-hero {
+  min-height: 285px;
+}
+
+@media (min-width: 1051px) {
+  .page-dash-command-center .ny-welcome-copy > p {
+    font-size: 13px;
+  }
+  .page-dash-command-center .ny-welcome-copy .ny-btn {
+    font-size: 11.5px;
+  }
+  .page-dash-command-center .ny-stat-label {
+    font-size: 12px;
+  }
+  .page-dash-command-center .ny-stat-bottom > span,
+  .page-dash-command-center .ny-stat-bottom b {
+    font-size: 10px;
+  }
+}
+@media (max-width: 640px) {
+  .page-dash-command-center .ny-welcome-hero .ny-lens-image.lens-roots {
+    width: 100%;
+    mask-image: none;
+    object-position: center 65%;
+  }
+  .page-dash-command-center .ny-welcome-copy > p {
+    font-size: 12px;
+  }
+  .page-dash-command-center .ny-stat-label {
+    font-size: 11.5px;
+  }
+}
+@media (max-width: 420px) {
+  .page-dash-command-center .ny-stat-label > svg {
+    display: none;
+  }
+}
+@media (max-width: 640px) {
+  .page-dash-command-center .ny-welcome-hero .ny-lens-image {
+    mask-image: none;
+  }
+}
+[data-ny-mode="elder"] .page-dash-command-center .ny-stat-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 640px) {
+  [data-ny-mode="elder"] .page-dash-command-center .ny-stat-grid {
+    grid-template-columns: 1fr;
+  }
+}

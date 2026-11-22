@@ -1,0 +1,35 @@
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", Georgia, serif;
+  --color-surface-0: #f8f9f5;
+  --color-surface-1: #ffffff;
+  --color-surface-2: #f1f2eb;
+  --color-surface-3: #e5e7dd;
+  --color-brand-primary: #224a36;
+  --color-brand-primary-deep: #172e23;
+  --color-brand-primary-tint: #e9efe6;
+  --color-brand-accent: #d9b766;
+  --color-brand-accent-soft: #f1e3c4;
+  --color-brand-secondary: #a66a42;
+  --color-text-primary: #253329;
+  --color-text-secondary: #72786e;
+  --color-text-tertiary: #93988e;
+  --color-line: #e0e3d9;
+  --radius-panel: 13px;
+  --shadow-lift: 0 7px 22px -13px rgb(31 55 37 / 25%);
+  --ease-heritage: cubic-bezier(0.22, 0.78, 0.25, 1);
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 750;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/fraunces.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+}

@@ -1,0 +1,160 @@
+.ny-module-page {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-height: calc(100dvh - 183px);
+}
+.ny-module-back {
+  align-self: flex-start;
+  color: #65725d;
+  font-size: 11px;
+}
+.ny-module-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  padding: 4px 0 9px;
+}
+.ny-module-header .ny-eyebrow {
+  color: var(--module-accent, #9b885b);
+  margin-bottom: 9px;
+  font-size: 9px;
+}
+.ny-module-header h1 {
+  font-size: clamp(32px, 3.4vw, 49px);
+  line-height: 1.15;
+}
+.ny-module-header > div > p:last-child {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #66715d;
+  max-width: 680px;
+  margin-top: 8px;
+}
+.ny-module-header .ny-btn {
+  flex-shrink: 0;
+}
+.ny-module-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.ny-module-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.ny-module-choice-grid > button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 10px;
+  border: 1px solid #dce5d4;
+  border-radius: 8px;
+}
+.ny-module-choice-grid strong {
+  font-size: 12px;
+  font-weight: 550;
+  flex: 1;
+}
+.ny-module-choice-grid > button > svg {
+  color: #67715e;
+}
+.ny-module-page .ny-member-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 25px;
+}
+.ny-module-page .ny-panel .ny-search-input {
+  max-width: 450px;
+}
+.ny-module-page .ny-event-list-row {
+  max-width: 100%;
+}
+.ny-module-page .ny-chart-wrap {
+  min-height: 190px;
+}
+.ny-module-page .ny-module-footnote {
+  color: #687060;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: auto;
+  padding: 10px 0;
+}
+.ny-remembrance {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 24px;
+}
+.ny-remembrance > img {
+  width: 100%;
+  aspect-ratio: 1.4;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.ny-remembrance h2 {
+  font-size: 29px;
+  margin: 8px 0;
+}
+.ny-remembrance p:not(.ny-eyebrow) {
+  color: #66725e;
+  font-size: 12px;
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+.ny-module-page .ny-gallery-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 900px) {
+  .ny-module-header {
+    align-items: flex-start;
+  }
+  .ny-module-header > div > p:last-child {
+    font-size: 12px;
+  }
+  .ny-module-grid {
+    grid-template-columns: 1fr;
+  }
+  .ny-module-choice-grid {
+    gap: 7px;
+  }
+  .ny-module-choice-grid strong {
+    font-size: 10px;
+  }
+  .ny-module-choice-grid > button {
+    gap: 5px;
+    padding: 8px;
+  }
+}
+@media (max-width: 640px) {
+  .ny-module-page {
+    gap: 16px;
+  }
+  .ny-module-header {
+    display: block;
+  }
+  .ny-module-header .ny-btn {
+    margin-top: 16px;
+  }
+  .ny-module-page .ny-member-list,
+  .ny-remembrance,
+  .ny-module-choice-grid {
+    grid-template-columns: 1fr;
+  }
+  .ny-module-page .ny-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ny-module-choice-grid strong {
+    font-size: 12px;
+  }
+  .ny-module-choice-grid > button {
+    padding: 10px;
+  }
+  .ny-module-back {
+    font-size: 10px;
+  }
+}

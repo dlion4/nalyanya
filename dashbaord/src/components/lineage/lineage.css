@@ -1,0 +1,112 @@
+.ny-tree-preview {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 274px;
+  color: #f2f1df;
+  padding: 19px 20px 13px;
+  border-radius: var(--radius-panel);
+  background:
+    radial-gradient(ellipse at 55% 75%, #354f36, transparent 75%), #233c2d;
+}
+.ny-tree-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.ny-tree-heading .ny-eyebrow {
+  color: #c9b98a;
+  font-size: 8px;
+  margin-bottom: 4px;
+}
+.ny-tree-heading h2 {
+  font-size: 24px;
+}
+.ny-tree-heading p:last-child {
+  color: #c2cfb9;
+  font-size: 10px;
+  margin-top: 4px;
+}
+.ny-tree-heading > button {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 9px;
+  border: 1px solid #b3c2a536;
+  border-radius: 5px;
+  padding: 4px 7px;
+  color: #d7e1cc;
+}
+.ny-tree-stage {
+  min-height: 155px;
+  position: relative;
+  flex: 1;
+}
+.ny-tree-stage > canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.ny-tree-stage > canvas:active {
+  cursor: grabbing;
+}
+.ny-tree-fallback {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+.ny-tree-fallback g[role="button"] {
+  cursor: pointer;
+}
+.ny-tree-fallback g[role="button"]:hover circle {
+  fill: #cead68;
+}
+.ny-tree-bottom,
+.ny-tree-bottom > button,
+.ny-tree-zoom {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ny-tree-bottom {
+  justify-content: space-between;
+  border-top: 1px solid #ffffff1c;
+  padding-top: 10px;
+}
+.ny-tree-bottom > button,
+.ny-tree-zoom button {
+  font-size: 10px;
+  color: #d9e2cf;
+  padding: 3px;
+}
+.ny-tree-bottom > button:last-child {
+  color: #ead8a6;
+}
+.ny-tree-preview.is-large {
+  min-height: 480px;
+}
+.ny-tree-preview.is-large .ny-tree-stage {
+  min-height: 340px;
+}
+.ny-tree-zoom button {
+  border: 1px solid #a2b59644;
+  border-radius: 5px;
+  padding: 6px;
+}
+@media (max-width: 640px) {
+  .ny-tree-preview {
+    min-height: 300px;
+  }
+  .ny-tree-preview.is-large {
+    min-height: 360px;
+  }
+  .ny-tree-preview.is-large .ny-tree-stage {
+    min-height: 230px;
+  }
+}

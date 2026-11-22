@@ -1,0 +1,7 @@
+.page-dash-account {
+  --module-accent: #8a805b;
+}
+.page-dash-account .ny-module-header {
+  border-bottom: 1px solid var(--color-line);
+  padding-bottom: 22px;
+}
