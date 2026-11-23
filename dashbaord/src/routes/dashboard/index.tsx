@@ -4,9 +4,6 @@ import LineagePage from "@/pages/dashboard/lineage/LineagePage";
 import MembersPage from "@/pages/dashboard/members/MembersPage";
 import EventsPage from "@/pages/dashboard/events/EventsPage";
 import GalleryPage from "@/pages/dashboard/gallery/GalleryPage";
-import RemembrancePage from "@/pages/dashboard/obituaries/RemembrancePage";
-import ContributionsPage from "@/pages/dashboard/contributions/ContributionsPage";
-import FinancesPage from "@/pages/dashboard/finances/FinancesPage";
 import AllocationsPage from "@/pages/dashboard/finance-access/AllocationsPage";
 import LoansPage from "@/pages/dashboard/loans/LoansPage";
 import FoundationPage from "@/pages/dashboard/foundation/FoundationPage";
@@ -15,6 +12,9 @@ import ProfessionsPage from "@/pages/dashboard/professions/ProfessionsPage";
 import CommunicationsPage from "@/pages/dashboard/communications/CommunicationsPage";
 import AccountPage from "@/pages/dashboard/account/AccountPage";
 import SettingsPage from "@/pages/dashboard/settings/SettingsPage";
+import { buildObituaryRoute } from "./obituaries";
+import { buildContributionRoute } from "./contributions";
+import { buildFinanceRoute } from "./finances";
 
 export function buildDashboardRoutes(parent: AnyRootRoute) {
   const dashboard = createRoute({
@@ -48,21 +48,9 @@ export function buildDashboardRoutes(parent: AnyRootRoute) {
       path: "gallery",
       component: GalleryPage,
     }),
-    createRoute({
-      getParentRoute: () => dashboard,
-      path: "obituaries",
-      component: RemembrancePage,
-    }),
-    createRoute({
-      getParentRoute: () => dashboard,
-      path: "contributions",
-      component: ContributionsPage,
-    }),
-    createRoute({
-      getParentRoute: () => dashboard,
-      path: "finances",
-      component: FinancesPage,
-    }),
+    buildObituaryRoute(dashboard),
+    buildContributionRoute(dashboard),
+    buildFinanceRoute(dashboard),
     createRoute({
       getParentRoute: () => dashboard,
       path: "finance-access",

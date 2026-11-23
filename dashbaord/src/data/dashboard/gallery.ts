@@ -3,6 +3,7 @@
    Every record carries the *displayed* crop ratio so the masonry layout can
    reserve the right box before the image loads (no layout shift). */
 
+import type { PageConfig } from "@/types/workspace";
 import { EVENTS_SEED } from "@/data/dashboard/events";
 import { MEMBERS } from "@/data/family/people";
 import { between, hashString, mulberry32 } from "@/lib/rng";
@@ -451,3 +452,15 @@ export const TAGGABLE_MEMBERS: string[] = TAG_POOL.filter((id) => {
 export const CONTRIBUTOR_LIST: string[] = CONTRIBUTOR_IDS.filter((id) => PHOTOS_SEED.some((p) => p.contributorId === id)).sort(
   (a, b) => PHOTOS_SEED.filter((p) => p.contributorId === b).length - PHOTOS_SEED.filter((p) => p.contributorId === a).length,
 );
+
+/* The module shell reads its header copy from here. */
+export const pageData: PageConfig = {
+  slug: "gallery",
+  name: "Family gallery",
+  eyebrow: "Every photograph",
+  description:
+    "Albums, event photographs and the long-running family archive, kept in one place.",
+  action: "Open the album",
+  panel: "memory",
+  layout: "memories",
+};
