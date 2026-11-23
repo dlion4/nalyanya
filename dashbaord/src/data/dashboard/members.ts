@@ -1,3 +1,5 @@
+import type { PageConfig } from "@/types/workspace";
+
 /* T-3 Members Directory — dedicated page data (mock, deterministic, Kenyan family records). */
 
 export type FamilyRole =
@@ -470,3 +472,15 @@ export const AGE_BANDS = [
 ] as const;
 
 export type AgeBand = (typeof AGE_BANDS)[number]["key"];
+
+/* The module shell reads its header copy from here. */
+export const pageData: PageConfig = {
+  slug: "members",
+  name: "Family members",
+  eyebrow: "Our people",
+  description:
+    "Every Nalyanya across twelve branches — searchable, sortable, and always reachable.",
+  action: "Add a member",
+  panel: "members",
+  layout: "people",
+};

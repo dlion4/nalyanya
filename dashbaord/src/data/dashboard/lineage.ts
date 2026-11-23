@@ -1,3 +1,4 @@
+import type { PageConfig } from "@/types/workspace";
 import type { AuditEntry, Presence } from "@/types/family";
 
 /* T-2 Lineage — page data. Shared family graph lives in src/data/family/*. */
@@ -61,3 +62,15 @@ export const SHORTCUTS: Array<{ keys: string[]; label: string }> = [
   { keys: ["Esc"], label: "Close the inspector or a dialog" },
   { keys: ["?"], label: "Open this list" },
 ];
+
+/* The module shell reads its header copy from here. */
+export const pageData: PageConfig = {
+  slug: "lineage",
+  name: "The family tree",
+  eyebrow: "Our lineage",
+  description:
+    "Six generations rooted at Mzee Victor Nalyanya — orbit the tree and find where you sit.",
+  action: "Explore the tree",
+  panel: "members",
+  layout: "tree",
+};

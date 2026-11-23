@@ -1,0 +1,1174 @@
+@reference "tailwindcss";
+
+/* ══════════════════════════════════════════════════════════════════════
+   T-7 · CONTRIBUTIONS — page stylesheet
+   Root class: .page-dash-contributions
+
+   A warm money/giving theme: gold-candle accents, progress rings, pulse
+   tallies and flash-received motion. The camera shutter is the one piece
+   of motion — a six-blade iris that closes to a pinhole while the cause
+   image changes.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.page-dash-contributions {
+  --give-accent: #b8860b;
+  --give-accent-soft: #f5ecd6;
+  --give-candle: #d4a437;
+  --give-ink: #16211b;
+  --give-dusk: #101a16;
+  --give-radius: 22px;
+}
+
+.ny-give-count {
+  font-size: 0.78rem;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+}
+.ny-give-count b { color: var(--give-ink); font-size: 1rem; }
+
+.text-give-ink { color: var(--give-ink); }
+
+/* ─────────────────────────────────────────────────────────────────────
+   1 · THE CAMERA STAGE (cause images)
+   Same shutter/iris behaviour as T-6: blades close to a pinhole, the
+   exposure swaps, blades reopen with a soft flash bloom.
+   ───────────────────────────────────────────────────────────────────── */
+
+.ny-give-stage {
+  position: relative;
+  overflow: hidden;
+  background: var(--give-dusk);
+  isolation: isolate;
+  border-radius: inherit;
+  outline-offset: 3px;
+}
+
+.ny-give-plate {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.015);
+  filter: saturate(0.88) contrast(1.04);
+  animation: ny-give-exposure 620ms var(--ease-out-expo);
+}
+
+@keyframes ny-give-exposure {
+  from { opacity: 0.55; transform: scale(1.045); }
+  to { opacity: 1; transform: scale(1.015); }
+}
+
+.ny-give-blades {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at var(--cx) var(--cy),
+      transparent 0 var(--hole),
+      #0a120e calc(var(--hole) + 0.6%)
+    );
+  box-shadow: inset 0 0 90px 30px rgb(6 14 10 / 0.55);
+}
+
+.ny-give-seam {
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(
+    from var(--spin),
+    rgb(255 255 255 / 0.09) 0deg 5deg,
+    transparent 5deg 45deg,
+    rgb(255 255 255 / 0.07) 45deg 50deg,
+    transparent 50deg 90deg,
+    rgb(255 255 255 / 0.09) 90deg 95deg,
+    transparent 95deg 135deg,
+    rgb(255 255 255 / 0.07) 135deg 140deg,
+    transparent 140deg 180deg,
+    rgb(255 255 255 / 0.09) 180deg 185deg,
+    transparent 185deg 225deg,
+    rgb(255 255 255 / 0.07) 225deg 230deg,
+    transparent 230deg 270deg,
+    rgb(255 255 255 / 0.09) 270deg 275deg,
+    transparent 275deg 315deg,
+    rgb(255 255 255 / 0.07) 315deg 320deg,
+    transparent 320deg 360deg
+  );
+  mask: radial-gradient(
+    circle at var(--cx) var(--cy),
+    transparent 0 var(--hole),
+    #000 calc(var(--hole) + 26%)
+  );
+  opacity: 0.85;
+}
+
+.ny-give-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--cx) var(--cy),
+    rgb(255 246 226 / 0.5),
+    transparent 55%
+  );
+  transition: opacity 240ms ease-out;
+}
+
+/* Viewfinder brackets */
+.ny-give-stage .ny-vf {
+  position: absolute;
+  z-index: 5;
+  width: 22px;
+  height: 22px;
+  border: 0 solid rgb(255 255 255 / 0.55);
+  pointer-events: none;
+}
+.ny-give-stage .ny-vf-tl { top: 12px; left: 12px; border-top-width: 2px; border-left-width: 2px; border-top-left-radius: 6px; }
+.ny-give-stage .ny-vf-tr { top: 12px; right: 12px; border-top-width: 2px; border-right-width: 2px; border-top-right-radius: 6px; }
+.ny-give-stage .ny-vf-bl { bottom: 12px; left: 12px; border-bottom-width: 2px; border-left-width: 2px; border-bottom-left-radius: 6px; }
+.ny-give-stage .ny-vf-br { bottom: 12px; right: 12px; border-bottom-width: 2px; border-right-width: 2px; border-bottom-right-radius: 6px; }
+
+.ny-give-chrome {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: linear-gradient(0deg, rgb(8 16 12 / 0.78), transparent);
+  color: #f4efe2;
+}
+
+.ny-give-readout {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 650;
+}
+.ny-give-readout b { opacity: 0.45; font-weight: 400; }
+
+.ny-give-settings {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+}
+
+.ny-give-arrows {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 6px;
+}
+.ny-give-arrows button {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 9999px;
+  border: 1px solid rgb(255 255 255 / 0.28);
+  background: rgb(30 44 34 / 0.45);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  transition: background 180ms ease, transform 180ms ease;
+}
+.ny-give-arrows button:hover { background: rgb(255 255 255 / 0.2); transform: scale(1.06); }
+
+/* ─────────────────────────────────────────────────────────────────────
+   2 · KPI ROW (S1)
+   ───────────────────────────────────────────────────────────────────── */
+
+.ny-give-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 48px);
+  align-items: center;
+  margin-bottom: clamp(40px, 6vw, 80px);
+}
+
+.ny-give-hero-stage {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lift);
+  transform: perspective(1400px) rotateY(-3deg);
+}
+
+.ny-give-hero-veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(90% 70% at 20% 10%, rgb(255 255 255 / 0.14), transparent 60%),
+    linear-gradient(200deg, transparent 45%, rgb(10 18 14 / 0.55));
+}
+
+.ny-give-hero-copy { min-width: 0; }
+
+.ny-give-rule {
+  display: inline-block;
+  width: 34px;
+  height: 1px;
+  background: var(--give-candle);
+  vertical-align: middle;
+}
+
+.ny-give-hero-copy h1 {
+  font-family: var(--font-display);
+  font-weight: 450;
+  letter-spacing: -0.045em;
+  font-size: clamp(2.3rem, 5vw, 3.9rem);
+  line-height: 1.02;
+  margin: 12px 0 16px;
+}
+.ny-give-hero-copy h1 em {
+  display: block;
+  font-style: italic;
+  color: var(--give-accent);
+}
+
+.ny-give-statement {
+  font-size: clamp(0.98rem, 1.3vw, 1.12rem);
+  line-height: 1.72;
+  color: var(--color-text-secondary);
+  max-width: 34ch;
+}
+
+.ny-give-kpis {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin: 26px 0;
+  padding: 16px 0;
+  border-top: 1px solid var(--color-hairline);
+  border-bottom: 1px solid var(--color-hairline);
+}
+.ny-give-kpis div { min-width: 0; }
+.ny-give-kpis b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--give-ink);
+}
+.ny-give-kpis span {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.ny-give-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ny-give-hero-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  font-size: 0.82rem;
+  color: var(--color-text-tertiary);
+  max-width: 46ch;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   3 · FLASH RECEIVED TOAST
+   ───────────────────────────────────────────────────────────────────── */
+
+.ny-give-flash-received {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  background: #fdf6e9;
+  border: 1px dashed #e2cfa3;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #7d6428;
+  animation: ny-give-pulse 2s ease-in-out infinite;
+}
+@keyframes ny-give-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.85; }
+}
+
+html[data-ny-mode="elder"] .ny-give-flash-received { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ny-give-flash-received { animation: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   4 · SECTION FRAMES
+   ───────────────────────────────────────────────────────────────────── */
+
+.ny-give-section {
+  margin-bottom: clamp(48px, 7vw, 92px);
+  scroll-margin-top: 96px;
+}
+
+.ny-give-section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+.ny-give-section-head h2 {
+  font-family: var(--font-display);
+  font-weight: 450;
+  letter-spacing: -0.04em;
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  line-height: 1.08;
+  margin-top: 8px;
+}
+.ny-give-section-intro {
+  margin-top: 10px;
+  max-width: 58ch;
+  color: var(--color-text-secondary);
+  line-height: 1.68;
+  font-size: 0.95rem;
+}
+
+.ny-give-quiet {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--color-text-tertiary);
+}
+
+.ny-give-subhead {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  margin: 24px 0 10px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   5 · CAUSE FILTERS (S2)
+   ───────────────────────────────────────────────────────────────────── */
+
+.ny-give-filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 12px;
+  margin-bottom: 22px;
+  border: 1px solid var(--color-hairline);
+  border-radius: 16px;
+  background: var(--color-surface-1);
+  box-shadow: var(--shadow-soft);
+}
+
+.ny-give-filter-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.ny-give-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px;
+  border-radius: 9999px;
+  border: 1px solid var(--color-hairline);
+  background: var(--color-surface-0);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  transition: all 180ms var(--ease-out-expo);
+}
+.ny-give-filter-chip:hover { border-color: var(--give-accent); color: var(--give-ink); }
+.ny-give-filter-chip.is-active {
+  background: var(--give-ink);
+  border-color: var(--give-ink);
+  color: #fdfbf5;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   6 · CAUSE CARDS (S2)
+   ───────────────────────────────────────────────────────────────────── */
+
+.ny-give-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+  gap: 18px;
+  perspective: 1200px;
+}
+
+.ny-give-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--give-radius);
+  border: 1px solid var(--color-hairline);
+  background: var(--color-surface-1);
+  box-shadow: var(--shadow-soft);
+  transform-style: preserve-3d;
+  transition: transform 260ms var(--ease-out-expo), box-shadow 260ms var(--ease-out-expo),
+    border-color 260ms ease;
+}
+.ny-give-card:hover {
+  box-shadow: var(--shadow-lift);
+  border-color: color-mix(in srgb, var(--give-accent) 45%, transparent);
+}
+
+.ny-give-card-stage {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--give-dusk);
+}
+.ny-give-card-stage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.82) contrast(1.03);
+  transition: transform 700ms var(--ease-out-expo), filter 500ms ease;
+}
+.ny-give-card:hover .ny-give-card-stage img {
+  transform: scale(1.045);
+  filter: saturate(0.95) contrast(1.02);
+}
+.ny-give-card-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgb(10 18 14 / 0.62), transparent 46%);
+}
+
+.ny-give-card-purpose {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 9999px;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #f3ecdd;
+  background: rgb(12 20 16 / 0.68);
+  backdrop-filter: blur(6px);
+}
+.ny-give-card-purpose.is-wedding { background: rgb(184 134 11 / 0.92); color: #4a2c00; }
+.ny-give-card-purpose.is-sickness { background: rgb(139 60 60 / 0.92); color: #fff; }
+.ny-give-card-purpose.is-funeral { background: rgb(16 26 22 / 0.92); color: #efe6d2; }
+.ny-give-card-purpose.is-project { background: rgb(70 110 90 / 0.92); color: #f3ecdd; }
+.ny-give-card-purpose.is-education { background: rgb(90 80 130 / 0.92); color: #efe6d2; }
+.ny-give-card-purpose.is-emergency { background: rgb(160 70 40 / 0.92); color: #fff; }
+
+.ny-give-card-deadline {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 2;
+  padding: 4px 9px;
+  border-radius: 9999px;
+  background: rgb(12 20 16 / 0.78);
+  backdrop-filter: blur(6px);
+  color: #efe6d2;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.ny-give-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 16px 14px;
+  flex: 1;
+}
+.ny-give-card-body h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  font-size: 1.16rem;
+  line-height: 1.22;
+}
+.ny-give-card-beneficiary {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+.ny-give-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.ny-give-card-progress {
+  margin-top: 10px;
+}
+.ny-give-card-progress-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  margin-bottom: 6px;
+  color: var(--color-text-secondary);
+}
+.ny-give-card-progress-head b { color: var(--give-ink); font-weight: 700; }
+.ny-give-card-progress-bar {
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--color-surface-2);
+  overflow: hidden;
+}
+.ny-give-card-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--give-accent), var(--give-candle));
+  transition: width 600ms var(--ease-out-expo);
+}
+
+.ny-give-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+}
+.ny-give-card-actions .ny-btn { flex: 1; }
+
+/* List view */
+.ny-give-cards.is-list { grid-template-columns: 1fr; }
+.ny-give-cards.is-list .ny-give-card { flex-direction: row; align-items: stretch; }
+.ny-give-cards.is-list .ny-give-card-stage {
+  aspect-ratio: auto;
+  width: 148px;
+  flex-shrink: 0;
+}
+.ny-give-cards.is-list .ny-give-card-body { padding: 18px 20px; }
+
+.ny-give-empty {
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  padding: 56px 24px;
+  border: 1px dashed var(--color-hairline);
+  border-radius: var(--give-radius);
+  text-align: center;
+}
+.ny-give-empty h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: -0.03em;
+}
+.ny-give-empty p { color: var(--color-text-secondary); max-width: 46ch; }
+
+/* ─────────────────────────────────────────────────────────────────────
+   7 · CONTRIBUTIONS TABLE (S4)
+   ───────────────────────────────────────────────────────────────────── */
+
+.ny-give-table-wrap {
+  border: 1px solid var(--color-hairline);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--color-surface-1);
+  box-shadow: var(--shadow-soft);
+}
+.ny-give-table-row {
+  display: grid;
+  grid-template-columns: 130px minmax(160px, 1.4fr) 110px 100px 110px 100px 52px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--color-hairline);
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+.ny-give-table-row:first-child { border-top: 0; }
+.ny-give-table-row.is-head {
+  background: var(--color-surface-2);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+}
+.ny-give-table-row:not(.is-head):hover { background: var(--color-surface-0); }
+.ny-give-table-receipt {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  color: var(--give-accent);
+  text-decoration: underline;
+}
+.ny-give-table-receipt:hover { color: var(--give-candle); }
+
+.ny-give-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+.ny-give-status-chip.is-confirmed {
+  background: #e9efe3;
+  color: #59734d;
+}
+.ny-give-status-chip.is-pending {
+  background: #fbf6e9;
+  color: #8d6a1f;
+}
+.ny-give-status-chip.is-failed {
+  background: #fbe5e5;
+  color: var(--color-danger);
+}
+.ny-give-status-chip.is-initiated {
+  background: var(--color-surface-2);
+  color: var(--color-text-tertiary);
+}
+
+.ny-give-channel-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  border: 1px solid var(--color-hairline);
+  background: var(--color-surface-1);
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
+}
+
+.ny-give-table-actions { display: flex; justify-content: flex-end; }
+
+/* ─────────────────────────────────────────────────────────────────────
+   8 · CAUSE DRAWER (S5)
+   ───────────────────────────────────────────────────────────────────── */
+
+.ny-give-drawer { display: flex; flex-direction: column; gap: 18px; }
+
+.ny-give-drawer-head {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.ny-give-drawer-image {
+  width: 100px;
+  height: 128px;
+  border-radius: 14px;
+  object-fit: cover;
+  filter: saturate(0.85);
+  box-shadow: var(--shadow-soft);
+  flex-shrink: 0;
+}
+.ny-give-drawer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.ny-give-tabs {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--color-hairline);
+  scrollbar-width: thin;
+}
+.ny-give-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border-radius: 10px 10px 0 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all 160ms ease;
+}
+.ny-give-tab:hover { color: var(--give-ink); background: var(--color-surface-2); }
+.ny-give-tab[aria-selected="true"] {
+  color: var(--give-ink);
+  border-bottom-color: var(--give-accent);
+  background: var(--give-accent-soft);
+}
+.ny-give-tab-count {
+  font-size: 0.62rem;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  background: var(--color-surface-2);
+  color: var(--color-text-tertiary);
+}
+
+.ny-give-panel { padding-top: 4px; }
+.ny-give-panel:focus-visible { outline: 2px solid var(--give-accent); }
+
+.ny-give-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.ny-give-progress-ring {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 9999px;
+  background: conic-gradient(
+    var(--give-accent) 0deg,
+    var(--give-accent) var(--pct),
+    var(--color-surface-2) var(--pct),
+    var(--color-surface-2) 360deg
+  );
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+}
+.ny-give-progress-ring-text {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--give-ink);
+}
+.ny-give-progress-ring-text small {
+  font-size: 0.66rem;
+  font-weight: 400;
+  color: var(--color-text-tertiary);
+  margin-top: 4px;
+  display: block;
+}
+
+.ny-give-cause-details { min-width: 0; }
+.ny-give-cause-details h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  font-size: 1.3rem;
+  margin: 0 0 8px;
+}
+.ny-give-cause-details p { color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 12px; }
+
+.ny-give-contributors,
+.ny-give-payouts,
+.ny-give-comms,
+.ny-give-audit {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ny-give-contributor {
+  display: grid;
+  grid-template-columns: 40px 1fr 96px 44px;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--color-hairline);
+  font-size: 0.86rem;
+}
+.ny-give-contributor:last-child { border-bottom: 0; }
+.ny-give-contributor-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: var(--give-accent-soft);
+  color: var(--give-ink);
+  font-size: 0.76rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+.ny-give-contributor-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.ny-give-contributor-name { font-weight: 600; color: var(--color-text-primary); }
+.ny-give-contributor-message { font-size: 0.78rem; color: var(--color-text-secondary); }
+.ny-give-contributor-amount { font-family: var(--font-display); font-weight: 700; color: var(--give-ink); }
+.ny-give-contributor-channel { font-size: 0.68rem; color: var(--color-text-tertiary); }
+
+.ny-give-payout {
+  display: grid;
+  grid-template-columns: 140px 1fr 100px 80px;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px dashed var(--color-hairline);
+  font-size: 0.84rem;
+}
+.ny-give-payout:last-child { border-bottom: 0; }
+.ny-give-payout-recipient { font-weight: 600; color: var(--color-text-primary); }
+.ny-give-payout-amount { font-family: var(--font-display); font-weight: 700; color: var(--give-ink); }
+
+.ny-give-audit { list-style: none; display: grid; gap: 14px; }
+.ny-give-audit li {
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  gap: 12px;
+  position: relative;
+}
+.ny-give-audit li::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 14px;
+  bottom: -18px;
+  width: 1px;
+  background: var(--color-hairline);
+}
+.ny-give-audit li:last-child::before { display: none; }
+.ny-give-audit-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 9999px;
+  background: var(--give-accent);
+  margin-top: 4px;
+  box-shadow: 0 0 0 3px var(--give-accent-soft);
+}
+.ny-give-audit-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.86rem;
+}
+.ny-give-audit-detail { font-size: 0.82rem; color: var(--color-text-secondary); margin-top: 3px; line-height: 1.6; }
+.ny-give-audit-time { display: block; font-size: 0.68rem; color: var(--color-text-tertiary); margin-top: 4px; }
+
+/* ─────────────────────────────────────────────────────────────────────
+   9 · WIZARD (S3 & S6)
+   ───────────────────────────────────────────────────────────────────── */
+
+.ny-give-stepper {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 18px;
+  list-style: none;
+}
+.ny-give-step {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px 6px 6px;
+  border-radius: 9999px;
+  white-space: nowrap;
+  font-size: 0.72rem;
+  color: var(--color-text-tertiary);
+  border: 1px solid transparent;
+}
+.ny-give-step-dot {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 9999px;
+  background: var(--color-surface-2);
+  color: var(--color-text-tertiary);
+  font-size: 0.66rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.ny-give-step.is-done .ny-give-step-dot { background: var(--give-accent-soft); color: var(--give-ink); }
+.ny-give-step.is-current {
+  background: var(--give-ink);
+  color: #fdfbf5;
+  border-color: var(--give-ink);
+}
+.ny-give-step.is-current .ny-give-step-dot { background: var(--give-candle); color: #2b2007; }
+.ny-give-step-label { font-weight: 600; }
+
+.ny-give-wizard-body { min-height: 320px; }
+.ny-give-wizard-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ny-give-wizard-count { font-size: 0.74rem; color: var(--color-text-tertiary); }
+
+.ny-give-step-body { display: flex; flex-direction: column; gap: 14px; }
+.ny-give-step-body h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  font-size: 1.24rem;
+}
+.ny-give-step-intro { font-size: 0.86rem; line-height: 1.66; color: var(--color-text-secondary); }
+
+.ny-give-field { display: flex; flex-direction: column; gap: 5px; }
+.ny-give-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+.ny-give-label em { color: var(--give-candle); font-style: normal; }
+.ny-give-control { display: block; }
+.ny-give-hint { font-size: 0.72rem; color: var(--color-text-tertiary); }
+.ny-textarea { min-height: 92px; resize: vertical; line-height: 1.6; }
+
+.ny-give-two-up {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.ny-give-error {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.78rem;
+  color: var(--color-danger);
+}
+
+.ny-give-simnote {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 11px 13px;
+  border-radius: 12px;
+  background: #fdf6e9;
+  border: 1px dashed #e2cfa3;
+  font-size: 0.76rem;
+  line-height: 1.55;
+  color: #7d6428;
+}
+.ny-give-simnote svg { flex-shrink: 0; margin-top: 2px; }
+
+.ny-give-scope { display: grid; gap: 9px; }
+.ny-give-scope-card {
+  display: grid;
+  grid-template-columns: 22px 1fr 18px;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 15px;
+  border-radius: 14px;
+  border: 1px solid var(--color-hairline);
+  background: var(--color-surface-0);
+  text-align: left;
+  transition: all 180ms var(--ease-out-expo);
+}
+.ny-give-scope-card:hover { border-color: var(--give-accent); }
+.ny-give-scope-card.is-active {
+  border-color: var(--give-ink);
+  background: var(--give-ink);
+  color: #fdfbf5;
+}
+.ny-give-scope-card b { display: block; font-size: 0.9rem; }
+.ny-give-scope-card small { display: block; font-size: 0.76rem; opacity: 0.7; margin-top: 2px; }
+.ny-give-check { color: var(--give-candle); }
+
+.ny-give-review {
+  display: grid;
+  gap: 8px;
+  padding: 15px;
+  border-radius: 14px;
+  background: var(--color-surface-0);
+  border: 1px solid var(--color-hairline);
+}
+.ny-give-review div {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 10px;
+  font-size: 0.82rem;
+}
+.ny-give-review span { color: var(--color-text-tertiary); }
+.ny-give-review b { color: var(--give-ink); font-weight: 600; }
+
+/* Receipt */
+.ny-give-receipt {
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--color-hairline);
+  background: var(--color-surface-0);
+  margin-bottom: 16px;
+}
+.ny-give-receipt-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.ny-give-receipt-no {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--give-accent);
+}
+.ny-give-receipt-line {
+  display: grid;
+  grid-template-columns: 1fr 96px;
+  gap: 10px;
+  font-size: 0.84rem;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--color-hairline);
+}
+.ny-give-receipt-line:last-child { border-bottom: 0; }
+.ny-give-receipt-line b { color: var(--give-ink); font-weight: 700; }
+.ny-give-receipt-foot {
+  margin-top: 10px;
+  font-size: 0.72rem;
+  color: var(--color-text-tertiary);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   10 · OVERLAY INTERIOR
+   ───────────────────────────────────────────────────────────────────── */
+
+.ny-give-foot { display: flex; justify-content: flex-end; gap: 9px; }
+
+.ny-give-quote {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--color-surface-0);
+  border-left: 3px solid var(--give-accent);
+  margin-bottom: 16px;
+}
+.ny-give-quote p {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.6;
+  font-style: italic;
+  color: var(--color-text-primary);
+}
+.ny-give-quote cite {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.74rem;
+  font-style: normal;
+  color: var(--color-text-tertiary);
+}
+
+.ny-give-choice { display: grid; gap: 8px; margin-bottom: 16px; }
+.ny-give-choice-card {
+  padding: 12px 15px;
+  border-radius: 13px;
+  border: 1px solid var(--color-hairline);
+  background: var(--color-surface-0);
+  text-align: left;
+  transition: all 180ms var(--ease-out-expo);
+}
+.ny-give-choice-card b { display: block; font-size: 0.9rem; }
+.ny-give-choice-card small { display: block; font-size: 0.76rem; color: var(--color-text-tertiary); margin-top: 2px; }
+.ny-give-choice-card:hover { border-color: var(--give-accent); }
+.ny-give-choice-card.is-active {
+  border-color: var(--give-ink);
+  background: var(--give-ink);
+  color: #fdfbf5;
+}
+.ny-give-choice-card.is-active small { color: rgb(253 251 245 / 0.7); }
+
+.ny-give-candle-scene {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 22px 0;
+  margin-bottom: 16px;
+  border-radius: 16px;
+  background: radial-gradient(70% 100% at 50% 100%, #fdf3dd, #fffdf8);
+}
+.ny-give-candle-scene .ny-candle { width: 16px; height: 26px; }
+.ny-give-candle-scene .ny-candle-body { height: 16px; }
+.ny-give-candle-scene .ny-candle-flame { width: 10px; height: 14px; margin-left: -5px; }
+
+/* ─────────────────────────────────────────────────────────────────────
+   11 · PAGE FURNITURE
+   ───────────────────────────────────────────────────────────────────── */
+
+.ny-give-crumbs {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 18px;
+  font-size: 0.76rem;
+  color: var(--color-text-tertiary);
+}
+.ny-give-crumbs a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+.ny-give-crumbs a:hover { color: var(--give-ink); }
+.ny-give-crumbs-spacer { flex: 1; }
+
+.ny-give-footnote {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  padding-top: 22px;
+  border-top: 1px solid var(--color-hairline);
+  font-size: 0.78rem;
+  color: var(--color-text-tertiary);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   12 · RESPONSIVE
+   ───────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 1023px) {
+  .ny-give-hero { grid-template-columns: 1fr; }
+  .ny-give-hero-stage { transform: none; aspect-ratio: 16 / 10; }
+  .ny-give-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .ny-give-table-wrap { overflow-x: auto; }
+  .ny-give-table-row { min-width: 860px; }
+  .ny-give-overview { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 639px) {
+  .ny-give-cards { grid-template-columns: 1fr; }
+  .ny-give-cards.is-list .ny-give-card { flex-direction: column; }
+  .ny-give-cards.is-list .ny-give-card-stage { width: 100%; aspect-ratio: 4 / 3; }
+  .ny-give-filters { padding: 10px; }
+  .ny-give-table-row { min-width: 700px; }
+  .ny-give-contributor { grid-template-columns: 36px 1fr 72px 36px; font-size: 0.78rem; }
+  .ny-give-payout { grid-template-columns: 100px 1fr 72px 64px; font-size: 0.78rem; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   13 · ELDER MODE & REDUCED MOTION
+   ───────────────────────────────────────────────────────────────────── */
+
+html[data-ny-mode="elder"] .page-dash-contributions .ny-give-hero-copy h1 {
+  font-size: 2.6rem;
+}
+html[data-ny-mode="elder"] .page-dash-contributions .ny-give-card-body h3 {
+  font-size: 1.35rem;
+}
+html[data-ny-mode="elder"] .page-dash-contributions .ny-give-tab {
+  font-size: 0.95rem;
+  padding: 12px 14px;
+}
+html[data-ny-mode="elder"] .page-dash-contributions .ny-give-card:hover { transform: none !important; }
+html[data-ny-mode="elder"] .page-dash-contributions .ny-give-card-stage img { transition: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .page-dash-contributions .ny-give-plate { animation: none; }
+  .page-dash-contributions .ny-give-card:hover { transform: none; }
+  .page-dash-contributions .ny-give-card-stage img { transition: none; }
+}
