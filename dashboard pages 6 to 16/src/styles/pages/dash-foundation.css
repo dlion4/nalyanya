@@ -1,0 +1,337 @@
+/* Page-scoped styles — /dashboard/foundation  (.page-dash-foundation)
+   Layout, 3D and motion only. Colour and type come from tokens.css.
+   Shared dashboard primitives (cc-tabs, cc-steps, cc-table, cc-rail, gd-*) are scoped here
+   too via the selector lists in dash-contributions.css / dash-generic.css. */
+
+.page-dash-foundation {
+  /* ---------- Hero ---------- */
+  .fd-hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 1rem;
+    background: var(--color-purple);
+  }
+  .fd-hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 42%;
+    transform: scale(1.05);
+    filter: saturate(0.9) contrast(1.04);
+    animation: fd-hero-drift 28s var(--ease-settle) infinite alternate;
+  }
+  .fd-hero__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(98deg, rgba(36, 24, 54, 0.95) 0%, rgba(36, 24, 54, 0.76) 46%, rgba(36, 24, 54, 0.2) 100%),
+      radial-gradient(80% 70% at 90% 0%, rgba(212, 164, 55, 0.3), transparent 60%);
+  }
+  .fd-hero__body {
+    position: relative;
+    z-index: 2;
+  }
+  .fd-glass {
+    color: var(--color-on-brand);
+    background: rgba(16, 12, 24, 0.44);
+    border: 1px solid rgba(250, 246, 238, 0.26);
+    border-radius: 0.9rem;
+    backdrop-filter: blur(10px);
+  }
+
+  /* ---------- KPI tiles ---------- */
+  .fd-kpi {
+    position: relative;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.85rem;
+    padding: 0.9rem 1rem 1rem;
+    box-shadow: var(--shadow-raise);
+    transform-style: preserve-3d;
+    transition: transform 260ms var(--ease-settle), box-shadow 260ms ease;
+  }
+  .fd-kpi:hover {
+    transform: translate3d(0, -4px, 12px);
+    box-shadow: var(--shadow-lift);
+  }
+  .fd-kpi::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    right: 1rem;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--kpi-accent, var(--color-purple));
+  }
+  .fd-kpi__value {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- Pillar cards (3D tilt + shutter sweep) ---------- */
+  .fd-pillar {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.95rem;
+    transform-style: preserve-3d;
+    transition: transform 320ms var(--ease-settle), box-shadow 320ms ease, border-color 320ms ease;
+  }
+  .fd-pillar:hover {
+    transform: perspective(1100px) rotateX(2.5deg) rotateY(-2deg) translate3d(0, -5px, 16px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-border-strong);
+  }
+  .fd-pillar__media {
+    position: relative;
+    aspect-ratio: 16 / 8;
+    overflow: hidden;
+    background: var(--color-surface-3);
+  }
+  .fd-pillar__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.9);
+    transition: transform 700ms var(--ease-settle), filter 400ms ease;
+  }
+  .fd-pillar:hover .fd-pillar__img {
+    transform: scale(1.07);
+    filter: saturate(1.05);
+  }
+  .fd-pillar__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10, 14, 11, 0.72) 0%, rgba(10, 14, 11, 0.04) 55%, rgba(10, 14, 11, 0.3) 100%);
+    pointer-events: none;
+  }
+  .fd-pillar__sheen {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 35%, rgba(250, 246, 238, 0.5) 50%, transparent 65%);
+    transform: translateX(-120%);
+    pointer-events: none;
+  }
+  .fd-pillar:hover .fd-pillar__sheen {
+    animation: fd-sheen 720ms var(--ease-mechanical) 1;
+  }
+
+  /* ---------- Grant cards ---------- */
+  .fd-grant {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.95rem;
+    padding: 1rem 1.05rem;
+    box-shadow: var(--shadow-raise);
+    transform-style: preserve-3d;
+    transition: transform 300ms var(--ease-settle), box-shadow 300ms ease, border-color 300ms ease;
+  }
+  .fd-grant:hover {
+    transform: perspective(1000px) rotateX(2deg) rotateY(-1.8deg) translate3d(0, -4px, 14px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-border-strong);
+  }
+  .fd-grant.is-paid {
+    border-left: 3px solid var(--color-success);
+  }
+  .fd-grant.is-pending {
+    border-left: 3px solid var(--color-warning);
+  }
+  .fd-meter {
+    position: relative;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--color-surface-3);
+  }
+  .fd-meter__bar {
+    position: absolute;
+    inset: 0;
+    background: var(--color-purple);
+    transform-origin: left center;
+    transform: scaleX(var(--p, 0));
+    animation: fd-grow 1000ms var(--ease-settle) both;
+  }
+  .fd-meter__bar.is-gold {
+    background: var(--color-brand-accent);
+  }
+
+  /* ---------- Disbursement timeline (os-draw) ---------- */
+  .fd-timeline__line {
+    stroke: var(--color-purple);
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: fd-draw 1500ms var(--ease-settle) 150ms forwards;
+  }
+  .fd-timeline__area {
+    opacity: 0;
+    animation: fd-fade 900ms ease 950ms forwards;
+  }
+  .fd-timeline__grid {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 3 5;
+  }
+  .fd-timeline__dot {
+    stroke: var(--color-surface-1);
+    stroke-width: 2.5;
+  }
+
+  /* ---------- Passbook-style document rows ---------- */
+  .fd-doc {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.75rem;
+    background: var(--color-surface-1);
+    padding: 0.65rem 0.85rem;
+    transition: transform 180ms var(--ease-settle), border-color 180ms ease, background-color 180ms ease;
+  }
+  .fd-doc:hover {
+    transform: translateX(4px);
+    border-color: var(--color-border-strong);
+    background: var(--color-surface-2);
+  }
+  .fd-doc__mark {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    background: rgba(106, 76, 147, 0.14);
+    color: var(--color-purple);
+  }
+
+  /* ---------- Switch ---------- */
+  .fd-switch {
+    position: relative;
+    flex: 0 0 auto;
+    width: 52px;
+    height: 30px;
+    border-radius: 999px;
+    cursor: pointer;
+    background: var(--color-surface-3);
+    border: 1px solid var(--color-border-strong);
+    transition: background-color 220ms ease, border-color 220ms ease;
+  }
+  .fd-switch::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--color-surface-1);
+    box-shadow: var(--shadow-raise);
+    transition: transform 280ms var(--ease-settle);
+  }
+  .fd-switch[aria-checked="true"] {
+    background: var(--color-purple);
+    border-color: var(--color-purple);
+  }
+  .fd-switch[aria-checked="true"]::after {
+    transform: translateX(22px);
+  }
+
+  /* ---------- Flash on release (green) ---------- */
+  .fd-flash-posted {
+    animation: fd-flash-posted 800ms ease-out 1;
+  }
+
+  /* Chips on this page carry whole sentences (SIMULATED notices, audit notes).
+     Let them wrap instead of forcing horizontal overflow on a 360px screen. */
+  .ny-chip {
+    white-space: normal;
+    text-align: left;
+  }
+
+  /* ---------- Reduced motion (Elder Mode lands here via globals.css) ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .fd-hero__img,
+    .fd-timeline__line,
+    .fd-timeline__area,
+    .fd-meter__bar {
+      animation: none;
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .fd-pillar:hover,
+    .fd-grant:hover,
+    .fd-kpi:hover,
+    .fd-doc:hover {
+      transform: none;
+    }
+  }
+}
+
+/* Keyframes at top level — names are page-prefixed, so nothing leaks. */
+@keyframes fd-hero-drift {
+  from {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.4%, -1%, 0);
+  }
+}
+
+@keyframes fd-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fd-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fd-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(var(--p, 0));
+  }
+}
+
+@keyframes fd-sheen {
+  to {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes fd-flash-posted {
+  0% {
+    background-color: rgba(46, 125, 50, 0.3);
+    box-shadow: 0 0 0 6px rgba(46, 125, 50, 0.25);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}

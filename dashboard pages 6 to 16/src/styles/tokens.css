@@ -1,0 +1,59 @@
+/* Nalyanya design tokens — Tailwind v4 CSS-first (@theme)
+   Warm heritage palette: evergreen + mzee gold on cream. Locked by nalyanyaMO.md §2.1 */
+
+@theme {
+  /* Surfaces */
+  --color-surface-0: #faf6ee;
+  --color-surface-1: #ffffff;
+  --color-surface-2: #f2ecde;
+  --color-surface-3: #e8e0cc;
+
+  /* Brand */
+  --color-brand-primary: #1f4d3a;
+  --color-brand-primary-dark: #163a2b;
+  --color-brand-accent: #d4a437;
+  --color-brand-accent-soft: #e9c877;
+  --color-brand-secondary: #b5532a;
+  --color-success: #2e7d32;
+  --color-danger: #c62828;
+  --color-warning: #e0a82e;
+  --color-info: #1976d2;
+  --color-purple: #6a4c93;
+
+  /* Text */
+  --color-text-primary: #1a2618;
+  --color-text-secondary: #5a6b57;
+  --color-text-tertiary: #8a9686;
+  --color-on-brand: #faf6ee;
+  --color-on-accent: #1a2618;
+
+  /* Hairlines */
+  --color-border-subtle: rgba(60, 45, 20, 0.1);
+  --color-border-strong: rgba(60, 45, 20, 0.22);
+
+  /* Branch + generation accents (lineage parity) */
+  --color-branch-1: #1f4d3a;
+  --color-branch-2: #b5532a;
+  --color-branch-3: #6a4c93;
+  --color-branch-4: #1e6091;
+  --color-gen-1: #d4a437;
+
+  /* Type */
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Motion */
+  --ease-mechanical: cubic-bezier(0.7, 0, 0.3, 1);
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 140ms;
+  --duration-base: 240ms;
+  --duration-slow: 480ms;
+
+  /* Depth */
+  --shadow-lift: 0 14px 34px -18px rgba(26, 38, 24, 0.45);
+  --shadow-raise: 0 4px 14px -6px rgba(26, 38, 24, 0.22);
+  --shadow-modal: 0 40px 90px -30px rgba(26, 38, 24, 0.5);
+
+  /* Elder mode touch floor */
+  --min-touch: 44px;
+}

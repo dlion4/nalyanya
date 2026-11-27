@@ -1,0 +1,425 @@
+/* Page-scoped styles — /dashboard/professions  (.page-dash-professions)
+   Layout, 3D, reveal and motion only. Colour and type come from tokens.css.
+   Shared dashboard primitives (cc-table, cc-rail, cc-sec-head, gd-*) are scoped here too,
+   through the selector lists in dash-contributions.css and dash-generic.css. */
+
+.page-dash-professions {
+  /* Chips here carry whole sentences (SIMULATED notices, service lists). Let them wrap. */
+  .ny-chip {
+    white-space: normal;
+    text-align: left;
+  }
+
+  /* ---------- Hero ---------- */
+  .pf-hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 1rem;
+    background: var(--color-brand-primary);
+  }
+  .pf-hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    transform: scale(1.05);
+    filter: saturate(0.9) contrast(1.04);
+    animation: pf-hero-drift 28s var(--ease-settle) infinite alternate;
+  }
+  .pf-hero__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(98deg, rgba(22, 58, 43, 0.96) 0%, rgba(22, 58, 43, 0.74) 46%, rgba(22, 58, 43, 0.2) 100%),
+      radial-gradient(80% 70% at 90% 0%, rgba(212, 164, 55, 0.3), transparent 60%);
+  }
+  .pf-hero__body {
+    position: relative;
+    z-index: 2;
+  }
+  .pf-glass {
+    color: var(--color-on-brand);
+    background: rgba(10, 14, 11, 0.42);
+    border: 1px solid rgba(250, 246, 238, 0.26);
+    border-radius: 0.9rem;
+    backdrop-filter: blur(10px);
+  }
+
+  /* ---------- KPI tiles ---------- */
+  .pf-kpi {
+    position: relative;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.85rem;
+    padding: 0.9rem 1rem 1rem;
+    box-shadow: var(--shadow-raise);
+    transform-style: preserve-3d;
+    transition: transform 260ms var(--ease-settle), box-shadow 260ms ease;
+  }
+  .pf-kpi:hover {
+    transform: translate3d(0, -4px, 12px);
+    box-shadow: var(--shadow-lift);
+  }
+  .pf-kpi::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    right: 1rem;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--kpi-accent, var(--color-brand-primary));
+  }
+  .pf-kpi__value {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- Profile card (pointer-tilt 3D) ---------- */
+  .pf-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.95rem;
+    box-shadow: var(--shadow-raise);
+    transform-style: preserve-3d;
+    transition: transform 320ms var(--ease-settle), box-shadow 320ms ease, border-color 320ms ease;
+    cursor: pointer;
+  }
+  .pf-card:hover {
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-border-strong);
+  }
+  .pf-card__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 8;
+    overflow: hidden;
+    background: var(--color-surface-3);
+  }
+  .pf-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.92);
+    transition: transform 700ms var(--ease-settle), filter 400ms ease;
+  }
+  .pf-card:hover .pf-card__img {
+    transform: scale(1.07);
+    filter: saturate(1.04);
+  }
+  .pf-card__sheen {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 35%, rgba(250, 246, 238, 0.5) 50%, transparent 65%);
+    transform: translateX(-120%);
+    pointer-events: none;
+  }
+  .pf-card:hover .pf-card__sheen {
+    animation: pf-sheen 720ms var(--ease-mechanical) 1;
+  }
+  .pf-card.is-off {
+    opacity: 0.72;
+  }
+
+  /* ---------- Avatars, stars, badges ---------- */
+  .pf-avatar {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background: var(--color-brand-primary);
+    color: var(--color-on-brand);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border: 2px solid var(--color-surface-1);
+    box-shadow: var(--shadow-raise);
+  }
+  .pf-avatar--lg {
+    width: 64px;
+    height: 64px;
+    font-size: 1.1rem;
+  }
+  .pf-star {
+    width: 14px;
+    height: 14px;
+    color: var(--color-surface-3);
+  }
+  .pf-star.is-on {
+    color: var(--color-brand-accent);
+    fill: var(--color-brand-accent);
+  }
+  .pf-verified {
+    position: relative;
+    overflow: hidden;
+  }
+  .pf-verified::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%);
+    transform: translateX(-100%);
+    animation: pf-shimmer 4.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* ---------- Switch ---------- */
+  .pf-switch {
+    position: relative;
+    flex: 0 0 auto;
+    width: 52px;
+    height: 30px;
+    border-radius: 999px;
+    cursor: pointer;
+    background: var(--color-surface-3);
+    border: 1px solid var(--color-border-strong);
+    transition: background-color 220ms ease, border-color 220ms ease;
+  }
+  .pf-switch::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--color-surface-1);
+    box-shadow: var(--shadow-raise);
+    transition: transform 280ms var(--ease-settle);
+  }
+  .pf-switch[aria-checked="true"] {
+    background: var(--color-brand-primary);
+    border-color: var(--color-brand-primary);
+  }
+  .pf-switch[aria-checked="true"]::after {
+    transform: translateX(22px);
+  }
+
+  /* ---------- Category tile (3D) ---------- */
+  .pf-cat {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 100%;
+    overflow: hidden;
+    padding: 0;
+    text-align: left;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.95rem;
+    box-shadow: var(--shadow-raise);
+    transform-style: preserve-3d;
+    transition: transform 300ms var(--ease-settle), box-shadow 300ms ease, border-color 300ms ease;
+  }
+  .pf-cat:hover {
+    transform: perspective(900px) rotateX(3deg) rotateY(-2.5deg) translate3d(0, -4px, 12px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-border-strong);
+  }
+  .pf-cat__img {
+    width: 100%;
+    height: 96px;
+    object-fit: cover;
+  }
+  .pf-cat.is-off .pf-cat__img {
+    filter: grayscale(0.9);
+    opacity: 0.6;
+  }
+
+  /* ---------- Meter (endorsements per listing) ---------- */
+  .pf-meter {
+    position: relative;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--color-surface-3);
+  }
+  .pf-meter__bar {
+    position: absolute;
+    inset: 0;
+    background: var(--color-brand-primary);
+    transform-origin: left center;
+    transform: scaleX(var(--p, 0));
+    animation: pf-grow 900ms var(--ease-settle) both;
+  }
+
+  /* ---------- Reveal-gated contact (blur until a member confirms) ---------- */
+  .pf-reveal {
+    filter: blur(6px);
+    user-select: none;
+    transition: filter 500ms var(--ease-settle);
+  }
+  .pf-reveal.is-open {
+    filter: none;
+    user-select: text;
+  }
+
+  /* ---------- Review quote ---------- */
+  .pf-review {
+    position: relative;
+    border-left: 3px solid var(--color-brand-accent);
+    background: var(--color-surface-1);
+    border-radius: 0.75rem;
+    padding: 0.8rem 0.95rem;
+    border-top: 1px solid var(--color-border-subtle);
+    border-right: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  /* ---------- Ticket with perforated edge ---------- */
+  .pf-ticket {
+    position: relative;
+    border-radius: 1rem;
+    background: var(--color-surface-1);
+    border: 1px dashed var(--color-border-strong);
+    padding: 1.1rem 1.15rem;
+    box-shadow: var(--shadow-raise);
+  }
+  .pf-ticket::before,
+  .pf-ticket::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 22px;
+    height: 22px;
+    margin-top: -11px;
+    border-radius: 999px;
+    background: var(--color-surface-0);
+    border: 1px solid var(--color-border-subtle);
+  }
+  .pf-ticket::before {
+    left: -11px;
+  }
+  .pf-ticket::after {
+    right: -11px;
+  }
+
+  /* ---------- Portfolio thumbnail ---------- */
+  .pf-thumb {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 0.7rem;
+    border: 1px solid var(--color-border-subtle);
+    transition: transform 240ms var(--ease-settle), box-shadow 240ms ease;
+  }
+  .pf-thumb:hover {
+    transform: translateY(-3px) rotate(-0.4deg);
+    box-shadow: var(--shadow-lift);
+  }
+  .pf-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ---------- Pick tiles (wizards) ---------- */
+  .pf-pick {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.8rem;
+    border: 2px solid var(--color-border-subtle);
+    background: var(--color-surface-1);
+    transition: transform 200ms var(--ease-settle), border-color 200ms ease, box-shadow 200ms ease;
+  }
+  .pf-pick:hover {
+    transform: translateY(-2px);
+  }
+  .pf-pick.is-on {
+    border-color: var(--color-brand-primary);
+    box-shadow: var(--shadow-raise);
+  }
+  .pf-pick img {
+    width: 100%;
+    height: 72px;
+    object-fit: cover;
+  }
+
+  /* ---------- Flash on a saved change ---------- */
+  .pf-flash-posted {
+    animation: pf-flash-posted 800ms ease-out 1;
+  }
+
+  /* ---------- Reduced motion (Elder Mode lands here via globals.css) ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .pf-hero__img,
+    .pf-verified::after,
+    .pf-meter__bar {
+      animation: none;
+    }
+    .pf-kpi:hover,
+    .pf-card:hover,
+    .pf-cat:hover,
+    .pf-thumb:hover,
+    .pf-pick:hover {
+      transform: none;
+    }
+    .pf-reveal {
+      filter: none;
+    }
+  }
+}
+
+/* Keyframes at top level — names are page-prefixed, so nothing leaks. */
+@keyframes pf-hero-drift {
+  from {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.4%, -1%, 0);
+  }
+}
+
+@keyframes pf-sheen {
+  to {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes pf-shimmer {
+  0%,
+  60% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes pf-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(var(--p, 0));
+  }
+}
+
+@keyframes pf-flash-posted {
+  0% {
+    background-color: rgba(46, 125, 50, 0.3);
+    box-shadow: 0 0 0 6px rgba(46, 125, 50, 0.25);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}

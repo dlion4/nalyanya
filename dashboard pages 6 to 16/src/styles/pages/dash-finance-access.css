@@ -1,0 +1,470 @@
+/* Page-scoped styles — /dashboard/finance-access  (.page-dash-finance-access)
+   Layout, device mockup and 3D only; colour/type come from tokens.css.
+   Shared dashboard primitives (cc-tabs, cc-steps, cc-table, cc-rail, gd-*) are
+   scoped here too via the selector lists in dash-contributions.css / dash-generic.css. */
+
+.page-dash-finance-access {
+  /* ---------- Hero band ---------- */
+  .fa-hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 1rem;
+    background: var(--color-brand-primary);
+  }
+  .fa-hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    transform: scale(1.05);
+    filter: saturate(0.9) contrast(1.05);
+    animation: fa-hero-drift 28s var(--ease-settle) infinite alternate;
+  }
+  .fa-hero__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(98deg, rgba(22, 58, 43, 0.96) 0%, rgba(22, 58, 43, 0.78) 44%, rgba(22, 58, 43, 0.18) 100%),
+      radial-gradient(80% 80% at 88% 0%, rgba(212, 164, 55, 0.32), transparent 62%);
+  }
+  .fa-hero__body {
+    position: relative;
+    z-index: 2;
+  }
+  .fa-glass {
+    color: var(--color-on-brand);
+    background: rgba(10, 14, 11, 0.42);
+    border: 1px solid rgba(250, 246, 238, 0.26);
+    border-radius: 0.9rem;
+    backdrop-filter: blur(10px);
+  }
+
+  /* ---------- KPI tiles ---------- */
+  .fa-kpi {
+    position: relative;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.85rem;
+    padding: 0.9rem 1rem 1rem;
+    box-shadow: var(--shadow-raise);
+    transform-style: preserve-3d;
+    transition: transform 260ms var(--ease-settle), box-shadow 260ms ease;
+  }
+  .fa-kpi:hover {
+    transform: translate3d(0, -4px, 12px);
+    box-shadow: var(--shadow-lift);
+  }
+  .fa-kpi::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    right: 1rem;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--kpi-accent, var(--color-brand-primary));
+  }
+  .fa-kpi__value {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.35rem, 2.1vw, 1.85rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- Status pipeline ---------- */
+  .fa-pipeline {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+    scrollbar-width: none;
+  }
+  .fa-pipeline::-webkit-scrollbar {
+    display: none;
+  }
+  .fa-node {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex: 0 0 auto;
+  }
+  .fa-node__dot {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--color-surface-3);
+    color: var(--color-text-tertiary);
+    font-size: 0.62rem;
+    font-weight: 700;
+    transition: background-color 300ms ease, color 300ms ease;
+  }
+  .fa-node.is-done .fa-node__dot {
+    background: var(--color-brand-primary);
+    color: var(--color-on-brand);
+  }
+  .fa-node.is-current .fa-node__dot {
+    background: var(--color-brand-accent);
+    color: var(--color-on-accent);
+  }
+  .fa-node__label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+  .fa-node.is-current .fa-node__label {
+    color: var(--color-text-primary);
+  }
+  .fa-node__link {
+    width: 26px;
+    height: 2px;
+    background: var(--color-surface-3);
+  }
+  .fa-node.is-done + .fa-node .fa-node__link {
+    background: var(--color-brand-primary);
+  }
+
+  /* ---------- Elder phone mockup ---------- */
+  .fa-phone {
+    width: 292px;
+    max-width: 100%;
+    padding: 10px;
+    border-radius: 2.1rem;
+    background: #10130f;
+    border: 1px solid rgba(250, 246, 238, 0.16);
+    box-shadow: var(--shadow-lift);
+    transform-style: preserve-3d;
+    transition: transform 600ms var(--ease-settle);
+  }
+  .fa-phone:hover {
+    transform: perspective(1200px) rotateY(-4deg) rotateX(2deg);
+  }
+  .fa-phone__notch {
+    width: 104px;
+    height: 20px;
+    margin: 2px auto 8px;
+    border-radius: 999px;
+    background: #050705;
+  }
+  .fa-phone__screen {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 468px;
+    border-radius: 1.45rem;
+    background: var(--color-surface-0);
+  }
+  .fa-phone__status {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.55rem 1rem 0.25rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-secondary);
+  }
+  .fa-screen {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 0.65rem 1.1rem 1.15rem;
+    animation: fa-iris-in 520ms var(--ease-mechanical) both;
+  }
+
+  .fa-pin-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 1.15rem 0 1.35rem;
+  }
+  .fa-pin-dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 999px;
+    border: 1.5px solid var(--color-brand-primary);
+    transition: background-color 180ms ease, transform 180ms var(--ease-settle);
+  }
+  .fa-pin-dot.is-on {
+    background: var(--color-brand-primary);
+    transform: scale(1.12);
+  }
+  .fa-keypad {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-top: auto;
+  }
+  .fa-key {
+    min-height: 52px;
+    border-radius: 0.8rem;
+    border: 1px solid var(--color-border-subtle);
+    background: var(--color-surface-1);
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: transform 140ms var(--ease-settle), background-color 140ms ease;
+  }
+  .fa-key:hover {
+    background: var(--color-surface-2);
+  }
+  .fa-key:active {
+    transform: scale(0.95);
+  }
+  .fa-key.is-quiet {
+    background: transparent;
+    border-color: transparent;
+    color: var(--color-text-secondary);
+  }
+
+  .fa-otp {
+    display: flex;
+    justify-content: center;
+    gap: 0.42rem;
+    margin: 1.15rem 0;
+  }
+  .fa-otp input {
+    width: 36px;
+    height: 46px;
+    text-align: center;
+    border-radius: 0.55rem;
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-surface-1);
+    font-family: var(--font-sans);
+    font-size: 1.15rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-primary);
+  }
+  .fa-otp input:focus {
+    outline: 2px solid var(--color-brand-accent);
+    outline-offset: 1px;
+    border-color: var(--color-brand-primary);
+  }
+
+  .fa-shake {
+    animation: fa-shake 380ms var(--ease-mechanical) 1;
+  }
+  .fa-done-ring {
+    display: grid;
+    place-items: center;
+    width: 78px;
+    height: 78px;
+    margin: 0 auto;
+    border-radius: 999px;
+    background: rgba(46, 125, 50, 0.14);
+    color: var(--color-success);
+    animation: fa-pop 520ms var(--ease-settle) both;
+  }
+
+  /* ---------- QR + link reveal (camera pinhole) ---------- */
+  .fa-qr-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid var(--color-border-subtle);
+    background: var(--color-surface-1);
+    box-shadow: var(--shadow-raise);
+  }
+  .fa-qr {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0.6rem;
+    background: var(--color-surface-1);
+  }
+  .fa-reveal {
+    clip-path: circle(0% at 50% 50%);
+    transition: clip-path 620ms var(--ease-mechanical);
+  }
+  .fa-reveal.is-open {
+    clip-path: circle(92% at 50% 50%);
+  }
+  .fa-flash {
+    position: absolute;
+    inset: 0;
+    background: #fff8e8;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .fa-flash.is-firing {
+    animation: fa-exposure 560ms var(--ease-mechanical) 1;
+  }
+  .fa-token {
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.14em;
+  }
+
+  /* ---------- Link health cards ---------- */
+  .fa-link-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.95rem;
+    background: var(--color-surface-1);
+    padding: 0.95rem 1rem 1rem;
+    box-shadow: var(--shadow-raise);
+    transform-style: preserve-3d;
+    transition: transform 300ms var(--ease-settle), box-shadow 300ms ease, border-color 300ms ease;
+  }
+  .fa-link-card:hover {
+    transform: perspective(1000px) rotateX(2.5deg) rotateY(-2deg) translate3d(0, -4px, 14px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-border-strong);
+  }
+  .fa-link-card.is-urgent {
+    border-left: 3px solid var(--color-warning);
+  }
+  .fa-link-card.is-settled {
+    border-left: 3px solid var(--color-success);
+  }
+  .fa-link-card.is-dead {
+    border-left: 3px solid var(--color-text-tertiary);
+  }
+
+  /* ---------- Rules ---------- */
+  .fa-rule {
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.85rem;
+    padding: 0.9rem 1rem;
+  }
+  .fa-switch {
+    position: relative;
+    flex: 0 0 auto;
+    width: 52px;
+    height: 30px;
+    border-radius: 999px;
+    cursor: pointer;
+    background: var(--color-surface-3);
+    border: 1px solid var(--color-border-strong);
+    transition: background-color 220ms ease, border-color 220ms ease;
+  }
+  .fa-switch::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--color-surface-1);
+    box-shadow: var(--shadow-raise);
+    transition: transform 280ms var(--ease-settle);
+  }
+  .fa-switch[aria-checked="true"] {
+    background: var(--color-brand-primary);
+    border-color: var(--color-brand-primary);
+  }
+  .fa-switch[aria-checked="true"]::after {
+    transform: translateX(22px);
+  }
+
+  /* ---------- Reduced motion (Elder Mode lands here via globals.css) ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .fa-hero__img,
+    .fa-screen,
+    .fa-shake,
+    .fa-done-ring {
+      animation: none;
+    }
+    .fa-phone:hover,
+    .fa-kpi:hover,
+    .fa-link-card:hover {
+      transform: none;
+    }
+    .fa-reveal {
+      clip-path: none;
+    }
+  }
+}
+
+  /* Chips carry whole SIMULATED sentences here — wrap instead of overflowing 360px. */
+  .ny-chip {
+    white-space: normal;
+    text-align: left;
+  }
+
+/* Keyframes at top level — names are page-prefixed, so nothing leaks. */
+@keyframes fa-hero-drift {
+  from {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.4%, -1%, 0);
+  }
+}
+
+@keyframes fa-iris-in {
+  from {
+    clip-path: circle(0% at 50% 46%);
+    opacity: 0.25;
+  }
+  to {
+    clip-path: circle(92% at 50% 46%);
+    opacity: 1;
+  }
+}
+
+@keyframes fa-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  22% {
+    transform: translateX(-7px);
+  }
+  44% {
+    transform: translateX(6px);
+  }
+  66% {
+    transform: translateX(-4px);
+  }
+  82% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes fa-pop {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fa-exposure {
+  0% {
+    opacity: 0;
+  }
+  58% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+  }
+}

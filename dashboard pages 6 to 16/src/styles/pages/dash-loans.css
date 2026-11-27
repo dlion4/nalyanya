@@ -1,0 +1,393 @@
+/* Page-scoped styles — /dashboard/loans  (.page-dash-loans)
+   Layout, 3D and motion only. Colour and type come from tokens.css.
+   Shared dashboard primitives (cc-tabs, cc-steps, cc-table, cc-rail, gd-*) are scoped
+   to this root via the selector lists in dash-contributions.css / dash-generic.css. */
+
+.page-dash-loans {
+  /* ---------- Hero ---------- */
+  .ln-hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 1rem;
+    background: var(--color-brand-primary);
+  }
+  .ln-hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+    transform: scale(1.05);
+    filter: saturate(0.9) contrast(1.05);
+    animation: ln-hero-drift 28s var(--ease-settle) infinite alternate;
+  }
+  .ln-hero__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(98deg, rgba(22, 58, 43, 0.96) 0%, rgba(22, 58, 43, 0.74) 46%, rgba(22, 58, 43, 0.2) 100%),
+      radial-gradient(80% 70% at 90% 0%, rgba(212, 164, 55, 0.3), transparent 60%);
+  }
+  .ln-hero__body {
+    position: relative;
+    z-index: 2;
+  }
+  .ln-glass {
+    color: var(--color-on-brand);
+    background: rgba(10, 14, 11, 0.42);
+    border: 1px solid rgba(250, 246, 238, 0.26);
+    border-radius: 0.9rem;
+    backdrop-filter: blur(10px);
+  }
+
+  /* ---------- KPI tiles ---------- */
+  .ln-kpi {
+    position: relative;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.85rem;
+    padding: 0.9rem 1rem 1rem;
+    box-shadow: var(--shadow-raise);
+    transform-style: preserve-3d;
+    transition: transform 260ms var(--ease-settle), box-shadow 260ms ease;
+  }
+  .ln-kpi:hover {
+    transform: translate3d(0, -4px, 12px);
+    box-shadow: var(--shadow-lift);
+  }
+  .ln-kpi::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    right: 1rem;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--kpi-accent, var(--color-brand-primary));
+  }
+  .ln-kpi__value {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .ln-kpi.is-alert {
+    border-color: rgba(198, 40, 40, 0.35);
+    background: linear-gradient(180deg, rgba(198, 40, 40, 0.06), var(--color-surface-1) 60%);
+  }
+
+  /* ---------- Product catalogue (3D tilt + shutter sweep) ---------- */
+  .ln-prod {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.95rem;
+    transform-style: preserve-3d;
+    transition: transform 320ms var(--ease-settle), box-shadow 320ms ease, border-color 320ms ease;
+  }
+  .ln-prod:hover {
+    transform: perspective(1100px) rotateX(2.5deg) rotateY(-2deg) translate3d(0, -5px, 16px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-border-strong);
+  }
+  .ln-prod__media {
+    position: relative;
+    aspect-ratio: 16 / 8;
+    overflow: hidden;
+    background: var(--color-surface-3);
+  }
+  .ln-prod__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.9);
+    transition: transform 700ms var(--ease-settle), filter 400ms ease;
+  }
+  .ln-prod:hover .ln-prod__img {
+    transform: scale(1.07);
+    filter: saturate(1.04);
+  }
+  .ln-prod__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10, 14, 11, 0.7) 0%, rgba(10, 14, 11, 0.04) 55%, rgba(10, 14, 11, 0.3) 100%);
+    pointer-events: none;
+  }
+  .ln-prod__sheen {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 35%, rgba(250, 246, 238, 0.5) 50%, transparent 65%);
+    transform: translateX(-120%);
+    pointer-events: none;
+  }
+  .ln-prod:hover .ln-prod__sheen {
+    animation: ln-sheen 720ms var(--ease-mechanical) 1;
+  }
+  .ln-prod__spec {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+  .ln-prod__spec > div {
+    border-radius: 0.6rem;
+    background: var(--color-surface-2);
+    padding: 0.45rem 0.6rem;
+  }
+
+  /* ---------- Passbook ticket (pointer-tilt 3D) ---------- */
+  .ln-ticket {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 1rem;
+    padding: 1rem 1.05rem 0.95rem;
+    text-align: left;
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgba(212, 164, 55, 0.12), transparent 55%),
+      var(--color-surface-1);
+    border: 1px solid rgba(212, 164, 55, 0.5);
+    box-shadow: var(--shadow-raise), inset 0 0 0 5px var(--color-surface-1), inset 0 0 0 6px rgba(212, 164, 55, 0.3);
+    transform-style: preserve-3d;
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 420ms var(--ease-settle), box-shadow 320ms ease;
+    cursor: pointer;
+  }
+  .ln-ticket:hover {
+    box-shadow: var(--shadow-lift), inset 0 0 0 5px var(--color-surface-1), inset 0 0 0 6px rgba(212, 164, 55, 0.5);
+  }
+  .ln-ticket.is-alert {
+    border-color: rgba(198, 40, 40, 0.5);
+  }
+  .ln-ticket__foil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(110deg, transparent 35%, rgba(212, 164, 55, 0.24) 50%, transparent 65%);
+    transform: translateX(-100%);
+    animation: ln-foil 6s ease-in-out infinite;
+  }
+
+  /* ---------- Calculator & charts ---------- */
+  .ln-calc {
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.95rem;
+    box-shadow: var(--shadow-raise);
+  }
+  .ln-chart__bar-p {
+    fill: var(--color-brand-primary);
+    transition: opacity 200ms ease;
+  }
+  .ln-chart__bar-i {
+    fill: var(--color-brand-accent);
+    transition: opacity 200ms ease;
+  }
+  .ln-chart__col {
+    fill: transparent;
+    cursor: pointer;
+  }
+  .ln-chart__col:hover + .ln-chart__hl,
+  .ln-chart__col:focus {
+    fill: rgba(31, 77, 58, 0.06);
+  }
+  .ln-chart__balance {
+    fill: none;
+    stroke: var(--color-text-primary);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: ln-draw 1400ms var(--ease-settle) 120ms forwards;
+  }
+  .ln-chart__axis {
+    stroke: var(--color-border-strong);
+    stroke-width: 1;
+  }
+  .ln-chart__cursor {
+    stroke: var(--color-brand-secondary);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 3;
+  }
+
+  /* ---------- Status pipeline + check list ---------- */
+  .ln-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    border-radius: 0.7rem;
+    border: 1px solid var(--color-border-subtle);
+    background: var(--color-surface-1);
+    padding: 0.6rem 0.8rem;
+  }
+  .ln-check__mark {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 800;
+  }
+  .ln-check.is-pass .ln-check__mark {
+    background: rgba(46, 125, 50, 0.16);
+    color: var(--color-success);
+  }
+  .ln-check.is-fail .ln-check__mark {
+    background: rgba(198, 40, 40, 0.14);
+    color: var(--color-danger);
+  }
+
+  /* ---------- Switch ---------- */
+  .ln-switch {
+    position: relative;
+    flex: 0 0 auto;
+    width: 52px;
+    height: 30px;
+    border-radius: 999px;
+    cursor: pointer;
+    background: var(--color-surface-3);
+    border: 1px solid var(--color-border-strong);
+    transition: background-color 220ms ease, border-color 220ms ease;
+  }
+  .ln-switch::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--color-surface-1);
+    box-shadow: var(--shadow-raise);
+    transition: transform 280ms var(--ease-settle);
+  }
+  .ln-switch[aria-checked="true"] {
+    background: var(--color-brand-primary);
+    border-color: var(--color-brand-primary);
+  }
+  .ln-switch[aria-checked="true"]::after {
+    transform: translateX(22px);
+  }
+
+  /* ---------- Flash on money posted (green) / overdue (red) ---------- */
+  .ln-flash-posted {
+    animation: ln-flash-posted 800ms ease-out 1;
+  }
+  .ln-flash-overdue {
+    animation: ln-flash-overdue 800ms ease-out 1;
+  }
+
+  /* ---------- Guarantor pledge bar ---------- */
+  .ln-pledge {
+    position: relative;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--color-surface-3);
+  }
+  .ln-pledge__bar {
+    position: absolute;
+    inset: 0;
+    background: var(--color-brand-accent);
+    transform-origin: left center;
+    transform: scaleX(var(--p, 0));
+    animation: ln-grow 900ms var(--ease-settle) both;
+  }
+
+  /* ---------- Reduced motion (Elder Mode lands here via globals.css) ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .ln-hero__img,
+    .ln-ticket__foil,
+    .ln-chart__balance {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+    .ln-prod:hover,
+    .ln-kpi:hover,
+    .ln-ticket {
+      transform: none;
+    }
+  }
+}
+
+  /* Chips carry whole SIMULATED sentences here — wrap instead of overflowing 360px. */
+  .ny-chip {
+    white-space: normal;
+    text-align: left;
+  }
+
+/* Keyframes at top level — names are page-prefixed, so nothing leaks. */
+@keyframes ln-hero-drift {
+  from {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.4%, -1%, 0);
+  }
+}
+
+@keyframes ln-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes ln-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(var(--p, 0));
+  }
+}
+
+@keyframes ln-sheen {
+  to {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes ln-foil {
+  0%,
+  55% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes ln-flash-posted {
+  0% {
+    background-color: rgba(46, 125, 50, 0.3);
+    box-shadow: 0 0 0 6px rgba(46, 125, 50, 0.25);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+@keyframes ln-flash-overdue {
+  0% {
+    background-color: rgba(198, 40, 40, 0.28);
+    box-shadow: 0 0 0 6px rgba(198, 40, 40, 0.22);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}

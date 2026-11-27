@@ -1,0 +1,499 @@
+/* Page-scoped styles — /dashboard/finances  (.page-dash-finances)
+   Layout, 3D and motion only. Colour and type come from tokens.css.
+   Shared dashboard primitives (cc-tabs, cc-steps, cc-table, cc-rail, gd-*) are
+   scoped to this root too via the selector lists in dash-contributions.css / dash-generic.css. */
+
+.page-dash-finances {
+  /* ---------- Hero: photograph + glass HUD ---------- */
+  .fin-hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 1rem;
+    background: var(--color-brand-primary);
+  }
+  .fin-hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 38%;
+    transform: scale(1.05);
+    filter: saturate(0.92) contrast(1.04);
+    animation: fin-hero-drift 26s var(--ease-settle) infinite alternate;
+  }
+  .fin-hero__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(100deg, rgba(22, 58, 43, 0.95) 0%, rgba(22, 58, 43, 0.72) 46%, rgba(22, 58, 43, 0.22) 100%),
+      radial-gradient(90% 70% at 92% 0%, rgba(212, 164, 55, 0.3), transparent 60%);
+  }
+  .fin-hero__body {
+    position: relative;
+    z-index: 2;
+  }
+  .fin-glass {
+    color: #faf6ee;
+    background: rgba(10, 14, 11, 0.42);
+    border: 1px solid rgba(250, 246, 238, 0.26);
+    border-radius: 0.9rem;
+    backdrop-filter: blur(10px);
+    transform-style: preserve-3d;
+    transition: transform 360ms var(--ease-settle), box-shadow 360ms ease;
+  }
+  .fin-glass:hover {
+    transform: perspective(900px) rotateX(3deg) rotateY(-3deg) translate3d(0, -3px, 14px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  /* ---------- KPI tiles ---------- */
+  .fin-kpi {
+    position: relative;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.85rem;
+    padding: 0.9rem 1rem 1rem;
+    box-shadow: var(--shadow-raise);
+    transform-style: preserve-3d;
+    transition: transform 260ms var(--ease-settle), box-shadow 260ms ease;
+  }
+  .fin-kpi:hover {
+    transform: translate3d(0, -4px, 12px);
+    box-shadow: var(--shadow-lift);
+  }
+  .fin-kpi::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    right: 1rem;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--kpi-accent, var(--color-brand-primary));
+  }
+  .fin-kpi__value {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.35rem, 2.1vw, 1.85rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- Chama cards (2.5D tilt) ---------- */
+  .fin-chama {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.95rem;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transition: transform 320ms var(--ease-settle), box-shadow 320ms ease, border-color 320ms ease;
+  }
+  .fin-chama:hover {
+    transform: perspective(1100px) rotateX(2.5deg) rotateY(-2deg) translate3d(0, -5px, 16px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-border-strong);
+  }
+  .fin-chama__media {
+    position: relative;
+    aspect-ratio: 16 / 8;
+    overflow: hidden;
+    background: var(--color-surface-3);
+  }
+  .fin-chama__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.92);
+    transition: transform 700ms var(--ease-settle), filter 400ms ease;
+  }
+  .fin-chama:hover .fin-chama__img {
+    transform: scale(1.06);
+    filter: saturate(1.04);
+  }
+  .fin-shade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(10, 14, 11, 0.72) 0%, rgba(10, 14, 11, 0.04) 55%, rgba(10, 14, 11, 0.34) 100%);
+  }
+
+  /* ---------- Meters ---------- */
+  .fin-meter {
+    position: relative;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--color-surface-3);
+  }
+  .fin-meter__bar {
+    position: absolute;
+    inset: 0;
+    background: var(--color-brand-primary);
+    transform-origin: left center;
+    transform: scaleX(var(--p, 0));
+    animation: fin-grow 1100ms var(--ease-settle) both;
+  }
+  .fin-meter__bar.is-gold {
+    background: var(--color-brand-accent);
+  }
+
+  /* ---------- 3D merry-go-round ring ---------- */
+  .fin-ring-stage {
+    position: relative;
+    height: 340px;
+    perspective: 1100px;
+  }
+  .fin-ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+    transition: transform 1000ms var(--ease-settle);
+  }
+  .fin-hub {
+    position: absolute;
+    left: -64px;
+    top: -64px;
+    width: 128px;
+    height: 128px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    border-radius: 999px;
+    border: 1px dashed var(--color-border-strong);
+    background: radial-gradient(circle at 50% 40%, var(--color-surface-1), var(--color-surface-2));
+  }
+  .fin-seat {
+    position: absolute;
+    left: -54px;
+    top: -40px;
+    width: 108px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    border-radius: 0.8rem;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    box-shadow: var(--shadow-raise);
+    backface-visibility: hidden;
+    transition: opacity 400ms ease, box-shadow 400ms ease, background-color 400ms ease;
+  }
+  .fin-seat.is-done {
+    background: var(--color-surface-2);
+  }
+  .fin-seat.is-current {
+    border-color: var(--color-brand-accent);
+    box-shadow: 0 0 0 3px rgba(212, 164, 55, 0.28), var(--shadow-lift);
+  }
+  .fin-seat__init {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    background: var(--color-brand-primary);
+    color: var(--color-on-brand);
+    font-weight: 700;
+    font-size: 0.78rem;
+  }
+  .fin-seat.is-current .fin-seat__init {
+    background: var(--color-brand-accent);
+    color: var(--color-on-accent);
+  }
+
+  /* ---------- Share certificate (3D tilt follows the pointer) ---------- */
+  .fin-cert {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    padding: 1.1rem 1.1rem 1rem;
+    background: var(--color-surface-1);
+    border: 1px solid rgba(212, 164, 55, 0.55);
+    box-shadow: var(--shadow-lift), inset 0 0 0 6px var(--color-surface-1), inset 0 0 0 7px rgba(212, 164, 55, 0.4);
+    transform-style: preserve-3d;
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 420ms var(--ease-settle);
+  }
+  .fin-cert__foil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(110deg, transparent 35%, rgba(212, 164, 55, 0.3) 50%, transparent 65%);
+    transform: translateX(-100%);
+    animation: fin-foil 5s ease-in-out infinite;
+  }
+  .fin-cert__seal {
+    width: 56px;
+    height: 56px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 35% 30%, #f3d98a, var(--color-brand-accent) 60%, #a57a1f);
+    box-shadow: 0 6px 14px -6px rgba(122, 91, 18, 0.7);
+  }
+
+  /* ---------- Sacco vault (photo, 3D hover) ---------- */
+  .fin-vault {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-raise);
+    transform-style: preserve-3d;
+    transition: transform 600ms var(--ease-settle), box-shadow 600ms ease;
+  }
+  .fin-vault:hover {
+    transform: perspective(1200px) rotateY(-5deg) rotateX(2deg);
+    box-shadow: var(--shadow-lift);
+  }
+  .fin-vault__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1200ms var(--ease-settle);
+  }
+  .fin-vault:hover .fin-vault__img {
+    transform: scale(1.06);
+  }
+
+  /* ---------- Share curve (os-draw on load) ---------- */
+  .fin-curve__grid {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 3 5;
+  }
+  .fin-curve__line {
+    fill: none;
+    stroke: var(--color-brand-primary);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: fin-draw 1400ms var(--ease-settle) 150ms forwards;
+  }
+  .fin-curve__area {
+    opacity: 0;
+    animation: fin-fade 900ms ease 900ms forwards;
+  }
+  .fin-curve__dot {
+    fill: var(--color-brand-accent);
+    stroke: var(--color-surface-1);
+    stroke-width: 2;
+  }
+
+  /* ---------- Flash on posted money (green, 800ms) ---------- */
+  .fin-flash-posted {
+    animation: fin-flash-posted 800ms ease-out 1;
+  }
+
+  /* ---------- Product type cards ---------- */
+  .fin-type {
+    position: relative;
+    text-align: left;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.95rem;
+    padding: 1rem;
+    transform-style: preserve-3d;
+    transition: transform 300ms var(--ease-settle), box-shadow 300ms ease, border-color 300ms ease, background-color 300ms ease;
+  }
+  .fin-type:hover {
+    transform: perspective(900px) rotateX(4deg) rotateY(-4deg) translate3d(0, -4px, 12px);
+    box-shadow: var(--shadow-lift);
+  }
+  .fin-type.is-on {
+    border-color: var(--color-brand-primary);
+    background: rgba(31, 77, 58, 0.06);
+    box-shadow: var(--shadow-raise);
+  }
+
+  /* ---------- Cycle track (horizontal seats) ---------- */
+  .fin-track {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding: 0.25rem 0.1rem 0.6rem;
+  }
+  .fin-track__seat {
+    flex: 0 0 auto;
+    width: 108px;
+    padding: 0.55rem 0.5rem;
+    text-align: center;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-border-subtle);
+    background: var(--color-surface-1);
+  }
+  .fin-track__seat.is-done {
+    background: var(--color-surface-2);
+    opacity: 0.82;
+  }
+  .fin-track__seat.is-current {
+    border-color: var(--color-brand-accent);
+    box-shadow: 0 0 0 3px rgba(212, 164, 55, 0.25);
+  }
+
+  /* ---------- Switch (auto-debit) ---------- */
+  .fin-switch {
+    position: relative;
+    flex: 0 0 auto;
+    width: 52px;
+    height: 30px;
+    border-radius: 999px;
+    cursor: pointer;
+    background: var(--color-surface-3);
+    border: 1px solid var(--color-border-strong);
+    transition: background-color 220ms ease, border-color 220ms ease;
+  }
+  .fin-switch::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--color-surface-1);
+    box-shadow: var(--shadow-raise);
+    transition: transform 280ms var(--ease-settle);
+  }
+  .fin-switch[aria-checked="true"] {
+    background: var(--color-brand-primary);
+    border-color: var(--color-brand-primary);
+  }
+  .fin-switch[aria-checked="true"]::after {
+    transform: translateX(22px);
+  }
+
+  /* ---------- M-Pesa prompt mockup (SIMULATED) ---------- */
+  .fin-phone {
+    width: 268px;
+    max-width: 100%;
+    padding: 0.75rem;
+    border-radius: 1.6rem;
+    border: 6px solid #1a2618;
+    background: #0d120e;
+    box-shadow: var(--shadow-lift);
+  }
+  .fin-phone__hdr {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: #9fe0a8;
+  }
+  .fin-phone__screen {
+    border-radius: 0.6rem;
+    background: #f4fff6;
+    color: #0d120e;
+    padding: 0.75rem;
+  }
+  .fin-phone__pin {
+    display: flex;
+    gap: 0.375rem;
+    margin-top: 0.375rem;
+  }
+  .fin-phone__pin span {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 999px;
+    border: 1px solid rgba(13, 18, 14, 0.3);
+    text-align: center;
+    line-height: 1.5rem;
+    font-size: 0.75rem;
+  }
+  .fin-phone__note {
+    margin-top: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    background: #e9f7ec;
+    color: #4a5b4d;
+    font-size: 0.62rem;
+  }
+
+  /* ---------- Reduced motion (Elder Mode also lands here via globals.css) ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .fin-hero__img,
+    .fin-cert__foil {
+      animation: none;
+    }
+    .fin-chama:hover,
+    .fin-kpi:hover,
+    .fin-vault:hover,
+    .fin-glass:hover,
+    .fin-type:hover {
+      transform: none;
+    }
+    .fin-cert {
+      transform: none;
+    }
+  }
+}
+
+  /* Chips carry whole SIMULATED sentences here — wrap instead of overflowing 360px. */
+  .ny-chip {
+    white-space: normal;
+    text-align: left;
+  }
+
+/* Keyframes at top level — names are page-prefixed, so nothing leaks. */
+@keyframes fin-hero-drift {
+  from {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.5%, -1%, 0);
+  }
+}
+
+@keyframes fin-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fin-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fin-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(var(--p, 0));
+  }
+}
+
+@keyframes fin-foil {
+  0%,
+  55% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fin-flash-posted {
+  0% {
+    background-color: rgba(46, 125, 50, 0.32);
+    box-shadow: 0 0 0 6px rgba(46, 125, 50, 0.28);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}

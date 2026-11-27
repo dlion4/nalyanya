@@ -1,0 +1,351 @@
+/* Nalyanya app-shell + shared component layer (.ny-*)
+   Loaded at root so MemberCard/MoneyBadge/RoleChip/ProgressRing render identically
+   on every page. Page-specific styles live in src/styles/pages/*.css */
+
+@layer components {
+  /* ---------- Typography helpers ---------- */
+  .ny-hud {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-tertiary);
+  }
+  .ny-num {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+  .ny-display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  /* ---------- Buttons ---------- */
+  .ny-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: var(--min-touch);
+    padding: 0.55rem 1.05rem;
+    border-radius: 0.6rem;
+    border: 1px solid transparent;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    transition:
+      transform var(--duration-fast) var(--ease-settle),
+      box-shadow var(--duration-fast) ease,
+      background-color var(--duration-fast) ease,
+      border-color var(--duration-fast) ease,
+      color var(--duration-fast) ease;
+    white-space: nowrap;
+  }
+  .ny-btn:active {
+    transform: translateY(1px) scale(0.99);
+  }
+  .ny-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .ny-btn-primary {
+    background: var(--color-brand-primary);
+    color: var(--color-on-brand);
+    box-shadow: var(--shadow-raise);
+  }
+  .ny-btn-primary:hover:not(:disabled) {
+    background: var(--color-brand-primary-dark);
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-1px);
+  }
+  .ny-btn-accent {
+    background: var(--color-brand-accent);
+    color: var(--color-on-accent);
+    box-shadow: var(--shadow-raise);
+  }
+  .ny-btn-accent:hover:not(:disabled) {
+    background: var(--color-brand-accent-soft);
+    transform: translateY(-1px);
+  }
+  .ny-btn-outline {
+    background: transparent;
+    color: var(--color-brand-primary);
+    border-color: var(--color-border-strong);
+  }
+  .ny-btn-outline:hover:not(:disabled) {
+    background: var(--color-surface-2);
+    border-color: var(--color-brand-primary);
+  }
+  .ny-btn-ghost {
+    background: transparent;
+    color: var(--color-text-secondary);
+    border-color: transparent;
+  }
+  .ny-btn-ghost:hover:not(:disabled) {
+    background: var(--color-surface-2);
+    color: var(--color-text-primary);
+  }
+  .ny-btn-danger {
+    background: var(--color-danger);
+    color: #fff;
+  }
+  .ny-btn-sm {
+    min-height: 34px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8125rem;
+    border-radius: 0.5rem;
+  }
+  [data-ny-mode="elder"] .ny-btn-sm {
+    min-height: 48px;
+  }
+
+  /* ---------- Inputs ---------- */
+  .ny-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.35rem;
+  }
+  .ny-input,
+  .ny-select,
+  .ny-textarea {
+    width: 100%;
+    min-height: var(--min-touch);
+    padding: 0.55rem 0.8rem;
+    border-radius: 0.6rem;
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-surface-1);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-variant-numeric: tabular-nums;
+    transition:
+      border-color var(--duration-fast) ease,
+      box-shadow var(--duration-fast) ease;
+  }
+  .ny-textarea {
+    min-height: 92px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+  .ny-input:focus,
+  .ny-select:focus,
+  .ny-textarea:focus {
+    outline: none;
+    border-color: var(--color-brand-primary);
+    box-shadow: 0 0 0 3px rgba(31, 77, 58, 0.16);
+  }
+  .ny-input::placeholder,
+  .ny-textarea::placeholder {
+    color: var(--color-text-tertiary);
+  }
+
+  /* ---------- Surfaces ---------- */
+  .ny-card {
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.9rem;
+    box-shadow: var(--shadow-raise);
+  }
+  .ny-card-flat {
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.9rem;
+  }
+  .ny-inset {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.75rem;
+  }
+
+  /* ---------- Chips / badges ---------- */
+  .ny-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.22rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .ny-chip-ok {
+    background: rgba(46, 125, 50, 0.12);
+    color: #245f27;
+    border-color: rgba(46, 125, 50, 0.25);
+  }
+  .ny-chip-warn {
+    background: rgba(224, 168, 46, 0.16);
+    color: #8a6410;
+    border-color: rgba(224, 168, 46, 0.35);
+  }
+  .ny-chip-danger {
+    background: rgba(198, 40, 40, 0.1);
+    color: #961f1f;
+    border-color: rgba(198, 40, 40, 0.25);
+  }
+  .ny-chip-info {
+    background: rgba(25, 118, 210, 0.1);
+    color: #14548f;
+    border-color: rgba(25, 118, 210, 0.25);
+  }
+  .ny-chip-neutral {
+    background: var(--color-surface-2);
+    color: var(--color-text-secondary);
+    border-color: var(--color-border-subtle);
+  }
+  .ny-chip-brand {
+    background: rgba(31, 77, 58, 0.1);
+    color: var(--color-brand-primary);
+    border-color: rgba(31, 77, 58, 0.24);
+  }
+  .ny-chip-sim {
+    background: repeating-linear-gradient(
+      -45deg,
+      rgba(212, 164, 55, 0.18),
+      rgba(212, 164, 55, 0.18) 6px,
+      rgba(212, 164, 55, 0.08) 6px,
+      rgba(212, 164, 55, 0.08) 12px
+    );
+    color: #7a5b12;
+    border-color: rgba(212, 164, 55, 0.5);
+  }
+
+  /* ---------- Progress ring ---------- */
+  .ny-ring-track {
+    stroke: var(--color-surface-3);
+  }
+  .ny-ring-fill {
+    stroke: var(--color-brand-primary);
+    stroke-linecap: round;
+    transition: stroke-dashoffset 900ms var(--ease-settle);
+  }
+  .ny-ring-fill.is-gold {
+    stroke: var(--color-brand-accent);
+  }
+
+  /* ---------- Motion hooks (nalyanyaMO.md §2.3) ---------- */
+  .ny-reveal {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 620ms var(--ease-settle),
+      transform 620ms var(--ease-settle);
+    transition-delay: var(--ny-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .ny-reveal.is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  .ny-hover-lift {
+    transition:
+      transform var(--duration-base) var(--ease-settle),
+      box-shadow var(--duration-base) ease;
+  }
+  .ny-hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .ny-pulse {
+    position: relative;
+  }
+  .ny-pulse::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    border: 2px solid currentColor;
+    opacity: 0;
+    animation: ny-pulse 1.4s ease-out infinite;
+    pointer-events: none;
+  }
+  @keyframes ny-pulse {
+    0% {
+      opacity: 0.55;
+      transform: scale(0.96);
+    }
+    70% {
+      opacity: 0;
+      transform: scale(1.12);
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .ny-flash {
+    animation: ny-flash-received 800ms ease-out 1;
+  }
+  @keyframes ny-flash-received {
+    0% {
+      background-color: rgba(212, 164, 55, 0.55);
+      box-shadow: 0 0 0 6px rgba(212, 164, 55, 0.35);
+    }
+    100% {
+      background-color: transparent;
+      box-shadow: none;
+    }
+  }
+
+  .ny-row-in {
+    animation: ny-row-in 520ms var(--ease-settle) both;
+  }
+  @keyframes ny-row-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* ---------- Film / sprocket language (page-agnostic) ---------- */
+  .ny-sprocket {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0 10px,
+      rgba(60, 45, 20, 0.22) 10px 24px,
+      transparent 24px 34px
+    );
+    background-size: 100% 34px;
+  }
+  .ny-sprocket-x {
+    background-image: repeating-linear-gradient(
+      to right,
+      transparent 0 12px,
+      rgba(60, 45, 20, 0.2) 12px 28px,
+      transparent 28px 40px
+    );
+    background-size: 40px 100%;
+  }
+
+  /* ---------- Scrollbars ---------- */
+  .ny-scroll::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  .ny-scroll::-webkit-scrollbar-thumb {
+    background: var(--color-surface-3);
+    border-radius: 999px;
+    border: 3px solid var(--color-surface-0);
+  }
+  .ny-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
