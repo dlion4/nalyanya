@@ -1,4 +1,13 @@
 import { BRANCHES } from "@/data/family/branches";
+import type {
+  Alert,
+  Branch,
+  Contribution,
+  FamilyEvent,
+  Member,
+  Memory,
+} from "@/types/workspace";
+
 import { between, mulberry32 } from "@/lib/rng";
 
 /* T-1 Command Center — page data (mock, deterministic). */
@@ -139,3 +148,360 @@ export const CHAMA = {
   nextPayout: "Wed 13 May",
   recipient: "Peter Otieno Nalyanya",
 };
+
+/* ═══════════════════════════════════════════════════════════════════════
+   WORKSPACE SNAPSHOT
+   The shared, deterministic view of the family that every dashboard page
+   reads from: branches, people, gatherings, memories, money and alerts.
+   Kept beside the T-1 analytics series so the command centre and the
+   module pages speak the same language.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+
+export const family = {
+  name: "Nalyanya Family",
+  root: "Mzee Victor Wafula Nalyanya",
+  members: 248,
+  branches: 12,
+  generations: 5,
+  wallet: 8_420_000,
+  shares: 1_250_000,
+  loans: 3_180_000,
+  contributions: 2_640_000,
+};
+
+export const branches: Branch[] = [
+  { id: "nalyanya-main", name: "Nalyanya Main", members: 46, balance: 1_840_000, growth: 8.4, color: "#4fae86" },
+  { id: "kimilili-joseph", name: "Kimilili · Joseph", members: 28, balance: 720_000, growth: 5.1, color: "#e0764a" },
+  { id: "nairobi-peter", name: "Nairobi · Peter", members: 31, balance: 1_120_000, growth: 11.2, color: "#6fa8dc" },
+  { id: "kakamega-samuel", name: "Kakamega · Samuel", members: 22, balance: 540_000, growth: 3.8, color: "#a284dc" },
+  { id: "kitale-ruth", name: "Kitale · Ruth & the Wakolis", members: 26, balance: 690_000, growth: 6.7, color: "#d4a437" },
+  { id: "kisumu-grace", name: "Kisumu · Grace", members: 19, balance: 410_000, growth: 4.4, color: "#4fc1b0" },
+  { id: "mombasa-daniel", name: "Mombasa · Daniel", members: 17, balance: 380_000, growth: 2.9, color: "#d86b9b" },
+  { id: "nyeri-hellen", name: "Nyeri · Hellen", members: 15, balance: 330_000, growth: 7.5, color: "#9bb85a" },
+  { id: "diaspora-naomi", name: "Diaspora · Naomi", members: 12, balance: 620_000, growth: 13.6, color: "#c9a27a" },
+  { id: "eldoret-caleb", name: "Eldoret · Caleb", members: 18, balance: 505_000, growth: 9.1, color: "#f09a4a" },
+  { id: "nakuru-esther", name: "Nakuru · Esther", members: 8, balance: 245_000, growth: 1.8, color: "#7c8fb3" },
+  { id: "kiambu-tom", name: "Kiambu · Tom", members: 6, balance: 115_000, growth: 0.9, color: "#7fbf7a" },
+];
+
+export const members: Member[] = [
+  {
+    id: "NY-MBR-00001",
+    name: "Mzee Victor Wafula Nalyanya",
+    short: "Mzee Victor",
+    branch: "nalyanya-main",
+    generation: 1,
+    profession: "Retired headteacher (TSC)",
+    bio: "Taught for thirty-eight years, raised five children on four acres in Kimilili, and still insists every Nalyanya has a chair at the family table.",
+    image: "/images/family/mzee-victor.jpg",
+  },
+  {
+    id: "NY-MBR-00002",
+    name: "Esther Nanjala Nalyanya",
+    short: "Esther",
+    branch: "nalyanya-main",
+    generation: 1,
+    profession: "Farmer & market trader",
+    bio: "Ran the Saturday market stall in Kimilili for thirty years. Her recipe book still lives in the kitchen drawer.",
+    image: "/images/family/esther-matriarch.jpg",
+  },
+  {
+    id: "NY-MBR-00003",
+    name: "Joseph Wafula Nalyanya",
+    short: "Joseph",
+    branch: "kimilili-joseph",
+    generation: 2,
+    profession: "Civil engineer · rural roads",
+    bio: "The eldest son builds roads for a living and still counts the rains in the Kimilili valley every season.",
+    image: "/images/family/joseph.jpg",
+  },
+  {
+    id: "NY-MBR-00005",
+    name: "Peter Otieno Nalyanya",
+    short: "Peter",
+    branch: "nairobi-peter",
+    generation: 2,
+    profession: "Pharmacist · community health",
+    bio: "Keeps the Nairobi branch connected and never misses the Sunday devotion call.",
+    image: "/images/family/peter.jpg",
+  },
+  {
+    id: "NY-MBR-00007",
+    name: "Samuel Kipkoech Nalyanya",
+    short: "Samuel",
+    branch: "kakamega-samuel",
+    generation: 2,
+    profession: "Sugarcane farmer",
+    bio: "Mentors the young farmers of Kakamega and chairs the harambee committee.",
+    image: "/images/family/samuel.jpg",
+  },
+  {
+    id: "NY-MBR-00009",
+    name: "Ruth Wakoli Nalyanya",
+    short: "Ruth",
+    branch: "kitale-ruth",
+    generation: 2,
+    profession: "School headteacher",
+    bio: "Runs three schools in Trans-Nzoia and keeps the Wakoli cousins in one spreadsheet.",
+    image: "/images/family/ruth.jpg",
+  },
+  {
+    id: "NY-MBR-00011",
+    name: "Grace Adhiambo Nalyanya",
+    short: "Grace",
+    branch: "kisumu-grace",
+    generation: 2,
+    profession: "Registered nurse",
+    bio: "Leads the Kisumu clinic drive and the family health outreach.",
+    image: "/images/family/grace.jpg",
+  },
+  {
+    id: "NY-MBR-00012",
+    name: "Daniel Wafula Nalyanya",
+    short: "Daniel",
+    branch: "mombasa-daniel",
+    generation: 3,
+    profession: "Port logistics manager",
+    bio: "Ships cargo for a living and organises the coastal reunion.",
+    image: "/images/family/daniel.jpg",
+  },
+  {
+    id: "NY-MBR-00013",
+    name: "Hellen Nasimiyu Nalyanya",
+    short: "Hellen",
+    branch: "nyeri-hellen",
+    generation: 3,
+    profession: "Community health officer",
+    bio: "Runs outreach clinics across Nyeri county and remembers every household.",
+    image: "/images/family/hellen.jpg",
+  },
+  {
+    id: "NY-MBR-00014",
+    name: "Naomi Achieng Nalyanya",
+    short: "Naomi",
+    branch: "diaspora-naomi",
+    generation: 3,
+    profession: "Family finance lead (London)",
+    bio: "Keeps the diaspora connected and the family ledger honest.",
+    image: "/images/family/naomi.jpg",
+  },
+  {
+    id: "NY-MBR-00019",
+    name: "Brian Otieno Nalyanya",
+    short: "Brian",
+    branch: "nairobi-peter",
+    generation: 3,
+    profession: "Product designer",
+    bio: "Family administrator for the Nalyanya workspace.",
+    image: "/images/family/brian.jpg",
+  },
+  {
+    id: "NY-MBR-00022",
+    name: "Ethan Nalyanya",
+    short: "Ethan",
+    branch: "nairobi-peter",
+    generation: 4,
+    profession: "Scholar",
+    bio: "The youngest of the family, and proud of it.",
+    image: "/images/family/ethan.jpg",
+  },
+];
+
+export const memories: Memory[] = [
+  {
+    id: "mem-1",
+    title: "Golden hour on the homestead",
+    image: "/images/golden-hour.webp",
+    alt: "Warm evening light falling over the Kenyan countryside",
+    caption: "The light we waited for after the last burial.",
+    place: "Kimilili, Bungoma",
+    year: "2019",
+    credit: "Family album",
+  },
+  {
+    id: "mem-2",
+    title: "Under the reunion tent",
+    image: "/images/reunion.webp",
+    alt: "A family gathered under a large tent at a reunion",
+    caption: "Everyone talking at once, as always.",
+    place: "Bungoma",
+    year: "2022",
+    credit: "Joseph Otieno",
+  },
+  {
+    id: "mem-3",
+    title: "Grandparents in charge",
+    image: "/images/grandparents.webp",
+    alt: "Grandparents laughing with their grandchildren",
+    caption: "The little ones always end up on their laps.",
+    place: "Kitale",
+    year: "2021",
+    credit: "Ruth Wakoli",
+  },
+  {
+    id: "mem-4",
+    title: "The garden after rain",
+    image: "/images/garden.webp",
+    alt: "A green garden after a fall of rain",
+    caption: "Mzee's last harvest.",
+    place: "Kimilili",
+    year: "2020",
+    credit: "Family album",
+  },
+  {
+    id: "mem-5",
+    title: "A long table, short prayers",
+    image: "/images/gathering.webp",
+    alt: "Family sharing a long table together",
+    caption: "Sunday lunch stretched to three hours.",
+    place: "Nairobi",
+    year: "2023",
+    credit: "Peter Otieno",
+  },
+  {
+    id: "mem-6",
+    title: "Traditions passed on",
+    image: "/images/traditions.webp",
+    alt: "Traditional Kenyan attire and beadwork",
+    caption: "Every generation learns the names.",
+    place: "Kakamega",
+    year: "2023",
+    credit: "Samuel Kipkoech",
+  },
+];
+
+export const events: FamilyEvent[] = [
+  {
+    id: "EVT-2026-014",
+    title: "Sunday devotion & family call",
+    date: "2026-05-10T18:00:00+03:00",
+    place: "Nairobi family compound",
+    host: "Peter Otieno",
+    type: "Devotion",
+    branch: "nairobi-peter",
+    attending: 34,
+    image: "/images/family/sunday-lunch.jpg",
+    description: "Our weekly call, a hymn, and a word for every branch.",
+  },
+  {
+    id: "EVT-2026-016",
+    title: "Caleb & Esther's kitchen committee",
+    date: "2026-05-12T17:30:00+03:00",
+    place: "Eldoret dairy co-op hall",
+    host: "Samuel Kipkoech",
+    type: "Wedding",
+    branch: "eldoret-caleb",
+    attending: 12,
+    image: "/images/family/wedding.jpg",
+    description: "Final fittings, the guest list, and the argument about the cake.",
+  },
+  {
+    id: "EVT-2026-019",
+    title: "Nairobi merry-go-round meeting",
+    date: "2026-05-14T19:00:00+03:00",
+    place: "Kasarani community hall",
+    host: "Brian Otieno",
+    type: "Chama",
+    branch: "nairobi-peter",
+    attending: 9,
+    image: "/images/family/meeting.jpg",
+    description: "Rotation positions, the December pot, and the tea.",
+  },
+  {
+    id: "EVT-2026-021",
+    title: "Kisumu clinic drive planning",
+    date: "2026-05-16T10:00:00+03:00",
+    place: "Kondele community centre",
+    host: "Grace Adhiambo",
+    type: "Foundation",
+    branch: "kisumu-grace",
+    attending: 21,
+    image: "/images/family/clinic.jpg",
+    description: "Free checks, medicines, and a borrowed tent.",
+  },
+  {
+    id: "EVT-2026-024",
+    title: "Kimilili reunion committee",
+    date: "2026-05-24T14:00:00+03:00",
+    place: "Kimilili family compound",
+    host: "Joseph Wafula",
+    type: "Reunion",
+    branch: "kimilili-joseph",
+    attending: 58,
+    image: "/images/family/reunion.jpg",
+    description: "One tent, one long table, and the whole family in one place.",
+  },
+];
+
+export const contributions: Contribution[] = [
+  { id: "NY-CON-2026-0412", member: "Peter Otieno Nalyanya", purpose: "Wedding", amount: 25000, time: "12 min ago", status: "Recorded", branch: "eldoret-caleb" },
+  { id: "NY-CON-2026-0411", member: "Naomi Achieng Nalyanya", purpose: "Medical", amount: 60000, time: "38 min ago", status: "Recorded", branch: "nairobi-peter" },
+  { id: "NY-CON-2026-0409", member: "Mercy Auma Nalyanya", purpose: "Harambee", amount: 5000, time: "1 h ago", status: "Pending", branch: "kakamega-samuel" },
+  { id: "NY-CON-2026-0405", member: "Tom Mutua Okoth", purpose: "Education", amount: 12000, time: "2 h ago", status: "Recorded", branch: "kiambu-tom" },
+  { id: "NY-CON-2026-0402", member: "Daniel Wafula Nalyanya", purpose: "Funeral", amount: 20000, time: "4 h ago", status: "Recorded", branch: "mombasa-daniel" },
+];
+
+export const alerts: Alert[] = [
+  { id: "al-1", title: "3 contributions waiting for verification", text: "Two M-Pesa references and one cash receipt need a second look.", kind: "contribution", time: "12 min ago" },
+  { id: "al-2", title: "Chama “Wazee Round” rotates in 2 days", text: "Your turn is position 4 of 12 in the merry-go-round.", kind: "chama", time: "1 h ago" },
+  { id: "al-3", title: "Loan NY-LON-2026-00088 is 2 days overdue", text: "Instalment of KES 18,400 is due. A reminder is queued (SIMULATED).", kind: "loan", time: "3 h ago", critical: true },
+  { id: "al-4", title: "Ann Nekesa's receive link unused for 7 days", text: "Resend the link, or call to confirm the PIN is still remembered.", kind: "allocation", time: "yesterday" },
+  { id: "al-5", title: "Reunion RSVP list closes on Friday", text: "58 going, 12 maybe, 6 pending.", kind: "event", time: "yesterday" },
+];
+
+export const chamas = [
+  { id: "wazee", name: "Wazee Round", members: 12, pool: 480000, days: 2, cadence: "Fortnightly", position: 4, next: "Wed 13 May", recipient: "Peter Otieno Nalyanya" },
+  { id: "umoja", name: "Umoja Round", members: 10, pool: 320000, days: 7, cadence: "Monthly", position: 2, next: "Mon 18 May", recipient: "Grace Adhiambo Nalyanya" },
+  { id: "taifa", name: "Taifa Savings Circle", members: 15, pool: 615000, days: 12, cadence: "Fortnightly", position: 9, next: "Fri 22 May", recipient: "Caleb Kiprono Nalyanya" },
+];
+
+export const funds = [
+  { id: "education", title: "Education fund", target: 1_200_000, raised: 745_000, purpose: "School fees, bursaries and the Nyeri bursary.", description: "Covers school fees, university bursaries and the annual Nyeri bursary for our young relatives." },
+  { id: "homestead", title: "Homestead project", target: 3_000_000, raised: 1_180_000, purpose: "Roof, borehole and the second wing at Kimilili.", description: "The family compound at Kimilili: a new roof, a borehole, and a second wing for the visiting cousins." },
+  { id: "welfare", title: "Family welfare", target: 600_000, raised: 512_000, purpose: "Illness, burials and the emergency bench.", description: "Health emergencies, burial support and the emergency bench that keeps a family afloat in a hard month." },
+];
+
+/** 36 monthly balance points (KES thousands) for the command-centre finance curve. */
+export const financeHistory: number[] = Array.from({ length: 36 }, (_, i) => {
+  const wave = Math.sin(i / 3.1) * 26 + Math.cos(i / 5.4) * 14;
+  return Math.round(286 + i * 4.6 + wave);
+});
+
+/* ─── Formatting helpers used across the shell ─────────────────────────── */
+
+/** "KES 245,000" — with a compact option for tight spaces. */
+export function kes(value: number, options: { compact?: boolean } = {}): string {
+  const abs = Math.abs(Math.round(value));
+  if (options.compact && abs >= 1_000_000)
+    return `KES ${(abs / 1_000_000).toFixed(1)}M`;
+  if (options.compact && abs >= 1_000) return `KES ${Math.round(abs / 1_000)}K`;
+  return `KES ${abs.toLocaleString("en-KE")}`;
+}
+
+/** "KES 1.2M" — for axis ticks and chips that have no room for the full amount. */
+export function compact(value: number): string {
+  const abs = Math.abs(value);
+  if (abs >= 1_000_000) return `KES ${(abs / 1_000_000).toFixed(1)}M`;
+  if (abs >= 1_000) return `KES ${Math.round(abs / 1_000)}K`;
+  return `KES ${Math.round(abs)}`;
+}
+
+/** A date formatted in Africa/Nairobi (EAT) with the browser's own locale. */
+export function localDate(
+  value: string | Date,
+  options: Intl.DateTimeFormatOptions = {},
+): string {
+  const date = typeof value === "string" ? new Date(value) : value;
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Africa/Nairobi",
+    ...options,
+  }).format(date);
+}
+
+/** An ISO timestamp `days` from today, used to seed forms with a future date. */
+export function dateFromToday(days: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toISOString();
+}

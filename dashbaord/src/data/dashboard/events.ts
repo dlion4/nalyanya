@@ -1,5 +1,6 @@
 /* T-4 Events & Activities — dedicated page data (mock, deterministic, Kenyan family records). */
 
+import type { PageConfig } from "@/types/workspace";
 import { MEMBERS } from "@/data/family/people";
 import { between, hashString, mulberry32 } from "@/lib/rng";
 import type { Channel, Member } from "@/types/family";
@@ -326,3 +327,15 @@ export function rsvpSummary(event: FamilyEvent) {
 export function sortByStart(list: FamilyEvent[]): FamilyEvent[] {
   return [...list].sort((a, b) => (a.date === b.date ? a.startTime.localeCompare(b.startTime) : a.date.localeCompare(b.date)));
 }
+
+/* The module shell reads its header copy from here. */
+export const pageData: PageConfig = {
+  slug: "events",
+  name: "Gatherings & events",
+  eyebrow: "Our family calendar",
+  description:
+    "Weddings, burials, graduations and the Sunday call — planned together, remembered longer.",
+  action: "Plan a gathering",
+  panel: "events",
+  layout: "events",
+};

@@ -74,21 +74,21 @@ export const DASHBOARD_NAV: ModuleSpec[] = [
     integrations: ["Google Drive"],
   },
   {
-    code: "T-6", slug: "obituaries", href: "/dashboard/obituaries", label: "Obituaries", group: "Family", icon: "Flower2", status: "queued",
+    code: "T-6", slug: "obituaries", href: "/dashboard/obituaries", label: "Obituaries", group: "Family", icon: "Flower2", status: "live",
     purpose: "Honour the departed: notices, life stories, funeral details and condolences, handled with dignity.",
     image: "/images/family/elder-stick.jpg", accent: "#7C8FB3",
     sections: ["In memoriam header", "Obituary cards", "Obituary detail drawer", "New obituary wizard", "Condolence wall", "Anniversary reminders", "Archive"],
     integrations: ["SMS"],
   },
   {
-    code: "T-7", slug: "contributions", href: "/dashboard/contributions", label: "Contributions", group: "Money", icon: "HandCoins", status: "queued",
+    code: "T-7", slug: "contributions", href: "/dashboard/contributions", label: "Contributions", group: "Money", icon: "HandCoins", status: "live",
     purpose: "The family's giving hub: contribute to weddings, sickness, funerals, harambees and community projects.",
     image: "/images/family/sunday-lunch.jpg", accent: "#D17A22",
     sections: ["KPI row", "Causes grid", "Contribute wizard", "Contributions table", "Cause detail drawer", "Create cause wizard", "Payout & reconciliation"],
     integrations: ["M-Pesa"],
   },
   {
-    code: "T-8", slug: "finances", href: "/dashboard/finances", label: "Finances", group: "Money", icon: "Wallet", status: "queued",
+    code: "T-8", slug: "finances", href: "/dashboard/finances", label: "Finances", group: "Money", icon: "Wallet", status: "live",
     purpose: "The collective money engine: chama, merry-go-round and the family Sacco with shares that unlock loans.",
     image: "/images/family/tea-hills.jpg", accent: "#2A9D8F",
     sections: ["Finance KPI row", "Chama & merry-go-round", "Sacco panel", "Transactions table", "Chama detail drawer", "Create chama wizard", "Governance & audit"],
@@ -155,3 +155,80 @@ export const DASHBOARD_NAV: ModuleSpec[] = [
 export function moduleBySlug(slug: string): ModuleSpec | undefined {
   return DASHBOARD_NAV.find((m) => m.slug === slug);
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+   Shell navigation — the icon set and route helpers the dashboard
+   chrome (sidebar · top bar · search) reads from.
+   ───────────────────────────────────────────────────────────────────── */
+
+import {
+  Briefcase,
+  CalendarDays,
+  Flower2,
+  GraduationCap,
+  HandCoins,
+  Images,
+  KeyRound,
+  Landmark,
+  LayoutDashboard,
+  Megaphone,
+  ScrollText,
+  Settings,
+  TreeDeciduous,
+  UserRound,
+  Users,
+  Wallet,
+  type LucideIcon,
+} from "lucide-react";
+
+export interface NavItem {
+  label: string;
+  slug: string;
+  code: string;
+  icon: LucideIcon;
+}
+
+const NAV_ICONS: Record<NavIcon, LucideIcon> = {
+  LayoutDashboard,
+  TreeDeciduous,
+  Users,
+  CalendarDays,
+  Images,
+  Flower2,
+  HandCoins,
+  Wallet,
+  KeyRound,
+  Landmark,
+  GraduationCap,
+  ScrollText,
+  Briefcase,
+  Megaphone,
+  UserRound,
+  Settings,
+};
+
+/** Every dashboard module as a sidebar row. */
+export const allNav: NavItem[] = DASHBOARD_NAV.map((module) => ({
+  label: module.label,
+  slug: module.slug,
+  code: module.code,
+  icon: NAV_ICONS[module.icon],
+}));
+
+/** The route a module slug lives at. */
+export function dashPath(slug: string): string {
+  return slug === "command-center" ? "/dashboard" : `/dashboard/${slug}`;
+}
+
+/** Sidebar groups, in reading order. */
+export const navGroups: Array<{ title: string; items: NavItem[] }> =
+  NAV_GROUPS.map((group) => ({
+    title: group,
+    items: allNav.filter((item) => {
+      const module = DASHBOARD_NAV.find((m) => m.slug === item.slug);
+      return module?.group === group;
+    }),
+  }));
+
+/** Utility routes tucked behind "More tools" — empty until a page ships them. */
+export const extraNav: NavItem[] = [];

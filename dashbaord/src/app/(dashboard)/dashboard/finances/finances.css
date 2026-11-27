@@ -1,0 +1,954 @@
+/* ══════════════════════════════════════════════════════════════════════
+   T-8 · FINANCES — page-scoped stylesheet (root: .page-dash-finances)
+   Warm heritage theme: evergreen #1f4d3a, mzee gold #d4a437, cream #faf6ee.
+   Camera pinhole shutter transitions on chama images.
+   Self-contained: uses design tokens from src/styles/tokens.css.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.page-dash-finances {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  --fin-accent: #2a9d8f;
+  --fin-gold: #d4a437;
+  --fin-evergreen: #1f4d3a;
+  --fin-dusk: #0f2a20;
+}
+
+/* ── Button variants (not in global CSS) ───────────────────────────── */
+.ny-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  min-height: 37px;
+  padding: 9px 15px;
+  border-radius: 7px;
+  font-size: 12px;
+  line-height: 1.4;
+  background: transparent;
+  border: 1px solid var(--color-hairline);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+.ny-btn-ghost:hover {
+  border-color: var(--color-brand-primary);
+  color: var(--color-brand-primary);
+  background: var(--color-surface-2);
+}
+.ny-btn-ghost:active {
+  transform: translateY(0);
+}
+
+.ny-btn-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  min-height: 32px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.ny-btn-sm.ny-btn-primary {
+  background: var(--color-brand-primary);
+  color: #fff;
+  border: 1px solid var(--color-brand-primary);
+}
+.ny-btn-sm.ny-btn-primary:hover {
+  background: #173b29;
+}
+
+.ny-btn-sm.ny-btn-ghost {
+  padding: 6px 12px;
+  font-size: 11px;
+  min-height: 32px;
+}
+
+/* ── Breadcrumbs ───────────────────────────────────────────────────── */
+.ny-fin-crumbs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--color-text-tertiary);
+}
+
+.ny-fin-crumbs a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.ny-fin-crumbs a:hover {
+  color: var(--color-brand-primary);
+}
+
+.ny-fin-crumbs .ny-fin-crumb-divider {
+  color: var(--color-text-tertiary);
+  font-size: 0.7rem;
+}
+
+.ny-fin-crumbs .ml-auto {
+  margin-left: auto;
+}
+
+/* ── Page title block ──────────────────────────────────────────────── */
+.ny-fin-title-block {
+  margin-bottom: 8px;
+}
+
+.ny-fin-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-brand-accent) 12%, transparent);
+  color: var(--color-brand-accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  border: 1px solid color-mix(in srgb, var(--color-brand-accent) 25%, transparent);
+}
+
+.ny-fin-eyebrow .ny-fin-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-brand-accent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-brand-accent) 60%, transparent);
+}
+
+.ny-fin-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 4px 0;
+}
+
+.ny-fin-title em {
+  font-style: italic;
+  color: var(--color-text-secondary);
+}
+
+.ny-fin-lead {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  max-width: 64ch;
+  margin: 0;
+}
+
+/* ── Section header ────────────────────────────────────────────────── */
+.ny-fin-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ny-fin-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.ny-fin-section-number {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-brand-accent);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ny-fin-section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.ny-fin-section-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ── Money camera / pinhole chrome ─────────────────────────────────── */
+.ny-money-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--fin-dusk);
+  box-shadow: 0 20px 60px -15px rgb(15 42 32 / 0.55);
+}
+
+.ny-money-plate {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ny-money-blades {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--cx, 50%) var(--cy, 46%),
+    transparent var(--hole, 150%),
+    #051810 calc(var(--hole, 150%) + 2px),
+    #051810 100%
+  );
+  opacity: 0.92;
+  pointer-events: none;
+  mask-image: radial-gradient(
+    circle at var(--cx, 50%) var(--cy, 46%),
+    black var(--hole, 150%),
+    transparent calc(var(--hole, 150%) + 1px),
+    transparent 100%
+  );
+  mask-composite: exclude;
+  -webkit-mask-image: radial-gradient(
+    circle at var(--cx, 50%) var(--cy, 46%),
+    black var(--hole, 150%),
+    transparent calc(var(--hole, 150%) + 1px),
+    transparent 100%
+  );
+  -webkit-mask-composite: destination-out;
+  transform: rotate(var(--spin, 0deg));
+  transform-origin: var(--cx, 50%) var(--cy, 46%);
+  transition: all 0.42s cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 0.78s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ny-money-flash {
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(
+    circle at var(--cx, 50%) var(--cy, 46%),
+    rgba(255, 255, 255, 0.35) 0%,
+    transparent 55%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.26s ease;
+}
+
+.ny-money-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(15, 42, 32, 0.35) 60%,
+    rgba(15, 42, 32, 0.7) 100%
+  );
+  pointer-events: none;
+}
+
+.ny-money-chrome {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  opacity: 0.85;
+}
+
+.ny-money-readout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #dcd7ca;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: rgba(5, 24, 16, 0.7);
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ny-money-settings {
+  color: rgba(220, 215, 202, 0.6);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.ny-money-arrows {
+  display: flex;
+  gap: 6px;
+}
+
+.ny-money-arrows button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  color: #dcd7ca;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.ny-money-arrows button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fdfbf5;
+}
+
+/* ── Money grid cards ──────────────────────────────────────────────── */
+.ny-fin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.ny-fin-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color-surface-1);
+  border: 1px solid var(--color-hairline);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ny-fin-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--color-brand-accent) 55%, transparent);
+  box-shadow: 0 24px 60px -20px rgb(31 77 58 / 0.4);
+}
+
+.ny-fin-card-stage {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+  background: var(--fin-dusk);
+}
+
+.ny-fin-card-plate {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.ny-fin-card:hover .ny-fin-card-plate {
+  transform: scale(1.05);
+}
+
+.ny-fin-card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.ny-fin-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1.3;
+}
+
+.ny-fin-card-purpose {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ny-fin-card-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.ny-fin-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border: 1px solid var(--color-hairline);
+  background: rgba(0, 0, 0, 0.02);
+  color: var(--color-text-secondary);
+}
+
+.ny-fin-chip.is-active {
+  border-color: color-mix(in srgb, var(--color-brand-accent) 50%, transparent);
+  color: #7fd0b7;
+  background: color-mix(in srgb, var(--color-brand-accent) 10%, transparent);
+}
+
+.ny-fin-chip.is-paused {
+  border-color: color-mix(in srgb, var(--color-brand-secondary) 50%, transparent);
+  color: var(--color-brand-secondary);
+  background: color-mix(in srgb, var(--color-brand-secondary) 10%, transparent);
+}
+
+.ny-fin-card-footer {
+  padding: 14px 16px;
+  border-top: 1px solid var(--color-hairline);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.ny-fin-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.ny-fin-card-row .ny-fin-label {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  font-family: var(--font-mono);
+}
+
+.ny-fin-card-row .ny-fin-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  font-family: var(--font-mono);
+}
+
+.ny-fin-card-row .ny-fin-value.is-gold {
+  color: var(--color-brand-accent);
+}
+
+.ny-fin-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.ny-fin-btn-sm {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--color-hairline);
+  background: rgba(0, 0, 0, 0.02);
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ny-fin-btn-sm:hover {
+  border-color: var(--color-brand-accent);
+  color: #7fd0b7;
+  background: color-mix(in srgb, var(--color-brand-accent) 8%, transparent);
+}
+
+.ny-fin-btn-sm.is-primary {
+  border-color: var(--color-brand-accent);
+  color: #7fd0b7;
+  background: color-mix(in srgb, var(--color-brand-accent) 12%, transparent);
+}
+
+.ny-fin-btn-sm.is-primary:hover {
+  background: color-mix(in srgb, var(--color-brand-accent) 20%, transparent);
+}
+
+/* ── Sacco panel ───────────────────────────────────────────────────── */
+.ny-fin-sacco-panel {
+  background: var(--color-surface-1);
+  border: 1px solid var(--color-hairline);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.ny-fin-sacco-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-hairline);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.ny-fin-sacco-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 4px 0;
+}
+
+.ny-fin-sacco-sub {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.ny-fin-sacco-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  padding: 20px 24px;
+}
+
+.ny-fin-sacco-share {
+  border: 1px solid var(--color-hairline);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(0, 0, 0, 0.02);
+  transition: border-color 0.2s ease;
+}
+
+.ny-fin-sacco-share:hover {
+  border-color: color-mix(in srgb, var(--color-brand-accent) 40%, transparent);
+}
+
+.ny-fin-share-member {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+}
+
+.ny-fin-share-stats {
+  display: flex;
+  gap: 10px;
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  margin-bottom: 8px;
+}
+
+.ny-fin-share-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #7fd0b7;
+  font-family: var(--font-mono);
+}
+
+.ny-fin-share-loan {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid;
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.ny-fin-share-loan.is-eligible {
+  border-color: var(--color-brand-accent);
+  color: #7fd0b7;
+  background: color-mix(in srgb, var(--color-brand-accent) 10%, transparent);
+}
+
+.ny-fin-share-loan.is-not-eligible {
+  border-color: var(--color-text-tertiary);
+  color: var(--color-text-tertiary);
+  background: color-mix(in srgb, var(--color-text-tertiary) 10%, transparent);
+}
+
+/* ── Transactions table ────────────────────────────────────────────── */
+.ny-fin-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-hairline);
+  border-radius: 16px;
+  background: var(--color-surface-1);
+}
+
+.ny-fin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.ny-fin-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  border-bottom: 1px solid var(--color-hairline);
+  background: rgba(0, 0, 0, 0.02);
+  font-family: var(--font-mono);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.ny-fin-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-hairline);
+  color: var(--color-text-secondary);
+  vertical-align: middle;
+}
+
+.ny-fin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ny-fin-table tbody tr:hover td {
+  background: color-mix(in srgb, var(--color-brand-accent) 4%, transparent);
+}
+
+.ny-fin-txn-member {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.ny-fin-txn-type {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ny-fin-txn-amount {
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--color-text-primary);
+}
+
+.ny-fin-txn-amount.is-positive {
+  color: #7fd0b7;
+}
+
+.ny-fin-txn-amount.is-negative {
+  color: var(--color-brand-secondary);
+}
+
+.ny-fin-txn-status {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+}
+
+.ny-fin-txn-status.confirmed {
+  background: color-mix(in srgb, var(--color-brand-accent) 10%, transparent);
+  color: #7fd0b7;
+  border: 1px solid color-mix(in srgb, var(--color-brand-accent) 30%, transparent);
+}
+
+.ny-fin-txn-status.pending {
+  background: color-mix(in srgb, var(--color-brand-accent) 10%, transparent);
+  color: var(--color-brand-accent);
+  border: 1px solid color-mix(in srgb, var(--color-brand-accent) 30%, transparent);
+}
+
+.ny-fin-txn-status.failed {
+  background: color-mix(in srgb, var(--color-brand-secondary) 10%, transparent);
+  color: var(--color-brand-secondary);
+  border: 1px solid color-mix(in srgb, var(--color-brand-secondary) 30%, transparent);
+}
+
+.ny-fin-txn-ref {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-tertiary);
+}
+
+.ny-fin-txn-channel {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-secondary);
+}
+
+.ny-fin-table-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--color-text-tertiary);
+}
+
+/* ── Filter bar ────────────────────────────────────────────────────── */
+.ny-fin-filter-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.ny-fin-filter-chip {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--color-hairline);
+  background: rgba(0, 0, 0, 0.02);
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ny-fin-filter-chip.active {
+  border-color: var(--color-brand-accent);
+  color: #7fd0b7;
+  background: color-mix(in srgb, var(--color-brand-accent) 12%, transparent);
+}
+
+.ny-fin-filter-chip:hover:not(.active) {
+  border-color: color-mix(in srgb, var(--color-brand-accent) 50%, transparent);
+}
+
+/* ── SIMULATED notice ─────────────────────────────────────────────── */
+.ny-fin-simulated {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-brand-accent) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-brand-accent) 20%, transparent);
+  color: var(--color-brand-accent);
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.ny-fin-simulated .ny-fin-sim-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-brand-accent);
+  animation: ny-fin-pulse 2s infinite;
+}
+
+@keyframes ny-fin-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+/* ── Overlay surfaces ──────────────────────────────────────────────── */
+.ny-fin-overlay-section {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-hairline);
+}
+
+.ny-fin-overlay-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 14px;
+  font-family: var(--font-mono);
+}
+
+/* ── Footnote ──────────────────────────────────────────────────────── */
+.ny-fin-footnote {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-hairline);
+  color: var(--color-text-tertiary);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.ny-fin-footnote .ny-fin-link {
+  color: var(--color-brand-accent);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .ny-fin-grid {
+    grid-template-columns: 1fr;
+  }
+  .ny-fin-sacco-grid {
+    grid-template-columns: 1fr;
+  }
+  .ny-fin-card-actions {
+    grid-template-columns: 1fr;
+  }
+  .ny-money-stage {
+    aspect-ratio: 4 / 3;
+    height: auto;
+    min-height: 200px;
+  }
+}
+
+/* ── Elder mode ────────────────────────────────────────────────────── */
+html[data-ny-mode="elder"] .ny-fin-card {
+  border: 2px solid var(--color-hairline);
+}
+
+html[data-ny-mode="elder"] .ny-fin-btn-sm,
+html[data-ny-mode="elder"] .ny-fin-filter-chip {
+  border: 2px solid currentColor;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+}
+
+html[data-ny-mode="elder"] .ny-fin-table td,
+html[data-ny-mode="elder"] .ny-fin-table th {
+  padding: 16px;
+  font-size: 0.95rem;
+}
+
+/* ── Wizard review / simnote / foot / candle (page-scoped) ─────────── */
+.ny-fin-review {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid var(--color-hairline);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.ny-fin-review > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.ny-fin-review > div span {
+  font-size: 0.8rem;
+  color: var(--color-text-tertiary);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ny-fin-review > div b {
+  font-size: 0.9rem;
+  color: var(--color-text-primary);
+}
+
+.ny-fin-review > div b.is-gold {
+  color: var(--color-brand-accent);
+}
+
+.ny-fin-simnote {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-brand-accent) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-brand-accent) 20%, transparent);
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.ny-fin-simnote b {
+  color: var(--color-text-primary);
+}
+
+.ny-give-foot {
+  margin-top: auto;
+}
+
+.ny-give-candle-scene {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid var(--color-hairline);
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+.ny-candle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 48px;
+  position: relative;
+}
+
+.ny-candle.is-lit .ny-candle-flame {
+  animation: ny-candle-flicker 3s ease-in-out infinite;
+}
+
+.ny-candle-flame {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 20px;
+  background: #fbbf24;
+  border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+  filter: blur(2px);
+  opacity: 0.9;
+}
+
+.ny-candle-body {
+  width: 10px;
+  height: 34px;
+  background: #f5f5f0;
+  border-radius: 4px;
+  box-shadow: inset -1px 0 0 rgba(0,0,0,0.1);
+}
+
+@keyframes ny-candle-flicker {
+  0%, 100% { transform: translateX(-50%) scale(1, 1); opacity: 0.9; }
+  25% { transform: translateX(-50%) scale(0.95, 1.05); opacity: 1; }
+  50% { transform: translateX(-50%) scale(1.02, 0.98); opacity: 0.85; }
+  75% { transform: translateX(-50%) scale(0.98, 1.02); opacity: 0.95; }
+}
+
+.is-gold {
+  color: var(--color-brand-accent);
+}
+
+/* ── Scroll ───────────────────────────────────────────────────────── */
+.ny-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-brand-primary) 30%, transparent) transparent;
+}
+.ny-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.ny-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-brand-primary) 25%, transparent);
+  border-radius: 9999px;
+}
+
+/* ── Textarea ─────────────────────────────────────────────────────── */
+.ny-textarea {
+  resize: vertical;
+  min-height: 80px;
+}

@@ -14,7 +14,20 @@ const root = createRootRoute({
     Object.fromEntries(
       Object.entries(search).filter(
         ([k, v]) =>
-          ["branch", "panel", "id"].includes(k) && typeof v === "string",
+          [
+            "branch",
+            "panel",
+            "id",
+            /* T-6 remembrance: the notice, its tab, the open overlay and
+               the filters all live in the URL so a page can be shared. */
+            "obit",
+            "tab",
+            "act",
+            "target",
+            "year",
+            "view",
+            "q",
+          ].includes(k) && typeof v === "string",
       ),
     ) as Record<string, string | undefined>,
   component: () => (
